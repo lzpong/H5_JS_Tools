@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<meta name="renderer" content="webkit">
+<style>
+#fileImage{
+  overflow: scroll;
+  height: 400px;
+  margin: 20px auto;
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: contain;
+}
+#fileInfo{border: 1px solid #CFF3F5;}
+#progressp{
+  position: absolute;
+  width:200px;
+  height:24px;
+  border: 1px solid #CFF3F5;
+  display: none;
+}
+#progress{
+  background-color:blue;
+  height:24px;
+  width:0%;
+}
+</style>
+
+<input type="file" value="upload" id="fileInput"> <div id="progressp"><div id="progress"> </div> </div>
+<p id="fileInfo"></p>
+<div id="fileText"></div>
+
+<script>
+var fileInput = document.getElementById("fileInput"),
+    fileText = document.getElementById("fileText"),
+    fileInfo = document.getElementById("fileInfo"),
+    progress = document.getElementById("progress");
+    progressp = document.getElementById("progressp");
+
+//读取文件
+function read(file,start,procFun){
+    start=parseInt(start, 10)||0;
+    var minSize=64*1024, maxSize=10*1024*1024;//64KB //10MB
+    var blob;
+    var reader=new FileReader();
+    var sliceSize=parseInt(file.size/100);//每次读取大小(byte)
+    if(sliceSize<64*1024)
+      sliceSize=64*1024;
+    else if(sliceSize>maxSize)
+      sliceSize=maxSize;
+    var end=start+sliceSize;
+    if(end+minSize>file.size)
+      end=file.size;
+    blob =(file.slice||(file.webkitSlice||file.mozSlice)).call(file,start, end);
+
+    reader.onload = function(e){
+        //console.log("进度(byte)",end,(end/file.size*100).toFixed(2)+"%");
+        start=end;
+        procFun?procFun(e.target.result,start):null;
+        if(start<file.size)
+            read(file,start,procFun);
+        //else
+        //    console.log("本次读取完毕",file.size);
+    }
+    reader.readAsText(blob)
+}
+
+
+//监听change事件
+fileInput.addEventListener('change',function(){
+    //清空预览区
+    fileText.innerText = '';
+    //检查文件是否选择
+    if(!fileInput.value){
+        fileInfo.innerHTML = "没有选择任何文件";
+        return;
+    }
+
+    //获取file的引用
+    var file = fileInput.files[0];
+
+    //获取file信息
+    fileInfo.innerHTML = '文件: '+file.name+'<br>'+
+                         '类型: '+file.type+'<br>'+
+                         '大小: '+file.size+'<br>'+
+                         '修改: '+file.lastModifiedDate+'<br>';
+    progress.style.width="1px";
+    progressp.style.display= "block";
+    progressp.style.top=(this.offsetTop-2)+"px",
+    progressp.style.left=this.offsetLeft+"px",
+    progressp.style.width=this.offsetWidth+"px",
+    progressp.style.height=this.offsetHeight+"px";
+
+    //对文件切片读取,防止文件过大,浏览器崩溃
+    var html="";//全部要显示内容
+    var ldata="";//本次数据结尾不完整的一行
+    var sipstr="";//数据的未完整内容,字符串
+    var siparr=[];//数据的未完整内容,行数组
+    var seq=0;
+    read(file,0,(data,size)=>{
+        progress.style.width=Math.round((size / file.size) * 100)+"%";
+        var lin=data.lastIndexOf("\n")+1;//最后一个
+        var lldata=data.substr(lin);
+        var lines=(ldata+data.substr(0,lin)).split("\n");
+        ldata=lldata;
+
+        for(i=0;i<lines.length;i++){
+            if(siparr.length<1 && lines[i].indexOf("   -----")<0) continue;
+            siparr.length<1?++i:0;
+            if(seq==10)
+               seq=seq;
+            //获取接下来的 内容
+            while(i<lines.length && lines[i].indexOf("   -----")<0){
+                {
+                    html+="\n"+lines[i].trim();
+                    siparr.push(lines[i].trim());
+                    i++;
+                }
+            }
+            ///
+            if(i<lines.length){
+                html+="\n---------------------------------------------"+ seq++ +"\n";
+                //var sip=getSip(siparr);
+                siparr=[];
+            }
+        }
+        //加载完成
+        if(size == file.size){
+            html+="\n"+ldata;
+            if(siparr.length>0){
+                siparr.push(ldata);
+            }
+            progressp.style.display= "none";
+            fileText.innerText=html;
+            html="";
+        }
+    });
+});
+</script>
