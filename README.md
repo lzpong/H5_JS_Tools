@@ -2,8 +2,8 @@
 JavaScript Tools
 JavaScript 有用的或有趣的, 实用工具,函数,等等...
 
-===================================================
-
+===================================================  
+列表:[最新在这里>>>Issues<<<](https://github.com/lzpong/JS_Tools/issues)
 <ul>
 <li>
   <a href="https://github.com/lzpong/JS_Tools/issues/1"  >
