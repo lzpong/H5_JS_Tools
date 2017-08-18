@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<meta name="renderer" content="webkit">
+<title>大文件查找字符串与详情查看----以及FS_sipTrace</title>
+<style>
+#fileImage{
+  overflow: scroll;
+  height: 400px;
+  margin: 20px auto;
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: contain;
+}
+#fileInfo,div{border: 1px solid #CFF3F5;}
+#progressp{
+  position: absolute;
+  width:200px;
+  height:24px;
+  border: 1px solid #CFF3F5;
+  display: none;
+}
+#progress{
+  background-color:blue;
+  height:24px;
+  width:0%;
+}
+
+.red{color:red;}
+#showMsg{position: absolute;background-color: antiquewhite;display:none;}
+#msgTitle{display:inline;}
+#close{display:inline;cursor: pointer;position: absolute;right:0px;color:red}
+</style>
+
+<input type="file" value="upload" id="fileInput"> <div id="progressp"><div id="progress"> </div> </div>
+<p id="fileInfo"></p>
+<div>搜索内容:<input id="stxt"/><input type="button" value="搜索" id="stxtbtn"/> <input type="button" id="siptracebtn" value="getSipTrace"/> 查看点前后字符数:<input id="poswave" value="350"/></div>
+<dl></dl>
+<div id="fileText"></div>
+
+<div id="showMsg">
+<div id="showMsgTitle"><div id="msgTitle">msgTitle</div><div id="close" onclick="javascript:showMsg.style.display= 'none'">×</div></div>
+<pre id="msgTxt"></pre>
+</div>
+
+<script>
+//读取文件(文件对象,开始位置[,结束位置],回调函数)
+//回调函数(数据,总共已读取数据大小)
+//回调函数返回true表示继续读取,false则停止
+function read(file,start,ended,procFun){
+    if(!file)
+      return alert("未选择文件");
+    if(typeof ended =="function")
+       procFun=ended,ended=file.size;
+    start=parseInt(start, 10)||0;
+    var minSize=64*1024, maxSize=10*1024*1024;//64KB //10MB
+    var blob;
+    var reader=new FileReader();
+    var sliceSize=parseInt(file.size/100);//每次读取大小(byte)
+    if(sliceSize<64*1024)
+      sliceSize=64*1024;
+    else if(sliceSize>maxSize)
+      sliceSize=maxSize;
+    var end=start+sliceSize;
+    if(end>ended)
+      end=ended;
+    blob =(file.slice||(file.webkitSlice||file.mozSlice)).call(file,start, end);
+    console.log("本次读取: ",start, end," total:"+file.size);
+    reader.onload = function(e){
+        //console.log("进度(byte)",end,(end/file.size*100).toFixed(2)+"%");
+        let ctnu=false;
+        start=end;
+        procFun?ctnu=procFun(e.target.result,start):null;
+        if(start<ended && ctnu)
+            read(file,start,ended,procFun);
+        //else
+        //    console.log("本次读取完毕",file.size);
+    }
+    reader.onerror=(e)=>{console.error(e)}
+    reader.readAsText(blob)
+}
+
+function downloadFile(content, fileName){
+    var aLink = document.createElement('a');
+    var blob = new Blob([content]);
+    var evt = document.createEvent("MouseEvents");
+    evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
+    aLink.download = fileName||"downloadFile";
+    aLink.href = URL.createObjectURL(blob);
+    aLink.dispatchEvent(evt);
+    if (navigator.userAgent.indexOf('Firefox') >= 0)//FF的支持,可能不需要
+    aLink.click();
+}
+
+
+//================================================
+
+var fileInput = document.getElementById("fileInput"),
+    fileText = document.getElementById("fileText"),
+    fileInfo = document.getElementById("fileInfo"),
+    progress = document.getElementById("progress");
+    progressp = document.getElementById("progressp");
+    showMsg=document.getElementById('showMsg');
+
+var file=null;
+
+function lodprogress(t,s){
+if(t!=s)
+progressp.style.display= "block",progress.style.width=Math.round((s / t) * 100)+"%";
+else
+progressp.style.display= "none";
+}
+function show(msg,title,top)
+{
+  showMsg.querySelector('#msgTitle').innerHTML=title;
+  showMsg.querySelector('#msgTxt').innerHTML=msg;
+  showMsg.style.display= 'block';
+  showMsg.style.top=top+"px";
+}
+
+//监听change事件
+fileInput.addEventListener('change',function(){
+    //清空预览区
+    fileText.innerText = '';
+    //检查文件是否选择
+    if(!this.value){
+        fileInfo.innerHTML = "没有选择任何文件";
+        return;
+    }
+
+    //获取file的引用
+    file = this.files[0];
+
+    //获取file信息
+    fileInfo.innerHTML = '文件: '+file.name+'<br>'+
+                         '类型: '+file.type+'<br>'+
+                         '大小: '+file.size+'<br>'+
+                         '修改: '+file.lastModifiedDate+'<br>';
+    progress.style.width="1px";
+    progressp.style.top=(this.offsetTop-2)+"px",
+    progressp.style.left=this.offsetLeft+"px",
+    progressp.style.width=this.offsetWidth+"px",
+    progressp.style.height=this.offsetHeight+"px";
+    /*if(file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif'){
+        alert('不是有效的图片');
+        return;
+    }*/
+});
+</script>
+
+<script descript="SIP-detect">
+function getSip(arr){
+  option;
+  optionData;
+  code;
+  descript;
+  from;
+  fromData;
+  to;
+  toData;
+  callID;
+  media;
+  rtp;
+  cSeq;
+  contact;
+
+  var arr1=arr[0].split(" ");
+  switch(arr1[0]){
+  case "SIP/2.0" :
+  case "SIP/1.0" : optionData=arr[0];
+    code=arr1[1],descript=arr1[2];  break;
+  case "ACK" : // break;
+  case "INVITE" : // break;
+  case "BYE" : // break;
+  case "CANCEL" : optionData=arr1[1]; break;
+  /* case "NOTIFY" :
+  break;
+  case "REGISTER" :
+  break;*/
+  default: return{};
+  }
+  option=arr1[0];
+  for(var i=1;i<arr.length;i++){
+    var arr2=arr[i].split(/[; :]/g);
+    switch(arr2.shift()){
+    case "From":
+      if(arr2.length>1)
+        from=arr2[0].replace(/\"/g,""); fromData=arr2[1].replace(/[<>]/g,"");
+    break;
+    case "To":
+      if(arr2.length>1)
+        to=arr2[0].replace(/\"/g,""); toData=arr2[1].replace(/[<>]/g,"");
+      //else
+      //  ;
+    break;
+    case "Call-ID":
+    break;
+    case "CSeq":
+    break;
+    case "Contact": contact=arr2.join(" ");
+    break;
+    case "m=audio": media=arr2.join(" ");
+    break;
+    case "a=rtpmap":
+      if(rtp==null || rtp.length<1) rtp+=arr2.join(" ");
+      else rtp+="\n"+arr2.join(" ");
+    break;
+    }
+  }
+
+  return{
+    option:option,
+    optionData:optionData,
+    code:code,
+    descript:descript,
+    from:from,
+    fromData:fromData,
+    to:to,
+    toData:toData,
+    callID:callID,
+    media:media,
+    rtp:rtp,
+    cSeq:cSeq,
+    contact:contact,
+    str:arr.join("")
+  }
+}
+
+document.getElementById("siptracebtn").addEventListener('click',function (){
+    //对文件切片读取,防止文件过大,浏览器崩溃
+    var html="";//全部sip
+    var ldata="";//本次数据结尾不完整的一行
+    var sipstr="";//sip数据的未完整内容,字符串
+    var siparr=[];//sip数据的未完整内容,行数组
+    var seq=0;//tt=0;
+
+    read(file,0,(data,size)=>{
+        progress.style.width=Math.round((size / file.size) * 100)+"%";
+        var lin=data.lastIndexOf("\n")+1;//最后一个
+        var lldata=data.substr(lin);
+        var lines=(ldata+data.substr(0,lin)).split("\n");
+        ldata=lldata;
+        //html+="\n----------------------------------------------------------------------------"+ ++tt +"\n";
+        for(i=0;i<lines.length;i++){
+            if(siparr.length<1 && lines[i].indexOf("   -----")<0) continue;
+            siparr.length<1?++i:0;
+            if(seq==10)
+               seq=seq;
+            //获取接下来的 sip 内容
+            while(i<lines.length && lines[i].indexOf("   -----")<0){
+                {
+                    html+="\n"+lines[i].trim();
+                    siparr.push(lines[i].trim());
+                    i++;
+                }
+            }
+            ///
+            if(i<lines.length){
+                html+="\n---------------------------------------------"+ seq++ +"\n";
+                //var sip=getSip(siparr);
+                siparr=[];
+            }
+        }
+        //加载完成
+        if(size == file.size){
+            //html+="\n"+ldata;
+            if(siparr.length>0){
+                siparr.push(ldata);
+                //var sip=getSip(siparr);
+            }
+            downloadFile(html,file.name+"_副本.log");
+            //fileText.innerText=html;
+            html="";
+        }
+        lodprogress(file.size,size);
+        return size < file.size;
+    });
+});
+
+</script>
+
+<script descript="actions">
+document.getElementById("stxtbtn").addEventListener('click',function(){
+	var s=document.getElementById("stxt").value;
+	var dl=document.querySelector("dl");
+	dl.innerHTML="";
+	read(file,0,(data,size)=>{
+		var ind=0;
+		while((ind=data.indexOf(s,ind+1))>=0&&ind<data.length){
+			var dd=document.createElement("dd");
+			let st=ind-60;st=st>0?st:0;
+			dd.innerHTML=size-data.length+ind+"  "+data.substr(st,128).replace(s,"<span class='red'>"+s+"</span>");
+			dd.start=size-data.length+ind;
+			dl.appendChild(dd);
+			dd.addEventListener('dblclick',(e)=>{
+				//console.log(e.target.start,e.target.innerText);
+				let st=e.target.start||0;
+				let pn=parseInt(document.querySelector("#poswave").value,10)||200;
+				read(file,st-pn,st+pn,(data,size)=>{
+					show(data,e.target.innerText,e.target.offsetTop+e.target.offsetHeight+1);
+				},false);
+			});
+		}
+		lodprogress(file.size,size);
+		return size < file.size;
+	});
+});
+</script>
