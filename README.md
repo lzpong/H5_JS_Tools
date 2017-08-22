@@ -1,7 +1,7 @@
 # H5_JS_Tools
 HTML5 JavaScript Tools 有用的或有趣的, 实用工具,函数,等等...
 
-### 建议使用下列样式来浏览 GitHub
+### 建议使用下列样式来浏览 GitHub, 可以获得更好的界面效果
 ```css
 .container {width: auto;min-width: 980px;max-width: 90%;margin-right: auto;margin-left: auto;}
 .discussion-timeline {position: relative;float: left;width: 80%;max-width: 100%;}
