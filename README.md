@@ -1,6 +1,13 @@
 # H5_JS_Tools
-HTML5 JavaScript Tools
-HTML5 JavaScript 有用的或有趣的, 实用工具,函数,等等...
+HTML5 JavaScript Tools 有用的或有趣的, 实用工具,函数,等等...
+
+### 建议使用下列样式来浏览 GitHub
+```css
+.container {width: auto;min-width: 980px;max-width: 90%;margin-right: auto;margin-left: auto;}
+.discussion-timeline {position: relative;float: left;width: 80%;max-width: 100%;}
+.discussion-sidebar {z-index: 21;position: absolute;right: 10px;top: 185px;}
+.timeline-new-comment {max-width: 100%;}
+```
 
 ===================================================  
 列表:[最新在这里>>>Issues<<<](https://github.com/lzpong/JS_Tools/issues)
