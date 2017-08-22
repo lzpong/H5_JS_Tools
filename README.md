@@ -29,7 +29,7 @@ HTML5 JavaScript Tools 有用的或有趣的, 实用工具,函数,等等...
 </li>
 <li>
   <a href="https://github.com/lzpong/JS_Tools/issues/4"  >
-    4. Array数组删除元素,参数可以是单个对象、一维数组、多维数组
+    4. Array数组删除元素,参数可以是下标、单个对象、一维数组、多维数组
   </a>
 </li>
 <li>
@@ -48,8 +48,13 @@ HTML5 JavaScript Tools 有用的或有趣的, 实用工具,函数,等等...
   </a>
 </li>
 <li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/8"  >
-    8. H5 拖拽,一个函数搞定,直接指定对象设置可拖拽
+  <a href="https://github.com/lzpong/JS_Tools/issues/7"  >
+    8. 用JavaScript在浏览器中创建下载文件,在前端生成的文件下载
+  </a>
+</li>
+<li>
+  <a href="https://github.com/lzpong/JS_Tools/issues/9"  >
+    9. String 的扩展和 stringBuilder 也是很有意思的
   </a>
 </li>
 </ul>
