@@ -1,6 +1,6 @@
-# JS_Tools
-JavaScript Tools
-JavaScript 有用的或有趣的, 实用工具,函数,等等...
+# H5_JS_Tools
+HTML5 JavaScript Tools
+HTML5 JavaScript 有用的或有趣的, 实用工具,函数,等等...
 
 ===================================================  
 列表:[最新在这里>>>Issues<<<](https://github.com/lzpong/JS_Tools/issues)
