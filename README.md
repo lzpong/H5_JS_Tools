@@ -49,7 +49,7 @@ HTML5 JavaScript Tools 有用的或有趣的, 实用工具,函数,等等...
 </li>
 <li>
   <a href="https://github.com/lzpong/JS_Tools/issues/7"  >
-    8. 用JavaScript在浏览器中创建下载文件,在前端生成的文件下载
+    8. H5 拖拽,一个函数搞定,直接指定对象设置可拖拽
   </a>
 </li>
 <li>
@@ -57,4 +57,8 @@ HTML5 JavaScript Tools 有用的或有趣的, 实用工具,函数,等等...
     9. String 的扩展和 stringBuilder 也是很有意思的
   </a>
 </li>
+<li>
+  <a href="https://github.com/lzpong/JS_Tools/issues/10"  >
+    10. Array 数组的排序 sort
+  </a>
 </ul>
