@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>数字转换RMB大写</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+span{color:red;}
+body {
+	padding:0 10px;
+	margin:0px;
+}
+font{padding:5 0px;}
+</style>
+</head>
+<script language="javascript">
+<!--
+var $=function(o){return document.getElementById(o);}
+var UpperCase = new Array("零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖");
+var LowerCase = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+var SmallUnits = new Array("", "拾", "佰", "仟");
+//var BigUnits = new Array("", "万", "亿", "万亿", "万万亿", "万亿亿", "万万亿亿", "万亿亿亿", "万万亿亿亿", "万亿亿亿亿");
+var BigUnits = new Array("", "<span>万</span>", "<span>亿</span>", "<span>万亿</span>", "<span>兆</span>", "<span>万兆</span>", "<span>亿兆</span>", "<span>万亿兆</span>", "<span>兆兆</span>", "<span>万兆兆</span>");
+var Units2 = new Array("<span>角</span>", "<span>分</span>");
+
+function checkInput()
+{
+    var _loc_1;
+    var _loc_2=$("InTxt").value;
+    if(-1!=_loc_2.indexOf('-')) return false;
+    if(-1==_loc_2.indexOf('.')) return true;
+    _loc_1 = _loc_2.split(".");
+    if (_loc_1[0] == 'undefined' || _loc_1[0] == "")
+    {
+        _loc_1[0] = "";
+        return false;
+    }
+    while (_loc_1[0].length > 1 && _loc_1[0].charAt(0) == "0")
+    {
+
+        _loc_1[0] = _loc_1[0].replace(_loc_1[0].charAt(0), "");
+        if (_loc_1.length == 1)
+        {
+            $("InTxt").value = _loc_1[0];
+            continue;
+        }
+        $("InTxt").value = _loc_1[0] + "." + _loc_1[1];
+    }
+    if (_loc_1.length > 2)
+    {
+        _loc_1 = _loc_1.splice(0, 2);
+        $("InTxt").value = _loc_1[0] + "." + _loc_1[1];
+    }
+    if (_loc_1[1].length > 2 && _loc_1.length > 1)
+    {
+        _loc_1[1] = _loc_1[1].charAt(0) + _loc_1[1].charAt(1);
+        $("InTxt").value = _loc_1[0] + "." + _loc_1[1];
+    }
+    if (_loc_1.length <= 1)
+    {
+        $("InTxt").value = _loc_1[0];
+    }
+    return true;
+}// end function
+
+function LowerToUpper(value_rmb)
+{
+    var _loc_9 = 0;
+    var _loc_1 = "";
+    var _loc_2 = "";
+    var value_rmb_AT = value_rmb.split(".");
+    var value_rmb_iArr = value_rmb_AT[0].split("");
+    var _loc_6 = 0;
+    var value_at = 0;
+    var i = 0;
+    while (i < value_rmb_AT[0].length)
+    {
+
+        value_at = value_rmb_AT[0].length - i - 1;
+        if (value_rmb_iArr[i] == 0)
+        {
+            _loc_6 = _loc_6 + 1;
+        }
+        else
+        {
+            if (_loc_6 > 0)
+            {
+                _loc_1 = _loc_1 + UpperCase[0];
+            }
+            _loc_6 = 0;
+            _loc_1 = _loc_1 + (UpperCase[value_rmb_iArr[i]] + SmallUnits[value_at % 4]);
+        }
+        if (value_at % 4 == 0 && _loc_6 < 4)
+        {
+            _loc_1 = _loc_1 + BigUnits[(value_at / 4)];
+        }
+        i++;
+    }
+    if (_loc_1 != "")
+    {
+        _loc_1 = _loc_1 + "<span>元</span>";
+    }
+    if (value_rmb_AT.length > 1)
+    {
+        _loc_9 = 0;
+        while (_loc_9 < value_rmb_AT[1].length)
+        {
+
+            if (value_rmb_AT[1].charAt(_loc_9) == "0")
+            {
+                if (_loc_9 == 0 && value_rmb_AT[1].charAt((_loc_9 + 1)) != "0")
+                {
+                    //trace("Come!!", _loc_9, 0);
+                    _loc_1 = _loc_1 + UpperCase[value_rmb_AT[1].charAt(_loc_9)];
+                }
+                if (_loc_9 == 1 && (value_rmb_AT[1].charAt((_loc_9 - 1)) == "0" || value_rmb_AT[1].charAt(1) == "0"))
+                {
+                    //trace("Come!!", _loc_9, 1);
+                    _loc_1 = _loc_1 + "<span>整</span>";
+                }
+            }
+            else
+            {
+                _loc_1 = _loc_1 + (UpperCase[value_rmb_AT[1].charAt(_loc_9)] + Units2[_loc_9]);
+            }
+            _loc_9++;
+        }
+    }
+    else if (_loc_1 != "")
+    {
+        _loc_1 = _loc_1 + "<span>整</span>";
+    }
+    return _loc_1;
+}// end function
+
+function Show(v)
+{
+	if(checkInput())
+		$("OutTxt").innerHTML=LowerToUpper(v);
+	$("vlen").innerHTML=v.length+"位";
+}
+-->
+</script>
+
+<body bgcolor="#FFFFFF" onclick="$('InTxt').select();$('InTxt').focus();">
+<input type="text" ID="InTxt" value="0" maxlength="40" size="40" onkeyup="if(isNaN(value))execCommand('undo');Show(this.value);" onafterpaste="if(isNaN(value))execCommand('undo')" onbeforecopy="if(isNaN(value))execCommand('undo');Show(this.value);" oncopy="" oncut="">
+<span id="vlen"></span><br>
+<b><font ID="OutTxt" family="楷体" bgcolor="#000" color="grey" size="6">零</font></b>
+</body>
+</html>
+<script language="javascript">
+<!--
+$("InTxt").select();$("InTxt").focus();
+-->
+</script>
