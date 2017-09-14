@@ -9,12 +9,13 @@ setHead('Access-Control-Allow-Origin','*');//不能单独设置这个,否则出�
 setHead('Access-Control-Allow-Methods','POST, GET, OPTIONS, HEAD');
 // 响应头设置
 SetHead('Access-Control-Allow-Headers','x-requested-with,content-type');
-//一次设置:
+//一次设置(默认):
 setHead([{"Access-Control-Allow-Origin":"*"},{"Access-Control-Allow-Methods":"POST, GET, OPTIONS, HEAD"},{"Access-Control-Allow-Headers":"x-requested-with,content-type"}]);
 //不用设置也能能访问其他域名
 */
 var Ajax = function () {
     var g_async=null;
+    var isJson={"application/json":true,"text/json":true,"application/javascript":true,"json":true};
     var heads = [{"Access-Control-Allow-Origin":"*"},{"Access-Control-Allow-Methods":"POST, GET, OPTIONS, HEAD"},{"Access-Control-Allow-Headers":"x-requested-with,content-type"}];
     function getajaxHttp(){var xmlHttp;try{xmlHttp=new XMLHttpRequest()}catch(e){try{xmlHttp=new ActiveXObject("Msxml2.XMLHTTP")}catch(e){try{xmlHttp=new ActiveXObject("Microsoft.XMLHTTP")}catch(e){return false}}}return xmlHttp};
     var xmlHttp = getajaxHttp();
@@ -27,6 +28,13 @@ var Ajax = function () {
                 var str1 = null, str2 = null, obj = null;
                 if (xmlHttp.status == 200) {
                     obj = xmlHttp.response;
+                    var tp=xmlHttp.getResponseHeader("Content-Type");
+                    if(tp)
+                        tp=tp.split(';')[0];
+                    if (isJson[tp] && (obj[0]=="{"||obj[0]=="[")){
+                        try { obj = JSON.parse(obj); }//obj.replace(/[\t\r\n]/g,"")
+                        catch (e){}
+                    }
                 }
                 else {
                     var tt = xmlHttp.response;
@@ -76,19 +84,6 @@ var Ajax = function () {
         }
         if (b) heads.push(({ name: nam, value: val }));
     }
-    function callBack(ret, code, xhr) {
-        var isJson={"application/json":true,"text/json":true,"application/javascript":true,};
-        if(typeof(fun)=="function") {
-            var tp=xhr.getResponseHeader("Content-Type");
-            if(tp)
-                tp=tp.split(';')[0];
-            if (isJson[tp]){
-                try { ret = JSON.parse(obj); }//obj.replace(/[\t\r\n]/g,"")
-                catch (e){}
-            }
-            fun(ret, code, xhr);
-        }
-    }
     return {
         setHead: function (hName, hValue) {
             if (typeof (hName) == "object")
@@ -106,24 +101,12 @@ var Ajax = function () {
             }
             doAjax("POST", url, data, fun, dataType, async);
         },
-        postEx: function (url, data, fun, dataType, async) {
-            if(typeof(data)=="function" && typeof(fun)!="function") {
-              async=dataType;dataType=fun;fun=data;data="";
-            }
-            doAjax("POST", url, data, callBack, dataType, async);
-        },
         get: function (url, data, fun, dataType, async) {
             if(typeof(data)=="function" && typeof(fun)!="function") {
               async=dataType;dataType=fun;fun=data;data="";
             }
             doAjax("GET", url, data, fun, dataType, async);
         },
-        getEx: function (url, data, fun, dataType, async) {
-            if(typeof(data)=="function" && typeof(fun)!="function") {
-              async=dataType;dataType=fun;fun=data;data="";
-            }
-            doAjax("GET", url, data, callBack, dataType, async);
-        }
     };
 };
 var ajax=new Ajax();
