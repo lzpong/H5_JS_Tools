@@ -32,7 +32,7 @@
 
 <input type="file" value="upload" id="fileInput"> <div id="progressp"><div id="progress"> </div> </div>
 <p id="fileInfo"></p>
-<div>搜索内容:<input id="stxt"/><input type="button" value="搜索" id="stxtbtn"/> <input type="button" id="siptracebtn" value="getSipTrace"/> 查看点前后字符数:<input id="poswave" value="350"/></div>
+<div>搜索内容:<input id="stxt" placeholder="支持正则表达式搜索"/><input type="button" value="按行搜索" id="stxtbtn"/><input type="button" value="按字节搜索" id="stxtbtn2"/> <input type="button" id="siptracebtn" value="getSipTrace"/> 查看点前后字符数:<input id="poswave" value="1024"/></div>
 <dl></dl>
 <div id="fileText"></div>
 
@@ -44,14 +44,14 @@
 <script>
 //读取文件(文件对象,开始位置[,结束位置],回调函数)
 //回调函数(数据,总共已读取数据大小)
-//回调函数返回true表示继续读取,false则停止
+//回调函数返回null表示停止,返回number表示继续读取偏移位置(如负数:往前偏移)
 function read(file,start,ended,procFun){
     if(!file)
       return alert("未选择文件");
     if(typeof ended =="function")
        procFun=ended,ended=file.size;
     start=parseInt(start, 10)||0;
-    var minSize=64*1024, maxSize=10*1024*1024;//64KB //10MB
+    var minSize=64*1024, maxSize=10*1024*1024;//64KB~10MB
     var blob;
     var reader=new FileReader();
     var sliceSize=parseInt(file.size/100);//每次读取大小(byte)
@@ -63,14 +63,17 @@ function read(file,start,ended,procFun){
     if(end>ended)
       end=ended;
     blob =(file.slice||(file.webkitSlice||file.mozSlice)).call(file,start, end);
-    console.log("本次读取: ",start, end," total:"+file.size);
+    console.log("本次读取: ",start, end," percent:"+(end/file.size).toFixed(5)*100+'%');
     reader.onload = function(e){
         //console.log("进度(byte)",end,(end/file.size*100).toFixed(2)+"%");
-        let ctnu=false;
+        let ctnu=null;
         start=end;
         procFun?ctnu=procFun(e.target.result,start):null;
-        if(start<ended && ctnu)
+        if(ctnu!=null){
+            start+=ctnu;
+            if(start<ended)
             read(file,start,ended,procFun);
+        }
         //else
         //    console.log("本次读取完毕",file.size);
     }
@@ -238,14 +241,26 @@ document.getElementById("siptracebtn").addEventListener('click',function (){
         var lldata=data.substr(lin);
         var lines=(ldata+data.substr(0,lin)).split("\n");
         ldata=lldata;
+        var lastLine1="",lastLine2="";
+        var lineDate="";
         //html+="\n----------------------------------------------------------------------------"+ ++tt +"\n";
         for(i=0;i<lines.length;i++){
-            if(siparr.length<1 && lines[i].indexOf("   -----")<0) continue;
-            siparr.length<1?++i:0;
+            if(siparr.length<1 && lines[i].indexOf("   ------------------")<0){
+                lastLine2=lastLine1;
+                lastLine1=lines[i];
+             continue;
+            }
             if(seq==10)
                seq=seq;
+            siparr.push(lastLine1);
+            var matchs=lastLine2.match(/(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)/m);
+            if(matchs)
+                lineDate="["+matchs[0];
+            var ind=lastLine1.indexOf(" at");
+            html+="\n"+lineDate+lastLine1.substr(ind+3,lastLine1.lastIndexOf(':')-1)+"]  "+lastLine1.substr(0,ind);
+            html+="\n"+lines[i++].trim()+"  "+ seq++;
             //获取接下来的 sip 内容
-            while(i<lines.length && lines[i].indexOf("   -----")<0){
+            while(i<lines.length && lines[i].indexOf("   -----------------")<0){
                 {
                     html+="\n"+lines[i].trim();
                     siparr.push(lines[i].trim());
@@ -254,7 +269,7 @@ document.getElementById("siptracebtn").addEventListener('click',function (){
             }
             ///
             if(i<lines.length){
-                html+="\n---------------------------------------------"+ seq++ +"\n";
+                html+="\n"+lines[i].trim();
                 //var sip=getSip(siparr);
                 siparr=[];
             }
@@ -271,7 +286,7 @@ document.getElementById("siptracebtn").addEventListener('click',function (){
             html="";
         }
         lodprogress(file.size,size);
-        return size < file.size;
+        return size < file.size?0:null;
     });
 });
 
@@ -280,6 +295,43 @@ document.getElementById("siptracebtn").addEventListener('click',function (){
 <script descript="actions">
 document.getElementById("stxtbtn").addEventListener('click',function(){
 	var s=document.getElementById("stxt").value;
+	if(s.length<1) return alert("没有搜索内容");
+	var sr=RegExp(s,"g");
+	var lineNum=0;
+	var dl=document.querySelector("dl");
+	dl.innerHTML="";
+	read(file,0,(data,size)=>{
+		var ind=0;
+		var offset=0;
+		var lines=data.split("\n");
+		var len=lines.length-1;
+		while(ind<len){
+            if(lines[ind].indexOf(s)>=0){
+                var dd=document.createElement("dd");
+                dd.innerHTML=lineNum+ind+1+"  "+lines[ind].replace(sr,"<span class='red'>"+s+"</span>");
+                dd.start=size-data.length+offset;
+                dl.appendChild(dd);
+                dd.addEventListener('dblclick',(e)=>{
+                    //console.log(e.target.start,e.target.innerText);
+                    let st=e.target.start||0;
+                    let pn=parseInt(document.querySelector("#poswave").value,10)||600;
+                    read(file,st-pn,st+pn,(data,size)=>{
+                        show(data.replace(sr,"<span class='red'>"+s+"</span>"),e.target.innerHTML,e.target.offsetTop+e.target.offsetHeight+1);
+                    },false);
+                });
+			}
+			offset+=lines[ind].length+1;
+			ind++;
+		}
+		lineNum+=ind;
+		lodprogress(file.size,size);
+		return offset-data.length;
+	});
+});
+document.getElementById("stxtbtn2").addEventListener('click',function(){
+	var s=document.getElementById("stxt").value;
+	if(s.length<1) return alert("没有搜索内容");
+	var sr=RegExp(s,"g");
 	var dl=document.querySelector("dl");
 	dl.innerHTML="";
 	read(file,0,(data,size)=>{
@@ -287,7 +339,7 @@ document.getElementById("stxtbtn").addEventListener('click',function(){
 		while((ind=data.indexOf(s,ind+1))>=0&&ind<data.length){
 			var dd=document.createElement("dd");
 			let st=ind-60;st=st>0?st:0;
-			dd.innerHTML=size-data.length+ind+"  "+data.substr(st,128).replace(s,"<span class='red'>"+s+"</span>");
+			dd.innerHTML=size-data.length+ind+"  "+data.substr(st,128).replace(sr,"<span class='red'>"+s+"</span>");
 			dd.start=size-data.length+ind;
 			dl.appendChild(dd);
 			dd.addEventListener('dblclick',(e)=>{
@@ -295,12 +347,12 @@ document.getElementById("stxtbtn").addEventListener('click',function(){
 				let st=e.target.start||0;
 				let pn=parseInt(document.querySelector("#poswave").value,10)||200;
 				read(file,st-pn,st+pn,(data,size)=>{
-					show(data,e.target.innerText,e.target.offsetTop+e.target.offsetHeight+1);
+					show(data.replace(sr,"<span class='red'>"+s+"</span>"),e.target.innerHTML,e.target.offsetTop+e.target.offsetHeight+1);
 				},false);
 			});
 		}
 		lodprogress(file.size,size);
-		return size < file.size;
+		return 0;
 	});
 });
 </script>
