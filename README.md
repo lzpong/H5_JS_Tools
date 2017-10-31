@@ -24,12 +24,12 @@ HTML5 JavaScript Tools 有用的或有趣的, 实用工具,函数,等等...
 </li>
 <li>
   <a href="https://github.com/lzpong/JS_Tools/issues/3">
-     3. 对Date的扩展，将Date 转化为指定格式的String
+    3. 对Date的扩展，将Date 转化为指定格式的String
   </a>
 </li>
 <li>
   <a href="https://github.com/lzpong/JS_Tools/issues/4">
-    4. Array数组删除元素,参数可以是下标、单个对象、一维数组、多维数组
+    4. Array数组删除元素,参数可以是下标、单个对象、一维数组、多维数组
   </a>
 </li>
 <li>
@@ -49,7 +49,7 @@ HTML5 JavaScript Tools 有用的或有趣的, 实用工具,函数,等等...
 </li>
 <li>
   <a href="https://github.com/lzpong/JS_Tools/issues/7">
-    8. H5 拖拽,一个函数搞定,直接指定对象设置可拖拽
+    8. 一个函数搞定拖拽,直接指定对象设置可拖拽
   </a>
 </li>
 <li>
@@ -66,5 +66,10 @@ HTML5 JavaScript Tools 有用的或有趣的, 实用工具,函数,等等...
   <a href="https://github.com/lzpong/JS_Tools/issues/11">
     11. 一个函数搞定进度条/拖动滑块
   </a>
+</li>
+<li>
+  <a href="https://github.com/lzpong/JS_Tools/issues/12">
+    12. 一个函数搞定右键菜单
+</a>
 </li>
 </ul>
