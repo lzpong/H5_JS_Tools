@@ -9,8 +9,9 @@ HTML5 JavaScript Tools 有用的或有趣的, 实用工具,函数,等等...
 .timeline-new-comment {max-width: 100%;}
 ```
 
-===================================================  
-列表: [更多的在这里>>>Issues<<<](https://github.com/lzpong/JS_Tools/issues)
+===================================================  
+# 列表: [更多的在这里>>>Issues<<<](https://github.com/lzpong/JS_Tools/issues)
+*此处列表不是实时更新*
 <ul>
 <li>
   <a href="https://github.com/lzpong/JS_Tools/issues/1">
@@ -70,6 +71,16 @@ HTML5 JavaScript Tools 有用的或有趣的, 实用工具,函数,等等...
 <li>
   <a href="https://github.com/lzpong/JS_Tools/issues/12">
     12. 一个函数搞定右键菜单
-</a>
+  </a>
+</li>
+<li>
+  <a href="https://github.com/lzpong/JS_Tools/issues/13">
+    13. 文档上点击鼠标左键并拖动绘制矩形,,矩形上点击拖动矩形
+  </a>
+</li>
+<li>
+  <a href="https://github.com/lzpong/JS_Tools/issues/14">
+    14. 类似桌面的鼠标框选,和拖动选择的所有元素(360°的框选)
+  </a>
 </li>
 </ul>
