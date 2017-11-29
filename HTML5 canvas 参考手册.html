@@ -1,0 +1,4815 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta property="qc:admins" content="465267610762567726375">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML5 画布 Canvs 参考手册</title>
+<style>
+*{border:0;margin:0;padding:0;}
+body {
+    font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Noto Sans CJK SC,WenQuanYi Micro Hei,Arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background: #f6f6f6;
+    color: #333;
+}
+hr {
+    background-color: #d4d4d4;
+    color: #d4d4d4;
+    height: 1px;
+    border: 0;
+    clear: both;
+}
+a {
+    color: #64854c;
+    text-decoration: none;
+}
+table a {
+    text-decoration: underline;
+}
+button, input, select, td, textarea, th {
+    font-size: 13px;
+}
+
+.article-body, .article-detail{
+    padding: 0px 0px 0px 10px;
+    width: 800px;
+}
+.article-body p {
+    font-size: 13px;
+    line-height: 2em;
+}
+.article-intro h1 {
+    margin: 0 0 10px 0;
+    font-size: 2.1em;
+    text-indent: initial;
+    text-decoration: none;
+    color: #000;
+}
+.article-intro h1 span {
+    color: #64854c;
+}
+.article-body h2 {
+    font-size: 1.2em;
+    margin: 2px 0;
+    line-height: 1.8em;
+}
+
+table.reference, table.tecspec {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 4px;
+    margin-top: 4px;
+}
+table.reference th {
+    color: #fff;
+    background-color: #555;
+    border: 1px solid #555;
+    font-size: 12px;
+    padding: 3px;
+    vertical-align: top;
+    text-align: left;
+}
+table.reference tr:nth-child(odd) {
+    background-color: #f6f4f0;
+}
+table.reference tr:nth-child(even) {
+    background-color: #fff;
+}
+table.reference td {
+    line-height: 2em;
+    min-width: 24px;
+    border: 1px solid #d4d4d4;
+    padding: 5px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    vertical-align: top;
+}
+td ul{
+    margin-left: 30px;
+}
+
+h2 {
+    display: block;
+    font-size: 1.5em;
+    -webkit-margin-before: 0.83em;
+    -webkit-margin-after: 0.83em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+div.example {
+    width: 98%;
+    color: #000;
+    background-color: #e5eecc;
+    margin: 0 0 5px 0;
+    padding: 5px;
+    border: 1px solid #d4d4d4;
+    background-image: -webkit-linear-gradient(#fff,#e5eecc 100px);
+    background-image: linear-gradient(#fff,#e5eecc 100px);
+}
+h2.example, h2.example_head {
+    color: #617f10;
+    margin-top: 0;
+    font-size: 13px;
+}
+div.tryit_ex {
+    clear: both;
+    width: 600px;
+    height: 50px;
+    margin-bottom: 5px;
+}
+div.tryit_ex h2 {
+    padding-top: 3px;
+}
+div.tryit_ex img {
+    border: 0;
+    float: left;
+    margin-right: 10px;
+    width: 40px;
+    height: 46px;
+}
+table.tecspec td, table.tecspec th {
+    border: 1px solid #d4d4d4;
+    padding: 5px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    vertical-align: top;
+    text-align: left;
+}
+canvas {
+    border: 1px solid #d3d3d3;
+    background: #ffffff;
+}
+
+div.example_code {
+    line-height: 1.4em;
+    width: 98%;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #d4d4d4;
+    font-size: 13px;
+    font-family: Menlo,Monaco,Consolas,"Andale Mono","lucida console","Courier New",monospace;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+a.showbtn, a.showbtn:link, a.showbtn:visited, a.tryitbtn, a.tryitbtn:link, a.tryitbtn:visited {
+    display: inline-block;
+    color: #FFF;
+    background-color: #8ac007;
+    font-weight: 700;
+    font-size: 12px;
+    text-align: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 4px;
+    text-decoration: none;
+    margin-left: 5px;
+    margin-top: 0;
+    margin-bottom: 5px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+
+
+#catalog_min{
+    position: fixed;
+    top: 0;
+    right: 20px;
+    cursor:pointer;
+    height: 100%;
+    overflow: auto;
+}
+#catalog_min ul{
+    overflow:auto;
+    display: table-cell;
+}
+#catalog_min ul li.attrb{
+    color: #fb00ff;
+}
+#catalog_min ul li.func{
+    color: blue;
+}
+
+#DetailContent{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+.article-detail{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#closeBtn{
+    right: 19px;
+    top: 3px;
+    color: white;
+    position: fixed;
+    background: red;
+    cursor: pointer;
+    padding: 3px 8px;
+}
+
+pre{
+    background-color: #fff;
+    border: 1px solid #d4d4d4;
+    padding: 3px;
+}
+
+</style>
+<script>
+function G(id){return document.getElementById(id);}
+</script>
+</head>
+<body>
+<div id="Catalog" class="article-body">
+  <div class="article-intro" id="content">
+
+    <h1>HTML5 <span class="color_h1">&lt;canvas&gt;</span> 参考手册</h1><hr>
+    <h2 id="catalog__">描述</h2>
+    <p>HTML5 &lt;canvas&gt; 标签用于绘制图像（通过脚本，通常是 JavaScript）。</p>
+    <p>不过，&lt;canvas&gt; 元素本身并没有绘制能力（它仅仅是图形的容器） - 您必须使用脚本来完成实际的绘图任务。</p>
+    <p>getContext() 方法可返回一个对象，该对象提供了用于在画布上绘图的方法和属性。</p>
+    <p>本手册提供大部分的 getContext("2d") 对象的属性和方法，可用于在画布上绘制文本、线条、矩形、圆形等等。</p>
+    <hr>
+    完整手册在<b><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D">这里</a></b>有
+    <hr>
+    <h2>浏览器支持</h2>
+    <p>
+    <img src="http://www.runoob.com/images/compatible_ie.gif" width="31" height="30" alt="Internet Explorer" title="Internet Explorer">
+    <img src="http://www.runoob.com/images/compatible_firefox.gif" width="31" height="30" alt="Firefox" title="Firefox">
+    <img src="http://www.runoob.com/images/compatible_opera.gif" width="28" height="30" alt="Opera" title="Opera">
+    <img src="http://www.runoob.com/images/compatible_chrome.gif" width="31" height="30" alt="Google Chrome" title="Google Chrome">
+    <img src="http://www.runoob.com/images/compatible_safari.gif" width="28" height="30" alt="Safari" title="Safari">
+    </p>
+    <p>Internet Explorer 9、Firefox、Opera、Chrome 和 Safari 支持 &lt;canvas&gt; 标签的属性及方法。</p>
+    <p><b>注意:</b>Internet Explorer 8 及更早的IE版本不支持 &lt;canvas&gt; 元素。</p>
+    <hr>
+
+<h2 id="catalog_0">canvas 状态</h2>
+<table class="reference">
+  <tr>
+    <th align="left" width="25%">属性</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+  <tr>
+    <td id="attr_canvas">canvas</td>
+    <td>对 HTMLCanvasElement 只读的反向引用。如果和 &lt;canvas&gt; 元素没有联系，可能为null。</td>
+  </tr>
+</table>
+
+<table class="reference">
+  <tr>
+    <th align="left" width="25%">方法</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+  <tr>
+    <td id="fun_save"><a href="canvas-save-restore.html">save()</a></td>
+    <td>保存当前环境的状态和属性，到状态栈。状态和属性包含:strokeStyle, fillStyle, globalAlpha, lineWidth, lineCap, lineJoin, miterLimit, shadowOffsetX, shadowOffsetY, shadowBlur, shadowColor, globalCompositeOperation 的值</td>
+  </tr>
+  <tr>
+    <td id="fun_restore"><a href="canvas-save-restore.html">restore()</a></td>
+    <td>从状态栈， 返回之前保存过的路径状态和属性。状态和属性的包含和save()一样</td>
+  </tr>
+  <tr>
+    <td id="fun_getcontext">getContext(type)</td>
+    <td>获取上下文对象(CanvasRenderingContext2D)，例： getContext('2d')</td>
+  </tr>
+</table>
+
+<h2 id="catalog_1">样式、渐变和阴影</h2>
+<table class="reference">
+  <tr>
+    <th align="left" width="25%">属性</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+  <tr>
+    <td id="attr_fillstyle"><a href="canvas-fillstyle.html">fillStyle</a></td>
+    <td>设置或返回用于填充绘画的颜色、渐变或模式。</td>
+  </tr>
+	<tr>
+    <td id="attr_strokestyle"><a href="canvas-strokestyle.html">strokeStyle</a></td>
+    <td>设置或返回用于笔触的颜色、渐变或模式。</td>
+  </tr>
+  <tr>
+    <td id="attr_shadowcolor"><a href="canvas-shadowcolor.html">shadowColor</a></td>
+    <td>设置或返回用于阴影的颜色。</td>
+  </tr>
+  <tr>
+    <td id="attr_shadowblur"><a href="canvas-shadowblur.html">shadowBlur</a></td>
+    <td>设置或返回用于阴影的模糊级别。</td>
+  </tr>
+  <tr>
+    <td id="attr_shadowoffsetx"><a href="canvas-shadowoffsetx.html">shadowOffsetX</a></td>
+    <td>设置或返回阴影与形状的水平距离。</td>
+  </tr>
+  <tr>
+    <td id="attr_shadowoffsety"><a href="canvas-shadowoffsety.html">shadowOffsetY</a></td>
+    <td>设置或返回阴影与形状的垂直距离。</td>
+  </tr>
+  </table>
+
+<table class="reference">
+  <tr>
+    <th align="left" width="25%">方法</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+  <tr>
+    <td id="fun_createlineargradient"><a href="canvas-createlineargradient.html">createLinearGradient(x0,y0,x1,y1);</a></td>
+    <td>创建线性渐变（用在画布内容上）。</td>
+  </tr>
+  <tr>
+    <td id="fun_createpattern"><a href="canvas-createpattern.html">createPattern(image,repeatStyle)</a></td>
+    <td>在指定的方向上重复指定的元素。</td>
+  </tr>
+  <tr>
+    <td id="fun_createradialgradient"><a href="canvas-createradialgradient.html">createRadialGradient(x0,y0,r0,x1,y1,r1)</a></td>
+    <td>创建放射状/环形的渐变（用在画布内容上）。</td>
+  </tr>
+  <tr>
+    <td id="fun_addcolorstop"><a href="canvas-addcolorstop.html">addColorStop(stop,color)</a></td>
+    <td>规定渐变对象中的颜色和停止位置。</td>
+  </tr>
+</table>
+
+<h2 id="catalog_2">线条、虚线样式</h2>
+<table class="reference">
+  <tr>
+    <th align="left" width="25%">属性</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+	<tr>
+    <td id="attr_linecap"><a href="canvas-linecap.html">lineCap</a></td>
+    <td>设置或返回线条的结束端点样式。</td>
+  </tr>
+	<tr>
+    <td id="attr_linejoin"><a href="canvas-linejoin.html">lineJoin</a></td>
+    <td>设置或返回两条线相交时，所创建的拐角类型。</td>
+  </tr>
+	<tr>
+    <td id="attr_linewidth"><a href="canvas-linewidth.html">lineWidth</a></td>
+    <td>设置或返回当前的线条宽度。</td>
+  </tr>
+	<tr>
+    <td id="attr_miterlimit"><a href="canvas-miterlimit.html">miterLimit</a></td>
+    <td>设置或返回最大斜接长度。</td>
+  </tr>
+	<tr>
+    <td id="attr_lineDashOffset"><a href="canvas-lineDashOffset.html">lineDashOffset</a></td>
+    <td>设置虚线样式的起始偏移量。</td>
+  </tr>
+  </table>
+<br/>
+<table class="reference">
+  <tr>
+    <th align="left" width="25%">方法</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+	<tr>
+    <td id="fun_getlinedash"><a href="canvas-getlinedash.html">getLineDash()</a></td>
+    <td>返回一个包含当前虚线样式，长度为非负偶数的数组。 如：[5,3]</td>
+  </tr>
+	<tr>
+    <td id="fun_setlinedash"><a href="canvas-setlinedash.html">setLineDash(segments)</a></td>
+    <td>设置当前虚线样式。如：setLineDash([5, 3])</td>
+  </tr>
+  </table>
+
+<h2 id="catalog_3">矩形</h2>
+<table class="reference">
+  <tr>
+    <th align="left" width="25%">方法</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+  <tr>
+    <td id="fun_rect"><a href="canvas-rect.html">rect(x,y,width,height)</a></td>
+    <td>创建矩形。</td>
+  </tr>
+  <tr>
+   <td id="fun_fillrect"><a href="canvas-fillrect.html">fillRect(x,y,width,height)</a></td>
+    <td>绘制"被填充"的矩形。</td>
+  </tr>
+  <tr>
+    <td id="fun_strokerect"><a href="canvas-strokerect.html">strokeRect(x,y,width,height)</a></td>
+    <td>绘制矩形（无填充）。</td>
+  </tr>
+  <tr>
+    <td id="fun_clearrect"><a href="canvas-clearrect.html">clearRect(x,y,width,height)</a></td>
+    <td>在给定的矩形内清除指定的像素。</td>
+  </tr>
+  </table>
+
+<h2 id="catalog_4">路径</h2>
+<table class="reference">
+  <tr>
+    <th align="left" width="25%">方法</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+  <tr>
+    <td id="fun_fill"><a href="canvas-fill.html">fill()</a></td>
+    <td>填充当前绘图（路径）。</td>
+  </tr>
+	<tr>
+    <td id="fun_stroke"><a href="canvas-stroke.html">stroke()</a></td>
+    <td>绘制已定义的路径。</td>
+  </tr>
+  <tr>
+    <td id="fun_beginpath"><a href="canvas-beginpath.html">beginPath()</a></td>
+    <td>起始一条路径，或重置当前路径。</td>
+  </tr>
+  <tr>
+    <td id="fun_closepath"><a href="canvas-closepath.html">closePath()</a></td>
+    <td>创建从当前点回到起始点的路径。</td>
+  </tr>
+  <tr>
+    <td id="fun_moveto"><a href="canvas-moveto.html">moveTo(x,y)</a></td>
+    <td>把路径移动到画布中的指定点，不创建线条。</td>
+  </tr>
+  <tr>
+    <td id="fun_lineto"><a href="canvas-lineto.html">lineTo(x,y)</a></td>
+    <td>添加一个新点，然后在画布中创建从该点到最后指定点的线条。</td>
+  </tr>
+  <tr>
+    <td id="fun_clip"><a href="canvas-clip.html">clip()</a></td>
+    <td>从原始画布剪切任意形状和尺寸的区域。</td>
+  </tr>
+  <tr>
+    <td id="fun_quadraticcurveto"><a href="canvas-quadraticcurveto.html">quadraticCurveTo(cpx,cpy,x,y);</a></td>
+    <td>创建二次贝塞尔曲线。</td>
+  </tr>
+  <tr>
+    <td id="fun_beziercurveto"><a href="canvas-beziercurveto.html">bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y)</a></td>
+    <td>创建三次贝塞尔曲线。</td>
+  </tr>
+  <tr>
+    <td id="fun_arc"><a href="canvas-arc.html">arc(x,y,r,startAngle,endAngle,anticlockwise)</a></td>
+    <td>绘制一段圆弧路径（用于创建圆形或部分圆）。</td>
+  </tr>
+  <tr>
+    <td id="fun_arcto"><a href="canvas-arcto.html">arcTo(x1,y1,x2,y2,r)</a></td>
+    <td>创建两切线之间的弧/曲线。</td>
+  </tr>
+  <tr>
+    <td id="fun_ellipse"><a href="canvas-ellipse.html">ellipse(x,y,radiusX,radiusY,rotation,startAngle,endAngle,anticlockwise)</a></td>
+    <td>绘制一个椭圆路径（用于创建椭圆或部分椭圆）。</td>
+  </tr>
+  <tr>
+    <td id="fun_ispointinpath"><a href="canvas-ispointinpath.html">isPointInPath(x,y)</a></td>
+    <td>如果指定的点位于当前路径中，则返回 true，否则返回 false。</td>
+  </tr>
+</table>
+
+<h2 id="catalog_5">变换</h2>
+<table class="reference">
+  <tr>
+    <th align="left" width="25%">方法</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+  <tr>
+    <td id="fun_scale"><a href="canvas-scale.html">scale(scalewidth,scaleheight)</a></td>
+    <td>缩放当前绘图至更大或更小。</td>
+  </tr>
+  <tr>
+    <td id="fun_rotate"><a href="canvas-rotate.html">rotate(angle)</a></td>
+    <td>旋转当前绘图。旋转圆心为(0,0)点。</td>
+  </tr>
+  <tr>
+    <td id="fun_translate"><a href="canvas-translate.html">translate(x,y)</a></td>
+    <td>重新映射画布上的 (0,0) 位置。</td>
+  </tr>
+  <tr>
+    <td id="fun_transform"><a href="canvas-transform.html">transform(a,b,c,d,e,f)</a></td>
+    <td>替换绘图的当前转换矩阵。</td>
+  </tr>
+  <tr>
+    <td id="fun_settransform"><a href="canvas-settransform.html">setTransform(a,b,c,d,e,f)</a></td>
+    <td>重新设置当前的变换为单位矩阵，并使用同样的变量调用 transform() 方法。</td>
+  </tr>
+  <tr>
+    <td id="fun_resettransform"><a href="canvas-resettransform.html">resetTransform(a,b,c,d,e,f)</a></td>
+    <td>使用单位矩阵重新设置当前的变换。</td>
+  </tr>
+  </table>
+
+<h2 id="catalog_6">文本</h2>
+<table class="reference">
+  <tr>
+    <th align="left" width="25%">属性</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+  <tr>
+    <td id="attr_font"><a href="canvas-font.html">font</a></td>
+    <td>设置或返回文本内容的当前字体属性。</td>
+  </tr>
+  <tr>
+    <td id="attr_textalign"><a href="canvas-textalign.html">textAlign</a></td>
+    <td>设置或返回文本内容的当前对齐方式。</td>
+  </tr>
+  <tr>
+    <td id="attr_textbaseline"><a href="canvas-textbaseline.html">textBaseline</a></td>
+    <td>设置或返回在绘制文本时使用的当前文本基线。</td>
+  </tr>
+</table>
+
+<table class="reference">
+   <tr>
+    <th align="left" width="25%">方法</th>
+    <th align="left" width="75%">描述</th>
+</tr>
+  <tr>
+    <td id="fun_filltext"><a href="canvas-filltext.html">fillText(text,x,y,maxWidth)</a></td>
+    <td>在画布上绘制"被填充的"文本。</td>
+  </tr>
+  <tr>
+    <td id="fun_stroketext"><a href="canvas-stroketext.html">strokeText(text,x,y,maxWidth)</a></td>
+    <td>在画布上绘制文本（无填充,空心）。</td>
+  </tr>
+  <tr>
+    <td id="fun_measuretext"><a href="canvas-measuretext.html">measureText(text)</a></td>
+    <td>返回包含指定文本宽度的<u>对象</u>。</td>
+  </tr>
+</table>
+
+<h2 id="catalog_7">图像绘制</h2>
+<table class="reference">
+   <tr>
+    <th align="left" width="25%">方法</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+  <tr>
+    <td id="fun_drawimage"><a href="canvas-drawimage.html">drawImage(img,sx,sy,swidth,sheight,x,y,width,height)</a></td>
+    <td>向画布上绘制图像、画布或视频。可进行定位、裁剪。</td>
+  </tr>
+  </table>
+
+<h2 id="catalog_8">像素操作</h2>
+<table class="reference">
+  <tr>
+    <th align="left" width="25%">属性</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+    <tr>
+    <td id="attr_width"><a href="canvas-width.html">width</a></td>
+    <td>返回 ImageData 对象的宽度。</td>
+    </tr>
+	<tr>
+    <td id="attr_height"><a href="canvas-height.html">height</a></td>
+    <td>返回 ImageData 对象的高度。</td>
+    </tr>
+	<tr>
+    <td id="attr_data"><a href="canvas-data.html">data</a></td>
+    <td>返回一个对象，其包含指定的 ImageData 对象的图像数据。</td>
+    </tr>
+</table>
+
+<table class="reference">
+   <tr>
+    <th align="left" width="25%">方法</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+  <tr>
+    <td id="fun_createimagedata"><a href="canvas-createimagedata.html">createImageData([width,height]|[imageData])</a></td>
+    <td>创建新的、空白的 ImageData 对象。</td>
+  </tr>
+  <tr>
+    <td id="fun_getimagedata"><a href="canvas-getimagedata.html">getImageData(x,y,width,height)</a></td>
+    <td>返回 ImageData 对象，该对象为画布上指定的矩形复制像素数据。</td>
+  </tr>
+  <tr>
+    <td id="fun_putimagedata"><a href="canvas-putimagedata.html">putImageData(imgData,x,y,dirtyX,dirtyY,dirtyWidth,dirtyHeight)</a></td>
+    <td>把图像数据（从指定的 ImageData 对象）放回画布上。</td>
+  </tr>
+</table>
+
+<h2 id="catalog_9">合成</h2>
+<table class="reference">
+  <tr>
+    <th align="left" width="25%">属性</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+  <tr>
+    <td id="attr_globalalpha"><a href="canvas-globalalpha.html">globalAlpha</a></td>
+    <td>设置或返回绘图的当前(全局) alpha 或透明值。</td>
+  </tr>
+  <tr>
+    <td id="attr_globalcompositeoperation"><a href="canvas-globalcompositeoperation.html">globalCompositeOperation</a></td>
+    <td>设置或返回使用何种合成或混合模式，将新图像绘制到已有的图像上。</td>
+  </tr>
+</table>
+
+<h2 id="catalog_10">点击区域</h2>
+<table class="reference">
+  <tr>
+    <th align="left" width="25%">方法</th>
+    <th align="left" width="75%">描述</th>
+  </tr>
+  <tr>
+    <td id="fun_addhitregion"><a href="canvas-addhitregion.html">addHitRegion() </a></td>
+    <td>在canvas上添加一个点击区域。<i>(实验功能)</i></td>
+  </tr>
+  <tr>
+    <td id="fun_removehitregion"><a href="canvas-removehitregion.html">removeHitRegion(id) </a></td>
+    <td>从canvas上移除指定id的点击区域。<i>(实验功能)</i></td>
+  </tr>
+  <tr>
+    <td id="fun_clearhitregions"><a href="canvas-clearhitregions.html">clearHitRegions() </a></td>
+    <td>移除canvas上的所有点击区域。<i>(实验功能)</i></td>
+  </tr>
+</table>
+
+  </div>
+  <div id="ext_func">
+  <h2>扩展函数</h2>
+<pre>
+Object.assign(CanvasRenderingContext2D.prototype,{
+  //圆角矩形
+  strokeRect(x,y,width,height,radius){ //圆角矩形
+    radius=Math.abs(radius||0);
+    this.beginPath();
+    this.moveTo(x,y+radius);
+    this.lineTo(x,y+height-radius);
+    this.quadraticCurveTo(x,y+height,x+radius,y+height);
+    this.lineTo(x+width-radius,y+height);
+    this.quadraticCurveTo(x+width,y+height,x+width,y+height-radius);
+    this.lineTo(x+width,y+radius);
+    this.quadraticCurveTo(x+width,y,x+width-radius,y);
+    this.lineTo(x+radius,y);
+    this.quadraticCurveTo(x,y,x,y+radius);
+    this.stroke();
+  },
+  //圆圈
+  strokeCircle(x,y,r){ //圆圈
+    this.beginPath();
+    this.arc(x,y,r,0,2*Math.PI);
+    this.stroke();
+  },
+  fillCircle(x,y,r){
+    this.beginPath();
+    this.arc(x,y,r,0,2*Math.PI);
+    this.fill();
+  },
+  //画线
+  line(x1,y1,x2,y2){ //画线
+    this.beginPath();
+    this.moveTo(x1,y1);
+    this.lineTo(x2,y2);
+    this.stroke();
+  },
+  //旋转绘图,使之呈菱形(45°)倾斜
+  rhombic(x=9,y=1){ //旋转绘图,使之呈菱形(45°)倾斜
+     this.scale(x,y); //缩放当前绘图 宽度
+     this.rotate(Math.PI * 0.25); //旋转当前绘图 45°,旋转圆心为(0,0)点。
+  }
+});
+</pre>
+  </div>
+  <div id="catalog_min">
+    <ul>
+    <li class="attrb" onclick="G('attr_canvas').scrollIntoView()">canvas</li>
+    <li class="attrb" onclick="G('attr_fillstyle').scrollIntoView()">fillStyle</li>
+    <li class="attrb" onclick="G('attr_filter').scrollIntoView()">filter</li>
+    <li class="attrb" onclick="G('attr_font').scrollIntoView()">font</li>
+    <li class="attrb" onclick="G('attr_globalalpha').scrollIntoView()">globalAlpha</li>
+    <li class="attrb" onclick="G('attr_globalcompositeoperation').scrollIntoView()">globalCompositeOperation</li>
+    <li class="attrb" onclick="G('attr_imagesmoothingenabled').scrollIntoView()">imageSmoothingEnabled</li>
+    <li class="attrb" onclick="G('attr_imagesmoothingquality').scrollIntoView()">imageSmoothingQuality</li>
+    <li class="attrb" onclick="G('attr_linecap').scrollIntoView()">lineCap</li>
+    <li class="attrb" onclick="G('attr_linedashoffset').scrollIntoView()">lineDashOffset</li>
+    <li class="attrb" onclick="G('attr_linejoin').scrollIntoView()">lineJoin</li>
+    <li class="attrb" onclick="G('attr_linewidth').scrollIntoView()">lineWidth</li>
+    <li class="attrb" onclick="G('attr_miterlimit').scrollIntoView()">miterLimit</li>
+    <li class="attrb" onclick="G('attr_shadowblur').scrollIntoView()">shadowBlur</li>
+    <li class="attrb" onclick="G('attr_shadowcolor').scrollIntoView()">shadowColor</li>
+    <li class="attrb" onclick="G('attr_shadowoffsetx').scrollIntoView()">shadowOffsetX</li>
+    <li class="attrb" onclick="G('attr_shadowoffsety').scrollIntoView()">shadowOffsetY</li>
+    <li class="attrb" onclick="G('attr_strokestyle').scrollIntoView()">strokeStyle</li>
+    <li class="attrb" onclick="G('attr_textalign').scrollIntoView()">textAlign</li>
+    <li class="attrb" onclick="G('attr_textbaseline').scrollIntoView()">textBaseline</li>
+
+    <li class="func" onclick="G('fun_arc').scrollIntoView()">arc</li>
+    <li class="func" onclick="G('fun_arcto').scrollIntoView()">arcTo</li>
+    <li class="func" onclick="G('fun_beginpath').scrollIntoView()">beginPath</li>
+    <li class="func" onclick="G('fun_beziercurveto').scrollIntoView()">bezierCurveTo</li>
+    <li class="func" onclick="G('fun_clearrect').scrollIntoView()">clearRect</li>
+    <li class="func" onclick="G('fun_clip').scrollIntoView()">clip</li>
+    <li class="func" onclick="G('fun_closepath').scrollIntoView()">closePath</li>
+    <li class="func" onclick="G('fun_constructor').scrollIntoView()">constructor</li>
+    <li class="func" onclick="G('fun_createimagedata').scrollIntoView()">createImageData</li>
+    <li class="func" onclick="G('fun_createlineargradient').scrollIntoView()">createLinearGradient</li>
+    <li class="func" onclick="G('fun_createpattern').scrollIntoView()">createPattern</li>
+    <li class="func" onclick="G('fun_createradialgradient').scrollIntoView()">createRadialGradient</li>
+    <li class="func" onclick="G('fun_drawfocusifneeded').scrollIntoView()">drawFocusIfNeeded</li>
+    <li class="func" onclick="G('fun_drawimage').scrollIntoView()">drawImage</li>
+    <li class="func" onclick="G('fun_ellipse').scrollIntoView()">ellipse</li>
+    <li class="func" onclick="G('fun_fill').scrollIntoView()">fill</li>
+    <li class="func" onclick="G('fun_fillrect').scrollIntoView()">fillRect</li>
+    <li class="func" onclick="G('fun_filltext').scrollIntoView()">fillText</li>
+    <li class="func" onclick="G('fun_getcontextattributes').scrollIntoView()">getContextAttributes</li>
+    <li class="func" onclick="G('fun_getimagedata').scrollIntoView()">getImageData</li>
+    <li class="func" onclick="G('fun_getlinedash').scrollIntoView()">getLineDash</li>
+    <li class="func" onclick="G('fun_ispointinpath').scrollIntoView()">isPointInPath</li>
+    <li class="func" onclick="G('fun_ispointinstroke').scrollIntoView()">isPointInStroke</li>
+    <li class="func" onclick="G('fun_lineto').scrollIntoView()">lineTo</li>
+    <li class="func" onclick="G('fun_measuretext').scrollIntoView()">measureText</li>
+    <li class="func" onclick="G('fun_moveto').scrollIntoView()">moveTo</li>
+    <li class="func" onclick="G('fun_putimagedata').scrollIntoView()">putImageData</li>
+    <li class="func" onclick="G('fun_quadraticcurveto').scrollIntoView()">quadraticCurveTo</li>
+    <li class="func" onclick="G('fun_rect').scrollIntoView()">rect</li>
+    <li class="func" onclick="G('fun_resettransform').scrollIntoView()">resetTransform</li>
+    <li class="func" onclick="G('fun_restore').scrollIntoView()">restore</li>
+    <li class="func" onclick="G('fun_rotate').scrollIntoView()">rotate</li>
+    <li class="func" onclick="G('fun_save').scrollIntoView()">save</li>
+    <li class="func" onclick="G('fun_scale').scrollIntoView()">scale</li>
+    <li class="func" onclick="G('fun_setlinedash').scrollIntoView()">setLineDash</li>
+    <li class="func" onclick="G('fun_settransform').scrollIntoView()">setTransform</li>
+    <li class="func" onclick="G('fun_stroke').scrollIntoView()">stroke</li>
+    <li class="func" onclick="G('fun_strokerect').scrollIntoView()">strokeRect</li>
+    <li class="func" onclick="G('fun_stroketext').scrollIntoView()">strokeText</li>
+    <li class="func" onclick="G('fun_transform').scrollIntoView()">transform</li>
+    <li class="func" onclick="G('fun_translate').scrollIntoView()">translate</li>
+    </ul>
+    <ul>
+    <li onclick="G('catalog__').scrollIntoView()">描述</li>
+    <li onclick="G('catalog_0').scrollIntoView()">canvas 状态</li>
+    <li onclick="G('catalog_1').scrollIntoView()">颜色、样式和阴影</li>
+    <li onclick="G('catalog_2').scrollIntoView()">线条、虚线样式</li>
+    <li onclick="G('catalog_3').scrollIntoView()">矩形</li>
+    <li onclick="G('catalog_4').scrollIntoView()">路径</li>
+    <li onclick="G('catalog_5').scrollIntoView()">变换</li>
+    <li onclick="G('catalog_6').scrollIntoView()">文本</li>
+    <li onclick="G('catalog_7').scrollIntoView()">图像绘制</li>
+    <li onclick="G('catalog_8').scrollIntoView()">像素操作</li>
+    <li onclick="G('catalog_9').scrollIntoView()">合成</li>
+    <li onclick="G('catalog_10').scrollIntoView()">点击区域</li>
+    <li onclick="G('ext_func').scrollIntoView()">扩展函数</li>
+    <li><a href="canvas-testdraw.html">testdraw(尝试一下)</a></li>
+    </ul>
+  </div>
+</div>
+
+
+<!------------------------------------------>
+<div id="DetailContent" style="display:none">
+
+<div id="canvas-fillstyle" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>fillStyle 属性设置或返回用于填充绘画的颜色、渐变或模式。</p>
+
+<table class="tecspec">
+<tbody><tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">#000000</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.fillStyle=<i>color</i>|<i>gradient</i>|<i>pattern</i>;</td>
+  </tr>
+</tbody></table>
+<h2>属性值</h2>
+<table class="reference">
+<tbody><tr>
+<th style="width:15%">值</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>color</i></td>
+		<td>指示绘图填充色的 <a href="http://www.runoob.com/cssref/css-colors-legal.html">CSS 颜色值</a>。默认值是 #000000。</td>
+	</tr>
+<tr>
+<td><i>gradient</i></td>
+		<td>用于填充绘图的渐变对象（<a href="canvas-createlineargradient.html">线性</a>
+		或 <a href="canvas-createradialgradient.html">放射性</a>）。</td>
+	</tr>
+<tr>
+<td><i>pattern</i></td>
+		<td>用于填充绘图的 <a href="canvas-createpattern.html">pattern</a> 对象。</td>
+	</tr>
+</tbody></table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>定义从上到下的渐变，作为矩形的填充样式：</p>
+<canvas id="canvas-fillstyle-myCanvas2" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">
+浏览器不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var canvas=G("canvas-fillstyle-myCanvas2");
+var ctx=canvas.getContext("2d");
+var my_gradient=ctx.createLinearGradient(0,0,0,170);
+my_gradient.addColorStop(0,"black");
+my_gradient.addColorStop(1,"white");
+ctx.fillStyle=my_gradient;
+ctx.fillRect(20,20,150,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+var my_gradient=ctx.createLinearGradient(0,0,0,170);<br>
+my_gradient.addColorStop(0,"black");<br>
+my_gradient.addColorStop(1,"white");<br>
+ctx.fillStyle=my_gradient;<br>
+ctx.fillRect(20,20,150,100);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_fillstyle_gradient" target="_blank">尝试一下 »</a>
+</div>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>定义从左到右的渐变，作为矩形的填充样式：</p>
+<canvas id="canvas-fillstyle-myCanvas3" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">
+浏览器不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var canvas=G("canvas-fillstyle-myCanvas3");
+var ctx=canvas.getContext("2d");
+var my_gradient=ctx.createLinearGradient(0,0,170,0);
+my_gradient.addColorStop(0,"black");
+my_gradient.addColorStop(1,"white");
+ctx.fillStyle=my_gradient;
+ctx.fillRect(20,20,150,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+var my_gradient=ctx.createLinearGradient(0,0,170,0);<br>
+my_gradient.addColorStop(0,"black");<br>
+my_gradient.addColorStop(1,"white");<br>
+ctx.fillStyle=my_gradient;<br>
+ctx.fillRect(20,20,150,100);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_fillstyle_gradient2" target="_blank">尝试一下 »</a>
+</div>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>定义从黑到红到白的的渐变，作为矩形的填充样式：</p>
+<canvas id="canvas-fillstyle-myCanvas4" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">浏览器不支持Canvas标签.</canvas>
+<script>
+(function(){
+var canvas=G("canvas-fillstyle-myCanvas4");
+var ctx=canvas.getContext("2d");
+var my_gradient=ctx.createLinearGradient(0,0,170,0);
+my_gradient.addColorStop(0,"black");
+my_gradient.addColorStop(0.5,"red");
+my_gradient.addColorStop(1,"white");
+ctx.fillStyle=my_gradient;
+ctx.fillRect(20,20,150,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+var my_gradient=ctx.createLinearGradient(0,0,170,0);<br>
+my_gradient.addColorStop(0,"black");<br>
+my_gradient.addColorStop(0.5,"red");<br>
+my_gradient.addColorStop(1,"white");<br>
+ctx.fillStyle=my_gradient;<br>
+ctx.fillRect(20,20,150,100);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_fillstyle_gradient3" target="_blank">尝试一下 »</a>
+</div>
+<div class="example">
+<h2 class="example">用到的图像：</h2>
+<p><img src="http://www.runoob.com/images/lamp.jpg" id="canvas-fillstyle-lamp" alt="Lamp"></p>
+<h2 class="example">实例</h2>
+<p>使用图像来填充绘图：</p>
+<canvas id="canvas-fillstyle-myCanvas5" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+G("canvas-fillstyle-lamp").onload=function()
+{
+	var c=G("canvas-fillstyle-myCanvas5");
+	var ctx=c.getContext('2d');
+	var img=this;
+	var pat=ctx.createPattern(img,'repeat');
+	ctx.rect(0,0,150,100);
+	ctx.fillStyle=pat;
+	ctx.fill();
+}
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>var ctx=c.getContext("2d");<br>
+	var img=document.getElementById("lamp");<br>var
+	pat=ctx.createPattern(img,"repeat");<br>ctx.rect(0,0,150,100);<br>
+	ctx.fillStyle=pat;<br>ctx.fill();</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_createpattern" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-strokestyle" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>strokeStyle 属性设置或返回用于笔触的颜色、渐变或模式。</p>
+<table class="tecspec">
+<tbody><tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">#000000</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.strokeStyle=<i>color</i>|<i>gradient</i>|<i>pattern</i>;</td>
+  </tr>
+</tbody></table>
+<h2>属性值</h2>
+<table class="reference">
+<tbody><tr>
+<th style="width:15%">值</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>color</i></td>
+		<td>指示绘图笔触颜色的 <a href="http://www.runoob.com/cssref/css-colors-legal.html">CSS 颜色值</a>。默认值是 #000000。</td>
+	</tr>
+<tr>
+<td><i>gradient</i></td>
+		<td>用于填充绘图的渐变对象（<a href="canvas-createlineargradient.html">线性</a>
+		或 <a href="canvas-createradialgradient.html">放射性</a>）。</td>
+	</tr>
+<tr>
+<td><i>pattern</i></td>
+		<td>用于创建 pattern 笔触的 <a href="canvas-createpattern.html">pattern</a> 对象。</td>
+	</tr>
+</tbody></table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制一个矩形。使用渐变笔触：</p>
+<canvas id="canvas-strokestyle-myCanvas2" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-strokestyle-myCanvas2");
+var ctx=c.getContext("2d");
+var gradient=ctx.createLinearGradient(0,0,170,0);
+gradient.addColorStop("0","magenta");
+gradient.addColorStop("0.5","blue");
+gradient.addColorStop("1.0","red");
+// Fill with gradient
+ctx.lineWidth=5;
+ctx.strokeStyle=gradient;
+ctx.strokeRect(20,20,150,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br><br>
+var gradient=ctx.createLinearGradient(0,0,170,0);<br>
+gradient.addColorStop("0","magenta");<br>
+gradient.addColorStop("0.5","blue");<br>
+gradient.addColorStop("1.0","red");<br><br>
+// Fill with gradient<br>
+ctx.strokeStyle=gradient;<br>
+ctx.lineWidth=5;<br>
+ctx.strokeRect(20,20,150,100);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_strokestyle2" target="_blank">尝试一下 »</a>
+</div>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>用一个渐变笔触来写文本 "Big smile!"：</p>
+<canvas id="canvas-strokestyle-myCanvas3" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-strokestyle-myCanvas3");
+var ctx=c.getContext("2d");
+ctx.font="30px Verdana";
+// Create gradient
+var gradient=ctx.createLinearGradient(0,0,c.width,0);
+gradient.addColorStop("0","magenta");
+gradient.addColorStop("0.5","blue");
+gradient.addColorStop("1.0","red");
+// Fill with gradient
+ctx.strokeStyle=gradient;
+ctx.strokeText("Big smile!",10,50);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br><br>
+ctx.font="30px Verdana";<br>
+// Create gradient<br>
+var gradient=ctx.createLinearGradient(0,0,c.width,0);<br>
+gradient.addColorStop("0","magenta");<br>
+gradient.addColorStop("0.5","blue");<br>
+gradient.addColorStop("1.0","red");<br>
+// Fill with gradient<br>
+ctx.strokeStyle=gradient;<br>
+ctx.strokeText("Big smile!",10,50);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_strokestyle3" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-shadowcolor" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>shadowColor 属性设置或返回用于阴影的颜色。</p>
+<p><b>注意：</b>请将 shadowColor 属性与 <a href="canvas-shadowblur.html">shadowBlur</a>
+属性一起使用，来创建阴影。</p>
+<p><strong>提示：</strong>请通过使用 <a href="canvas-shadowoffsetx.html">shadowOffsetX</a>
+和 <a href="canvas-shadowoffsety.html">shadowOffsetY</a> 属性来调节阴影效果。</p>
+
+<table class="tecspec">
+<tbody><tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">#000000</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.shadowColor=<i>color</i>;</td>
+  </tr>
+</tbody></table>
+<h2>属性值</h2>
+<table class="reference">
+<tbody><tr>
+<th style="width:15%">值</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><i>color</i></td>
+		<td>用于阴影的 <a href="http://www.runoob.com/cssref/css-colors-legal.html">CSS 颜色值</a>。默认值是 #000000。</td>
+
+	</tr>
+</tbody></table>
+
+</div>
+<div id="canvas-shadowblur" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>shadowBlur 属性设置或返回阴影的模糊级数。</p>
+<table class="tecspec">
+<tbody><tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">0</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.shadowBlur=<i>number</i>;</td>
+  </tr>
+</tbody></table>
+<h2>属性值</h2>
+<table class="reference">
+<tbody><tr>
+<th style="width:15%">值</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><i>number</i></td>
+		<td>阴影的模糊级数</td>
+
+	</tr>
+</tbody></table>
+
+</div>
+<div id="canvas-shadowoffsetx" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>shadowOffsetX 属性设置或返回阴影与形状的水平距离。</p>
+<p>shadowOffsetX=0 指示阴影位于形状的正下方。</p>
+<p>shadowOffsetX=20 指示阴影位于形状 left 位置右侧的 20 像素处。</p>
+<p>shadowOffsetX=-20 指示阴影位于形状 left 位置左侧的 20 像素处。</p>
+<p><strong>提示：</strong>如需调整阴影与形状的垂直距离，请使用 <a href="canvas-shadowoffsety.html">shadowOffsetY</a> 属性。</p>
+
+<table class="tecspec">
+<tbody><tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">0</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.shadowOffsetX=<i>number</i>;</td>
+  </tr>
+</tbody></table>
+<h2>属性值</h2>
+<table class="reference">
+<tbody><tr>
+<th style="width:15%">值</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><i>number</i></td>
+		<td>正值或负值，定义阴影与形状的水平距离。</td>
+
+	</tr>
+</tbody></table>
+
+</div>
+<div id="canvas-shadowoffsety" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>shadowOffsetY 属性设置或返回阴影与形状的垂直距离。</p>
+<p>shadowOffsety=0 指示阴影位于形状的正下方。</p>
+<p>shadowOffsetY=20 指示阴影位于形状 top 位置下方的 20 像素处。</p>
+<p>shadowOffsetY=-20 指示阴影位于形状 top 位置上方的 20 像素处。</p>
+<p><strong>提示：</strong>如需调整阴影与形状的水平距离，请使用 <a href="canvas-shadowoffsetx.html">shadowOffsetX</a> 属性。</p>
+
+<table class="tecspec">
+<tbody><tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">0</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.shadowOffsetY=<i>number</i>;</td>
+  </tr>
+</tbody></table>
+<h2>属性值</h2>
+<table class="reference">
+<tbody><tr>
+<th style="width:15%">值</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><i>number</i></td>
+		<td>正值或负值，定义阴影与形状的垂直距离。</td>
+
+	</tr>
+</tbody></table>
+
+</div>
+
+<div id="canvas-createlineargradient" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>createLinearGradient() 方法创建线性的渐变对象。</p>
+<p>渐变可用于填充矩形、圆形、线条、文本等等。</p>
+<p><strong>提示：</strong>请使用该对象作为 <a href="canvas-strokestyle.html">strokeStyle</a>
+或 <a href="canvas-fillstyle.html">fillStyle</a> 属性的值。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-addcolorstop.html">addColorStop()</a> 方法规定不同的颜色，以及在 gradient 对象中的何处定位颜色。</p>
+
+<table class="tecspec"><tbody><tr>
+<th style="width:25%">JavaScript 语法：</th>
+    <td>
+<i>context</i>.createLinearGradient(<i>x0,y0,x1,y1</i>);</td>
+  </tr></tbody></table>
+<h2>参数值</h2>
+<table class="reference">
+<tbody><tr>
+<th style="width:20%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>x0</i></td>
+		<td>渐变开始点的 x 坐标</td>
+	</tr>
+<tr>
+<td><i>y0</i></td>
+		<td>渐变开始点的 y 坐标</td>
+	</tr>
+<tr>
+<td><i>x1</i></td>
+		<td>渐变结束点的 x 坐标</td>
+	</tr>
+<tr>
+<td><i>y1</i></td>
+		<td>渐变结束点的 y 坐标</td>
+	</tr>
+</tbody></table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>定义一个渐变（从上到下）作为矩形的填充样式：</p>
+<canvas id="canvas-createlineargradient-myCanvas2" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">
+浏览器不支持Canvas标签.</canvas>
+<script>
+(function(){
+var canvas=G("canvas-createlineargradient-myCanvas2");
+var ctx=canvas.getContext("2d");
+var my_gradient=ctx.createLinearGradient(0,0,0,170);
+my_gradient.addColorStop(0,"black");
+my_gradient.addColorStop(1,"white");
+ctx.fillStyle=my_gradient;
+ctx.fillRect(20,20,150,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+var my_gradient=ctx.createLinearGradient(0,0,0,170);<br>
+my_gradient.addColorStop(0,"black");<br>
+my_gradient.addColorStop(1,"white");<br>
+ctx.fillStyle=my_gradient;<br>
+ctx.fillRect(20,20,150,100);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_fillstyle_gradient" target="_blank">尝试一下 »</a>
+</div>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>定义一个从黑到红再到白的渐变，作为矩形的填充样式：</p>
+<canvas id="canvas-createlineargradient-myCanvas4" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">
+浏览器不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var canvas=G("canvas-createlineargradient-myCanvas4");
+var ctx=canvas.getContext("2d");
+var my_gradient=ctx.createLinearGradient(0,0,170,0);
+my_gradient.addColorStop(0,"black");
+my_gradient.addColorStop(0.5,"red");
+my_gradient.addColorStop(1,"white");
+ctx.fillStyle=my_gradient;
+ctx.fillRect(20,20,150,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+var my_gradient=ctx.createLinearGradient(0,0,170,0);<br>
+my_gradient.addColorStop(0,"black");<br>
+my_gradient.addColorStop(0.5,"red");<br>
+my_gradient.addColorStop(1,"white");<br>
+ctx.fillStyle=my_gradient;<br>
+ctx.fillRect(20,20,150,100);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_fillstyle_gradient3" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-createpattern" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>createPattern() 方法在指定的方向内重复指定的元素。</p>
+<p>元素可以是图片、视频，或者其他 &lt;canvas&gt; 元素。</p>
+<p>被重复的元素可用于绘制/填充矩形、圆形或线条等等。</p>
+
+<table class="tecspec"><tbody><tr>
+<th style="width:25%">JavaScript 语法：</th>
+    <td>
+<i>context</i>.createPattern(<i>image</i>,"repeat|repeat-x|repeat-y|no-repeat");</td>
+  </tr></tbody></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>image</i></td>
+		<td>规定要使用的模式的图片、画布或视频元素。<br>
+<ul>
+  <li><a href="/zh-CN/docs/Web/API/HTMLImageElement" title="The HTMLImageElement&nbsp;接口提供了特别的属性和方法 (在常规的&nbsp;HTMLElement之外,它也能通过继承使用)来操纵 <img> 元素的布局和图像."><code>HTMLImageElement</code></a> (<a href="/zh-CN/docs/Web/HTML/Element/img" title="HTML Image 元素（&nbsp;<img>&nbsp;）代表文档中的一个图像。"><code>&lt;img&gt;</code></a>),</li>
+  <li><a href="/zh-CN/docs/Web/API/HTMLVideoElement" title="HTMLVideoElement&nbsp;接口提供了用于操作视频对象的特殊属性和方法。它同时还继承了HTMLMediaElement 和 HTMLElement&nbsp;的属性与方法。"><code>HTMLVideoElement</code></a> (<a href="/zh-CN/docs/Web/HTML/Element/video" title="HTML <video> 元素 用于在HTML或者XHTML文档中嵌入视频内容。"><code>&lt;video&gt;</code></a>),</li>
+  <li><a href="/zh-CN/docs/Web/API/HTMLCanvasElement" title="DOM canvas元素暴露了HTMLCanvasElement接口,该接口提供了用来操作一个canvas元素布局和呈现的属性和方法.HTMLCanvasElement接口继承了element接口的属性和方法."><code>HTMLCanvasElement</code></a> (<a href="/zh-CN/docs/Web/HTML/Element/canvas" title="<canvas>元素可被用来通过脚本（通常是JavaScript）绘制图形。比如,它可以被用来绘制图形,制作图片集合,甚至用来实现动画效果。你可以(也应该)在元素标签内写入可提供替代的的代码内容，这些内容将会在在旧的、不支持<canvas>元素的浏览器或是禁用了JavaScript的浏览器内渲染并展现。"><code>&lt;canvas&gt;</code></a>),</li>
+  <li><a href="/zh-CN/docs/Web/API/CanvasRenderingContext2D" title="CanvasRenderingContext2D&nbsp;接口提供的 2D 渲染背景用来绘制<canvas>元素，为了获得这个接口的对象，需要在 <canvas> 上调用 getContext()&nbsp;，并提供一个 &quot;2d&quot; 的参数："><code>CanvasRenderingContext2D</code></a>,</li>
+  <li><a href="/zh-CN/docs/Web/API/ImageBitmap" title="ImageBitmap 接口表示能够被绘制到 <canvas> 上的位图图像，具有低延迟的特性。运用 createImageBitmap() 工厂方法模式，它可以从多种源中生成。 ImageBitmap提供了一种异步且高资源利用率的方式来为WebGL的渲染准备基础结构。"><code>ImageBitmap</code></a>,</li>
+  <li><a href="/zh-CN/docs/Web/API/ImageData" title="ImageData&nbsp;接口描述 <canvas> 元素的一个隐含像素数据的区域。使用&nbsp;ImageData() 构造函数创建或者使用和 canvas 在一起的 CanvasRenderingContext2D 对象的创建方法：&nbsp;createImageData() 和 getImageData()。也可以使用&nbsp;putImageData() 设置 canvas 的一部分。"><code>ImageData</code></a>,</li>
+  <li><a href="/zh-CN/docs/Web/API/Blob" title="Blob对象表示不可变的类似文件对象的原始数据。Blob表示不一定是JavaScript原生形式的数据。&nbsp;File&nbsp;接口基于Blob，继承了 blob的功能并将其扩展使其支持用户系统上的文件。"><code>Blob</code></a>.</li>
+ </ul>
+		</td>
+	</tr>
+<tr>
+<td>repeat</td>
+		<td>默认。该模式在水平和垂直方向重复。<br>
+<ul>
+  <li><code>"repeat"</code> 该模式在水平和垂直方向都重复。</li>
+  <li><code>"repeat-x"</code> 该模式只在水平方向重复。</li>
+  <li><code>"repeat-y"</code> 该模式只在垂直方向重复。</li>
+  <li><code>"no-repeat"</code> 	该模式只显示一次（不重复）。</li>
+ </ul>
+		</td>
+	</tr>
+</table>
+
+</div>
+<div id="canvas-createradialgradient" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>createRadialGradient() 方法创建放射状/圆形渐变对象。</p>
+<p>渐变可用于填充矩形、圆形、线条、文本等等。</p>
+<p><strong>提示：</strong>请使用该对象作为
+<a href="canvas-strokestyle.html">strokeStyle</a>
+	或 <a href="canvas-fillstyle.html">fillStyle</a> 属性的值。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-addcolorstop.html">addColorStop()</a> 方法规定不同的颜色，以及在 gradient 对象中的何处定位颜色。</p>
+
+<table class="tecspec"><tbody><tr>
+<th style="width:25%">JavaScript 语法：</th>
+    <td>
+<i>context</i>.createRadialGradient(<i>x0,y0,r0,x1,y1,r1</i>);</td>
+  </tr></tbody></table>
+<h2>参数值</h2>
+<table class="reference">
+<tbody><tr>
+<th style="width:20%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>x0</i></td>
+		<td>渐变的开始圆的 x 坐标</td>
+	</tr>
+<tr>
+<td><i>y0</i></td>
+		<td>渐变的开始圆的 y 坐标</td>
+	</tr>
+<tr>
+<td><i>r0</i></td>
+		<td>开始圆的半径</td>
+	</tr>
+<tr>
+<td><i>x1</i></td>
+		<td>渐变的结束圆的 x 坐标</td>
+	</tr>
+<tr>
+<td><i>y1</i></td>
+		<td>渐变的结束圆的 y 坐标</td>
+	</tr>
+<tr>
+<td><i>r1</i></td>
+		<td>结束圆的半径</td>
+	</tr>
+</tbody></table>
+
+</div>
+<div id="canvas-addcolorstop" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>addColorStop() 方法规定渐变对象中的颜色和位置。</p>
+<p>addColorStop() 方法与
+<a href="canvas-createlineargradient.html">createLinearGradient()</a> 或
+<a href="canvas-createradialgradient.html">createRadialGradient()</a> 一起使用。</p>
+<p><b>注意：</b>您可以多次调用 addColorStop() 方法来改变渐变。如果您不对渐变对象使用该方法，那么渐变将不可见。为了获得可见的渐变，您需要创建至少一个色标。</p>
+
+<table class="tecspec"><tbody><tr>
+<th style="width:25%">JavaScript 语法：</th>
+    <td>
+<i>gradient</i>.addColorStop(<i>stop</i>,<i>color</i>);</td>
+  </tr></tbody></table>
+<h2>参数值</h2>
+<table class="reference">
+<tbody><tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><i>stop</i></td>
+		<td>介于 0.0 与 1.0 之间的值，表示渐变中开始与结束之间的位置。</td>
+
+	</tr>
+<tr>
+<td><i>color</i></td>
+		<td>在 <i>stop</i> 位置显示的 <a href="http://www.runoob.com/cssref/css-colors-legal.html">CSS 颜色值</a>。</td>
+
+	</tr>
+</tbody></table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>通过多个 addColorStop() 方法来定义渐变：</p>
+<canvas id="canvas-addcolorstop-myCanvas2" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">
+浏览器不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var canvas=G("canvas-addcolorstop-myCanvas2");
+var ctx=canvas.getContext("2d");
+var grd=ctx.createLinearGradient(0,0,170,0);
+grd.addColorStop(0,"black");
+grd.addColorStop("0.3","magenta");
+grd.addColorStop("0.5","blue");
+grd.addColorStop("0.6","green");
+grd.addColorStop("0.8","yellow");
+grd.addColorStop(1,"red");
+ctx.fillStyle=grd;
+ctx.fillRect(20,20,150,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br><br>
+var grd=ctx.createLinearGradient(0,0,170,0);<br>
+grd.addColorStop(0,"black");<br>
+grd.addColorStop("0.3","magenta");<br>
+grd.addColorStop("0.5","blue");<br>
+grd.addColorStop("0.6","green");<br>
+grd.addColorStop("0.8","yellow");<br>
+grd.addColorStop(1,"red");<br><br>
+ctx.fillStyle=grd;<br>
+ctx.fillRect(20,20,150,100);
+</div>
+<br><a class="tryitbtn" target="_blank" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_addcolorstop_multiple">尝试一下 »</a>
+</div>
+
+</div>
+
+<div id="canvas-linecap" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>lineCap 属性设置或返回线条末端线帽的样式。</p>
+<p><b>注意：</b>"round" 和 "square" 值会使线条略微变长。</p>
+
+<table class="tecspec">
+<tbody><tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">butt</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.lineCap="butt|round|square";</td>
+  </tr>
+</tbody></table>
+<h2>属性值</h2>
+<table class="reference">
+<tbody><tr>
+<th style="width:15%">值</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td>butt</td>
+		<td>默认。向线条的每个末端添加平直的边缘。</td>
+	</tr>
+<tr>
+<td>round</td>
+		<td>向线条的每个末端添加圆形线帽。</td>
+	</tr>
+<tr>
+<td>square</td>
+		<td>向线条的每个末端添加正方形线帽。</td>
+	</tr>
+</tbody></table>
+<hr>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制圆形的结束线帽：</p>
+<canvas id="canvas-linecap-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">
+您的浏览器不支持 HTML5 canvas 标签。</canvas>
+
+<script>
+(function(){
+var c=G("canvas-linecap-myCanvas");
+var ctx=c.getContext("2d");
+ctx.beginPath();
+ctx.lineWidth=10;
+ctx.lineCap="butt";
+ctx.moveTo(20,20);
+ctx.lineTo(200,20);
+ctx.stroke();
+ctx.beginPath();
+ctx.lineCap="round";
+ctx.moveTo(20,40);
+ctx.lineTo(200,40);
+ctx.stroke();
+ctx.beginPath();
+ctx.lineCap="square";
+ctx.moveTo(20,60);
+ctx.lineTo(200,60);
+ctx.stroke();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.beginPath();<br>
+ctx.lineCap="round";<br>
+ctx.moveTo(20,20);<br>
+ctx.lineTo(20,200);<br>
+ctx.stroke();
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_linecap" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-linejoin" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>lineJoin 属性设置或返回所创建边角的类型，当两条线交汇时。</p>
+<p><b>注意：</b>"miter" 值受
+<a href="canvas-miterlimit.html">miterLimit</a> 属性的影响。</p>
+<table class="tecspec">
+<tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">miter</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.lineJoin="bevel|round|miter";</td>
+  </tr>
+</table>
+<h2>属性值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">值</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td>bevel</td>
+		<td>创建斜角。</td>
+
+	</tr>
+<tr>
+<td>round</td>
+		<td>创建圆角。</td>
+
+	</tr>
+<tr>
+<td>miter</td>
+		<td>默认。创建尖角。</td>
+
+	</tr>
+</table>
+<hr>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>当两条线条交汇时，创建圆形边角：</p>
+<canvas id="canvas-linejoin-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-linejoin-myCanvas");
+var ctx=c.getContext("2d");
+ctx.beginPath();
+ctx.lineWidth=10;
+ctx.lineJoin="round";
+ctx.moveTo(20,20);
+ctx.lineTo(100,50);
+ctx.lineTo(20,100);
+ctx.stroke();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.beginPath();<br>
+ctx.lineJoin="round";<br>
+ctx.moveTo(20,20);<br>
+ctx.lineTo(100,50);<br>
+ctx.lineTo(20,100);<br>
+ctx.stroke();
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_linejoin" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-linewidth" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>lineWidth 属性设置或返回当前线条的宽度，以像素计。</p>
+<table class="tecspec">
+<tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">1</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.lineWidth=<i>number</i>;</td>
+  </tr>
+</table>
+<h2>属性值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">值</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><i>number</i></td>
+		<td>当前线条的宽度，以像素计。</td>
+
+	</tr>
+</table>
+<hr>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>用宽度为 10 像素的线条来绘制矩形：</p>
+<canvas id="canvas-linewidth-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-linewidth-myCanvas");
+var ctx=c.getContext("2d");
+ctx.lineWidth=10;
+ctx.strokeRect(20,20,80,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.lineWidth=10;<br>
+ctx.strokeRect(20,20,80,100);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_linewidth" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-miterlimit" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>miterLimit 属性设置或返回最大斜接长度。</p>
+<p>斜接长度指的是在两条线交汇处内角和外角之间的距离。</p>
+<img src="http://www.runoob.com/wp-content/uploads/2013/11/img_miterlimitFig.gif" alt="Miter Limit figure 1"><p><strong>提示：</strong>只有当 lineJoin 属性为 "miter" 时，miterLimit 才有效。</p>
+<p>边角的角度越小，斜接长度就会越大。</p>
+<p>为了避免斜接长度<em>过长</em>，我们可以使用 miterLimit 属性。</p>
+<p>如果斜接长度超过 miterLimit 的值，边角会以 lineJoin 的 "bevel" 类型来显示（Fig 3）：</p>
+<img src="http://www.runoob.com/wp-content/uploads/2013/11/img_miterlimitBevelFig.gif" alt="Miter Limit figure 2"><table class="tecspec">
+<tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">10</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.miterLimit=<i>number</i>;</td>
+  </tr>
+</table>
+<h2>属性值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">值</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>number</i></td>
+		<td>正数。规定最大斜接长度。如果斜接长度超过 miterLimit 的值，边角会以 lineJoin 的 "bevel" 类型来显示。</td>
+	</tr>
+</table>
+<hr>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>以最大斜接长度 5 绘制线条：</p>
+<canvas id="canvas-miterlimit-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-miterlimit-myCanvas");
+var ctx=c.getContext("2d");
+ctx.lineWidth=10;
+ctx.lineJoin="miter";
+ctx.miterLimit=5;
+ctx.moveTo(20,20);
+ctx.lineTo(50,27);
+ctx.lineTo(20,34);
+ctx.stroke();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>var ctx=c.getContext("2d");<br>
+	ctx.lineWidth=10;<br>ctx.lineJoin="miter";<br>ctx.miterLimit=5;<br>
+	ctx.moveTo(20,20);<br>ctx.lineTo(50,27);<br>
+	ctx.lineTo(20,34);<br>ctx.stroke();</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_miterlimit" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-lineDashOffset" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>是 Canvas 2D API 设置虚线偏移量的属性，例如可以实现 “跑马灯“ 的效果。</p>
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td><i>context</i>.lineDashOffset = value;</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>lineDashOffset</i></td>
+		<td>偏移量是float精度的数字。 初始值为 0.0。</td>
+	</tr>
+</table>
+<div class="example">
+<h2 class="example">实例</h2>
+<canvas id="canvas-lineDashOffset-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">浏览器不支持Canvas标签.</canvas>
+<script>
+(function(){
+var canvas = G("canvas-lineDashOffset-myCanvas");
+var ctx = canvas.getContext("2d");
+var offset = 0;
+
+function draw() {
+  ctx.clearRect(0,0, canvas.width, canvas.height);
+  ctx.setLineDash([4, 2]);
+  ctx.lineDashOffset = -offset;
+  ctx.strokeRect(10,10, 100, 100);
+}
+
+function march() {
+  offset++;
+  if (offset > 16) {
+    offset = 0;
+  }
+  draw();
+  setTimeout(march, 20);
+}
+
+march();
+})()
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var canvas = document.getElementById("canvas");<br/>
+var ctx = canvas.getContext("2d");<br/>
+var offset = 0;<br/>
+<br/>
+function draw() {<br/>
+  ctx.clearRect(0,0, canvas.width, canvas.height);<br/>
+  ctx.setLineDash([4, 2]);<br/>
+  ctx.lineDashOffset = -offset;<br/>
+  ctx.strokeRect(10,10, 100, 100);<br/>
+}<br/>
+<br/>
+function march() {<br/>
+  offset++;<br/>
+  if (offset > 16) {<br/>
+    offset = 0;<br/>
+  }<br/>
+  draw();<br/>
+  setTimeout(march, 20);<br/>
+}<br/>
+<br/>
+march();
+</div>
+</div>
+
+</div>
+<div id="canvas-getlinedash" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>是 Canvas 2D API 获取当前线段样式的方法。返回一个Array数组。一组描述交替绘制线段和间距（坐标空间单位）长度的数字。 如果设置的数组元素的数量是奇数， 数组的元素会被复制并重复。例如， [5, 15, 25] 会变成 [5, 15, 25, 5, 15, 25]。</p>
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td><i>context</i>.getLineDash();</td>
+  </tr>
+</table>
+<div class="example">
+<h2 class="example">实例</h2>
+<canvas id="canvas-getlinedash-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">浏览器不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-getlinedash-myCanvas");
+var ctx=c.getContext("2d");
+ctx.setLineDash([10,3,20,6]);
+ctx.beginPath();
+ctx.moveTo(0,0);
+ctx.lineTo(50,100);
+ctx.lineTo(150,100);
+ctx.lineTo(150,150);
+ctx.stroke();
+var dash=ctx.getLineDash();
+ctx.fillText("getLineDash: "+JSON.stringify(dash),50,50);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.setLineDash([10,3,20,6]);<br>
+ctx.beginPath();<br>
+ctx.moveTo(0,0);<br>
+ctx.lineTo(50,100);<br>
+ctx.lineTo(150,100);<br>
+ctx.lineTo(150,200);<br>
+ctx.stroke(); //绘制到canvas显示<br>
+var dash=ctx.getLineDash();<br>
+ctx.fillText("getLineDash: "+JSON.stringify(dash),50,50); //显示线段样式
+</div>
+</div>
+
+</div>
+<div id="canvas-setlinedash" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>是 Canvas 2D API 设置虚线样式的方法。</p>
+<table class="tecspec">
+<tr><th>JavaScript 语法：</th>
+    <td><i>context</i>.setLineDash(<i>segments</i>);</td>
+  </tr>
+</table>
+<h2>参数值</h2>
+<table class="reference">
+<tr><th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr><td><i>segments</i></td>
+		<td>一个Array数组。一组描述交替绘制线段和间距（坐标空间单位）长度的数字。 如果数组元素的数量是奇数， 数组的元素会被复制并重复。例如， [5, 15, 25] 会变成 [5, 15, 25, 5, 15, 25]。</td>
+	</tr>
+</table>
+<div class="example">
+<h2 class="example">实例</h2>
+<canvas id="canvas-setlinedash-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">浏览器不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-setlinedash-myCanvas");
+var ctx=c.getContext("2d");
+ctx.setLineDash([5, 15, 25]);
+ctx.beginPath();
+ctx.moveTo(0,0);
+ctx.lineTo(50,100);
+ctx.lineTo(150,100);
+ctx.lineTo(150,150);
+ctx.stroke();
+var dash=ctx.getLineDash();
+ctx.fillText("getLineDash: "+JSON.stringify(dash),50,50);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.setLineDash([10,3,20]);<br>
+ctx.beginPath();<br>
+ctx.moveTo(0,0);<br>
+ctx.lineTo(50,100);<br>
+ctx.lineTo(150,100);<br>
+ctx.lineTo(150,150);<br>
+ctx.stroke(); //绘制到canvas显示<br>
+var dash=ctx.getLineDash();<br>
+ctx.fillText("getLineDash: "+JSON.stringify(dash),50,50); //显示线段样式
+</div>
+</div>
+
+</div>
+
+<div id="canvas-rect" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>rect() 方法创建矩形。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-stroke.html">stroke()</a> 或
+<a href="canvas-fill.html">fill()</a> 方法在画布上实际地绘制矩形。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.rect(<i>x,y,width,height</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>x</i></td>
+		<td>矩形左上角的 x 坐标。</td>
+
+	</tr>
+<tr>
+<td><i>y</i></td>
+		<td>矩形左上角的 y 坐标。</td>
+	</tr>
+<tr>
+<td><i>width</i></td>
+		<td>矩形的宽度，以像素计。</td>
+	</tr>
+<tr>
+<td><i>height</i></td>
+		<td>矩形的高度，以像素计。</td>
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>通过 rect() 方法来创建三个矩形：</p>
+<canvas id="canvas-rect-myCanvas2" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">浏览器不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-rect-myCanvas2");
+var ctx=c.getContext("2d");
+// Red rectangle
+ctx.beginPath();
+ctx.lineWidth=6;
+ctx.strokeStyle="red";
+ctx.rect(5,5,290,140);
+ctx.stroke();
+// Green rectangle
+ctx.beginPath();
+ctx.lineWidth=4;
+ctx.strokeStyle="green";
+ctx.rect(30,30,50,50);
+ctx.stroke();
+// Blue rectangle
+ctx.beginPath();
+ctx.lineWidth=10;
+ctx.strokeStyle="blue";
+ctx.rect(50,50,150,80);
+ctx.stroke();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br><br>
+// Red rectangle<br>
+ctx.beginPath();<br>
+ctx.lineWidth=6;<br>
+ctx.strokeStyle="red";<br>
+ctx.rect(5,5,290,140); <br>
+ctx.stroke();<br><br>
+// Green rectangle<br>
+ctx.beginPath();<br>
+ctx.lineWidth=4;<br>
+ctx.strokeStyle="green";<br>
+ctx.rect(30,30,50,50);<br>
+ctx.stroke();<br><br>
+// Blue rectangle<br>
+ctx.beginPath();<br>
+ctx.lineWidth=10;<br>
+ctx.strokeStyle="blue";<br>
+ctx.rect(50,50,150,80);<br>
+ctx.stroke();
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_rect2" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-fillrect" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>fillRect() 方法绘制"已填充"的矩形。默认的填充颜色是黑色。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-fillstyle.html">fillStyle</a> 属性来设置用于填充绘图的颜色、渐变或模式。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.fillRect(<i>x,y,width,height</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr><td><i>x</i></td>
+	<td>矩形左上角的 x 坐标。</td>
+	</tr>
+<tr><td><i>y</i></td>
+	<td>矩形左上角的 y 坐标。</td>
+	</tr>
+<tr><td><i>width</i></td>
+	<td>矩形的宽度，以像素计。</td>
+	</tr>
+<tr><td><i>height</i></td>
+	<td>矩形的高度，以像素计。</td>
+	</tr>
+</table>
+<hr>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制 150*100 像素的已填充矩形：</p>
+<canvas id="canvas-fillrect-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-fillrect-myCanvas");
+var ctx=c.getContext("2d");
+ctx.fillRect(20,20,150,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.fillRect(20,20,150,100);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_fillrect" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-strokerect" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>strokeRect() 方法绘制矩形（无填充）。笔触的默认颜色是黑色。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-strokestyle.html">strokeStyle</a> 属性来设置笔触的颜色、渐变或模式。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.strokeRect(<i>x,y,width,height</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><i>x</i></td>
+		<td>矩形左上角的 x 坐标。</td>
+
+	</tr>
+<tr>
+<td><i>y</i></td>
+		<td>矩形左上角的 y 坐标。</td>
+
+	</tr>
+<tr>
+<td><i>width</i></td>
+		<td>矩形的宽度，以像素计。</td>
+
+	</tr>
+<tr>
+<td><i>height</i></td>
+		<td>矩形的高度，以像素计。</td>
+
+	</tr>
+</table>
+<hr>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制 150*100 像素的矩形：</p>
+<canvas id="canvas-strokerect-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-strokerect-myCanvas");
+var ctx=c.getContext("2d");
+ctx.strokeRect(20,20,150,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.strokeRect(20,20,150,100);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_strokerect" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-clearrect" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>clearRect() 方法清空给定矩形内的指定像素。</p>
+<p>要注意的是：<b>后面两个参数是高和宽</b>。</p>
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.clearRect(<i>x,y,width,height</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>x</i></td>
+		<td>要清除的矩形左上角的 x 坐标。</td>
+	</tr>
+<tr>
+<td><i>y</i></td>
+		<td>要清除的矩形左上角的 y 坐标。</td>
+	</tr>
+<tr>
+<td><i>width</i></td>
+		<td>要清除的矩形的宽度，以像素计。</td>
+	</tr>
+<tr>
+<td><i>height</i></td>
+		<td>要清除的矩形的高度，以像素计。</td>
+	</tr>
+</table>
+<hr>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>在给定矩形内清空一个矩形：</p>
+<canvas id="canvas-clearrect-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-clearrect-myCanvas");
+var ctx=c.getContext("2d");
+ctx.fillStyle="red";
+ctx.fillRect(0,0,300,150);
+ctx.clearRect(20,20,100,50);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>var ctx=c.getContext("2d");<br>
+	ctx.fillStyle="red";<br>ctx.fillRect(0,0,300,150);<br>
+	ctx.clearRect(20,20,100,50);</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_clearrect" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+
+<div id="canvas-fill" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>fill() 方法填充当前的图像（路径）。默认颜色是黑色。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-fillstyle.html">fillStyle</a>
+属性来填充另一种颜色/渐变。</p>
+
+<p><b>注意：</b>如果路径未关闭，那么 fill() 方法会从路径结束点到开始点之间添加一条线，以关闭该路径（正如 <a href="canvas-closepath.html">closePath()</a> 一样），然后填充该路径。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.fill(<i></i>);</td>
+  </tr></table>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制 150*100 像素的矩形，然后用红色来给它填色：</p>
+<canvas id="canvas-fill-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-fill-myCanvas");
+var ctx=c.getContext("2d");
+ctx.rect(20,20,150,100);
+ctx.fillStyle="red";
+ctx.fill();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.rect(20,20,150,100);<br>
+ctx.fillStyle="red";<br>
+ctx.fill();
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_fill" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-stroke" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>stroke() 方法会实际地绘制出通过 moveTo() 和 lineTo() 方法定义的路径。默认颜色是黑色。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-strokestyle.html">strokeStyle</a>
+属性来绘制另一种颜色/渐变。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.stroke(<i></i>);</td>
+  </tr></table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制一条路径，形状是红色的字母 L：</p>
+<canvas id="canvas-stroke-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-stroke-myCanvas");
+var ctx=c.getContext("2d");
+ctx.beginPath();
+ctx.moveTo(20,20);
+ctx.lineTo(20,100);
+ctx.lineTo(70,100);
+ctx.strokeStyle="red";
+ctx.stroke();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.beginPath();<br>
+ctx.moveTo(20,20);<br>
+ctx.lineTo(20,100);<br>
+ctx.lineTo(70,100);<br>
+ctx.strokeStyle="red";<br>
+ctx.stroke();
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_stroke" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-beginpath" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>beginPath() 方法开始一条路径，或重置当前的路径。</p>
+<p><strong>提示：</strong>请使用这些方法来创建路径 moveTo()、lineTo()、quadricCurveTo()、bezierCurveTo()、arcTo() 和 arc()。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-stroke.html">stroke()</a> 方法在画布上绘制确切的路径。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.beginPath();</td>
+  </tr></table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>在画布上绘制两条路径；绿色和紫色：</p>
+<canvas id="canvas-beginpath-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-beginpath-myCanvas");
+var ctx=c.getContext("2d");
+ctx.beginPath();
+ctx.lineWidth=5;
+ctx.strokeStyle="green";  // Green path
+ctx.moveTo(0,75);
+ctx.lineTo(250,75);
+ctx.stroke();  // Draw it
+
+ctx.beginPath();
+ctx.strokeStyle="purple";  // Purple path
+ctx.moveTo(50,0);
+ctx.lineTo(150,130);
+ctx.stroke();  // Draw it
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>var ctx=c.getContext("2d");<br><br>
+	ctx.beginPath(); <br>
+	ctx.lineWidth=5;<br>
+	ctx.strokeStyle="green"; // Green path<br>
+	ctx.moveTo(0,75);<br>
+	ctx.lineTo(250,75);<br>
+	ctx.stroke(); // Draw it<br><br>
+	ctx.beginPath();<br>
+	ctx.strokeStyle="purple"; // Purple path<br>
+	ctx.moveTo(50,0);<br>
+	ctx.lineTo(150,130); <br>
+	ctx.stroke(); // Draw it</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_beginpath" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-moveto" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>moveTo() 方法把路径移动到画布中的指定点，不创建线条。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-stroke.html">stroke()</a> 方法在画布上绘制确切的路径。</p>
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.moveTo(<i>x,y</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>x</i></td>
+		<td>路径的目标位置的 x 坐标。</td>
+	</tr>
+<tr>
+<td><i>y</i></td>
+		<td>路径的目标位置的 y 坐标。</td>
+	</tr>
+</table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>开始一条路径，移动到位置 0,0。创建到达位置 300,150 的一条线：</p>
+<canvas id="canvas-moveto-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-moveto-myCanvas");
+var ctx=c.getContext("2d");
+ctx.beginPath();
+ctx.moveTo(0,0);
+ctx.lineTo(300,150);
+ctx.stroke();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br>
+	ctx.beginPath();<br>ctx.moveTo(0,0);<br>
+	ctx.lineTo(300,150);<br>
+	ctx.stroke();</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_moveto" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-closepath" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>closePath() 方法创建从当前点到开始点的路径。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-stroke.html">stroke()</a> 方法在画布上绘制确切的路径。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-fill.html">fill()</a> 方法来填充图像（默认是黑色）。请使用 <a href="canvas-fillstyle.html">fillStyle</a>
+属性来填充另一个颜色/渐变。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.closePath();</td>
+  </tr></table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制一条路径，形式是字母 L，然后绘制线条以返回开始点：</p>
+<canvas id="canvas-closepath-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-closepath-myCanvas");
+var ctx=c.getContext("2d");
+ctx.beginPath();
+ctx.moveTo(20,20);
+ctx.lineTo(20,100);
+ctx.lineTo(70,100);
+ctx.closePath();
+ctx.stroke();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br>
+	ctx.beginPath();<br>
+	ctx.moveTo(20,20);<br>
+	ctx.lineTo(20,100);<br>
+	ctx.lineTo(70,100);<br>
+	ctx.closePath();<br>
+	ctx.stroke();</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_closepath" target="_blank">尝试一下 »</a>
+</div>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>把红色作为填充颜色：</p>
+<canvas id="canvas-closepath-myCanvas2" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">
+浏览器不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-closepath-myCanvas2");
+var ctx=c.getContext("2d");
+ctx.beginPath();
+ctx.moveTo(20,20);
+ctx.lineTo(20,100);
+ctx.lineTo(70,100);
+ctx.closePath();
+ctx.stroke();
+ctx.fillStyle="red";
+ctx.fill();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.beginPath();<br>
+ctx.moveTo(20,20);<br>
+ctx.lineTo(20,100);<br>
+ctx.lineTo(70,100);<br>
+ctx.closePath();<br>
+ctx.stroke();<br>
+ctx.fillStyle="red";<br>
+ctx.fill();
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_closepath2" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-lineto" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>lineTo() 方法添加一个新点，然后创建从该点到画布中最后指定点的线条（该方法并不会创建线条）。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-stroke.html">stroke()</a> 方法在画布上绘制确切的路径。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.lineTo(<i>x,y</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><i>x</i></td>
+		<td>路径的目标位置的 x 坐标。</td>
+
+	</tr>
+<tr>
+<td><i>y</i></td>
+		<td>路径的目标位置的 y 坐标。</td>
+
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制一条路径，形状是字母 L：</p>
+<canvas id="canvas-lineto-myCanvas2" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-lineto-myCanvas2");
+var ctx=c.getContext("2d");
+ctx.beginPath();
+ctx.moveTo(20,20);
+ctx.lineTo(20,100);
+ctx.lineTo(70,100);
+ctx.stroke();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.beginPath();<br>
+ctx.moveTo(20,20);<br>
+ctx.lineTo(20,100);<br>
+ctx.lineTo(70,100);<br>
+ctx.stroke();
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_lineto2" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-clip" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>clip()方法从原始画布中剪切任意形状和尺寸。</p>
+<p><strong>提示：</strong>一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内（不能访问画布上的其他区域）。您也可以在使用 clip() 方法前通过使用 save() 方法对当前画布区域进行保存，并在以后的任意时间对其进行恢复（通过 restore() 方法）。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.clip();</td>
+  </tr></table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>从画布中剪切 200*120 像素的矩形区域。然后，绘制一个红色矩形。只有被剪切区域内的红色矩形部分是可见的：</p>
+<canvas id="canvas-clip-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-clip-myCanvas");
+var ctx=c.getContext("2d");
+// Clip a rectangular area
+ctx.rect(50,20,200,120);
+ctx.stroke();
+ctx.clip();
+// Draw red rectangle after clip()
+ctx.fillStyle="red";
+ctx.fillRect(0,0,150,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+// Clip a rectangular area<br>
+ctx.rect(50,20,200,120);<br>
+ctx.stroke();<br>
+ctx.clip();<br>
+// Draw red rectangle after clip()<br>
+ctx.fillStyle="red";<br>
+ctx.fillRect(0,0,150,100);<br>
+&lt;/script&gt;</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_clip" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-quadraticcurveto" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>quadraticCurveTo() 方法通过使用表示二次贝塞尔曲线的指定控制点，向当前路径添加一个点。</p>
+<p>二次贝塞尔曲线需要两个点。第一个点是用于二次贝塞尔计算中的控制点，第二个点是曲线的结束点。曲线的开始点是当前路径中最后一个点。如果路径不存在，那么请使用 <a href="canvas-beginpath.html">beginPath()</a> 和 <a href="canvas-moveto.html">moveTo()
+</a> 方法来定义开始点。</p>
+<img src="http://www.runoob.com/wp-content/uploads/2013/11/img_quadraticcurve.gif" alt="二次贝塞尔曲线" />
+<table>
+<tr><td style="font-size:16px"><div style="float:left;background-color:#ff9000;width:4px;height:4px;margin:5px;"></div>开始点：</td><td style="font-size:16px"> moveTo(<strong>20,20</strong>)</td></tr>
+<tr><td style="font-size:16px"><div style="float:left;background-color:#FF0000;width:4px;height:4px;margin:5px;"></div>控制点：</td><td style="font-size:16px"> quadraticCurveTo(<strong>20,100</strong>,200,20)</td></tr>
+<tr><td style="font-size:16px"><div style="float:left;background-color:#b0ef4e;width:4px;height:4px;margin:5px;"></div>结束点：</td><td style="font-size:16px"> quadraticCurveTo(20,100,<strong>200,20</strong>)</td></tr>
+</table>
+<p><b>提示：</b>请查看 <a href="canvas-beziercurveto.html">bezierCurveTo()</a> 方法。 它有两个控制点，而不是一个。</p>
+<table class="tecspec">
+	<tr>
+    <th>JavaScript 语法：</th>
+    <td><i>context</i>.quadraticCurveTo(<i>cpx,cpy,x,y</i>);</td>
+  </tr>
+</table>
+<h2>参数值</h2>
+<table class="reference">
+	<tr>
+    <th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+	<tr>
+		<td><i>cpx</i></td>
+		<td>贝塞尔控制点的 x 坐标。</td>
+	</tr>
+	<tr>
+		<td><i>cpy</i></td>
+		<td>贝塞尔控制点的 y 坐标。</td>
+	</tr>
+	<tr>
+		<td><i>x</i></td>
+		<td>结束点的 x 坐标。</td>
+	</tr>
+	<tr>
+		<td><i>y</i></td>
+		<td>结束点的 y 坐标。</td>
+	</tr>
+</table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制一条二次贝塞尔曲线：</p>
+<canvas id="canvas-quadraticcurveto-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-quadraticcurveto-myCanvas");
+var ctx=c.getContext("2d");
+ctx.beginPath();
+ctx.moveTo(20,20);
+ctx.quadraticCurveTo(20,100,200,20);
+ctx.stroke();
+})();
+</script>
+
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br>
+	ctx.beginPath();<br>
+	ctx.moveTo(20,20);<br>
+	ctx.quadraticCurveTo(20,100,200,20);<br>
+	ctx.stroke();</div>
+<br>
+<a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_quadraticcurveto" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-beziercurveto" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>bezierCurveTo() 方法通过使用表示三次贝塞尔曲线的指定控制点，向当前路径添加一个点。</p>
+<p>三次贝塞尔曲线需要三个点。前两个点是用于三次贝塞尔计算中的控制点，第三个点是曲线的结束点。曲线的开始点是当前路径中最后一个点。如果路径不存在，那么请使用 <a href="canvas-beginpath.html">beginPath()</a> 和 <a href="canvas-moveto.html">moveTo()</a> 方法来定义开始点。</p>
+<img src="http://www.runoob.com/wp-content/uploads/2013/11/img_beziercurve.gif" alt="三次贝塞尔曲线" />
+<table>
+<tr><td style="font-size:16px"><div style="float:left;background-color:#ff9000;width:4px;height:4px;margin:5px;"></div>开始点：</td><td style="font-size:16px"> moveTo(<strong>20,20</strong>)</td></tr>
+<tr><td style="font-size:16px"><div style="float:left;background-color:#FF0000;width:4px;height:4px;margin:5px;"></div>控制点 1：</td><td style="font-size:16px"> bezierCurveTo(<strong>20,100</strong>,200,100,200,20)</td></tr>
+<tr><td style="font-size:16px"><div style="float:left;background-color:#FF0000;width:4px;height:4px;margin:5px;"></div>控制点 2：</td><td style="font-size:16px"> bezierCurveTo(20,100,<strong>200,100</strong>,200,20)</td></tr>
+<tr><td style="font-size:16px"><div style="float:left;background-color:#b0ef4e;width:4px;height:4px;margin:5px;"></div>结束点：</td><td style="font-size:16px"> bezierCurveTo(20,100,200,100,<strong>200,20</strong>)</td></tr>
+</table>
+<p><b>提示：</b>请查看 <a href="canvas-quadraticcurveto.html">quadraticCurveTo()</a> 方法。它有一个控制点，而不是两个。</p>
+<table class="tecspec">
+	<tr>
+    <th>JavaScript 语法：</th>
+    <td><i>context</i>.bezierCurveTo(<i>cp1x,cp1y,cp2x,cp2y,x,y</i>);</td>
+  </tr>
+</table>
+<h2>参数值</h2>
+<table class="reference">
+	<tr>
+    <th style="width:15%">参数</th>
+    <th>描述</th>
+
+	</tr>
+	<tr>
+		<td><i>cp1x</i></td>
+		<td>第一个贝塞尔控制点的 x 坐标。</td>
+	</tr>
+	<tr>
+		<td><i>cp1y</i></td>
+		<td>第一个贝塞尔控制点的 y 坐标。</td>
+	</tr>
+	<tr>
+		<td><i>cp2x</i></td>
+		<td>第二个贝塞尔控制点的 x 坐标。</td>
+	</tr>
+	<tr>
+		<td><i>cp2y</i></td>
+		<td>第二个贝塞尔控制点的 y 坐标。</td>
+	</tr>
+	<tr>
+		<td><i>x</i></td>
+		<td>结束点的 x 坐标。</td>
+	</tr>
+	<tr>
+		<td><i>y</i></td>
+		<td>结束点的 y 坐标。</td>
+	</tr>
+</table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制一条三次贝塞尔曲线：</p>
+<canvas id="canvas-beziercurveto-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-beziercurveto-myCanvas");
+var ctx=c.getContext("2d");
+ctx.beginPath();
+ctx.moveTo(20,20);
+ctx.bezierCurveTo(20,100,200,100,200,20);
+ctx.stroke();
+})();
+</script>
+
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br>
+	ctx.beginPath();<br>
+	ctx.moveTo(20,20);<br>
+	ctx.bezierCurveTo(20,100,200,100,200,20);<br>
+	ctx.stroke();</div>
+<br>
+<a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_beziercurveto" target="_blank">尝试一下 »</a>
+</div>
+
+
+</div>
+<div id="canvas-arc" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>arc() 绘制一段圆弧路径， 圆弧路径的圆心在 (x, y) 位置，半径为 r ，根据anticlockwise （默认为顺时针）指定的方向从 startAngle 开始绘制，到 endAngle 结束。</p>
+<p><strong>提示：</strong>如需通过 arc() 来创建圆，请把起始角设置为 0，结束角设置为 2*Math.PI。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-stroke.html">stroke()</a> 或 <a href="canvas-fill.html">fill()</a> 方法在画布上绘制实际的弧。</p>
+<img src="http://www.runoob.com/wp-content/uploads/2013/11/img_arc.gif" alt="An arc"><br>
+<table style="font-size: 16px;">
+<tr>
+<td style="font-size:16px;"><div style="float:left;background-color:#00ff00;width:4px;height:4px;margin:5px"></div>中心：</td>
+<td style="font-size:16px;">arc(<strong>100,75</strong>,50,0*Math.PI,1.5*Math.PI)</td>
+</tr>
+<tr>
+<td style="font-size:16px;"><div style="float:left;background-color:#ff0000;width:4px;height:4px;margin:5px"></div>起始角：</td>
+<td style="font-size:16px;">arc(100,75,50,<strong>0</strong>,1.5*Math.PI)</td>
+</tr>
+<tr>
+<td style="font-size:16px;"><div style="float:left;background-color:#0000ff;width:4px;height:4px;margin:5px"></div>结束角：</td>
+<td style="font-size:16px;">arc(100,75,50,0*Math.PI,<strong>1.5*Math.PI</strong>)</td>
+</tr>
+</table>
+
+<br><table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.arc(<i>x, y, r, startAngle, endAngle, anticlockwise</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr><th style="width:15%">参数</th>
+    <th>描述</th>
+</tr>
+<tr><td><i>x</i></td>
+		<td>圆的中心的 x 坐标。</td>
+	</tr>
+<tr><td><i>y</i></td>
+		<td>圆的中心的 y 坐标。</td>
+	</tr>
+<tr><td><i>r</i></td>
+		<td>圆的半径。</td>
+	</tr>
+<tr><td><i>startAngle</i></td>
+		<td>起始角，以弧度计（弧的圆形的三点钟位置是 0 度）。</td>
+	</tr>
+<tr><td><i>endAngle</i></td>
+		<td>结束角，以弧度计。</td>
+	</tr>
+<tr><td><i>anticlockwise</i></td>
+		<td>可选。规定应该逆时针还是顺时针绘图。False = 顺时针，true = 逆时针。</td>
+	</tr>
+</table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>创建一个圆形：</p>
+<canvas id="canvas-arc-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-arc-myCanvas");
+var ctx=c.getContext("2d");
+ctx.beginPath();
+ctx.arc(100,75,50,0,2*Math.PI);
+ctx.stroke();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br>
+	ctx.beginPath();<br>
+	ctx.arc(100,75,50,0,2*Math.PI);<br>
+	ctx.stroke();</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_arc" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-arcto" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>arcTo() 方法在画布上创建介于<b>两个切线之间的弧/曲线</b>。</p>
+<p><b>两个切线</b>：起始点与第一个控制点的连线， 和， 第一个控制点与第二个控制点的连线， 这两条线作为切线。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-stroke.html">stroke()</a> 方法在画布上绘制确切的弧。</p>
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.arcTo(<i>x1,y1,x2,y2,r</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>x1</i></td>
+		<td>第一个控制点的 x 坐标。</td>
+	</tr>
+<tr>
+<td><i>y1</i></td>
+		<td>第一个控制点的 y 坐标。</td>
+	</tr>
+<tr>
+<td><i>x2</i></td>
+		<td>第二个控制点的 x 坐标。</td>
+	</tr>
+<tr>
+<td><i>y2</i></td>
+		<td>第二个控制点的 y 坐标。</td>
+	</tr>
+<tr>
+<td><i>r</i></td>
+		<td>弧的半径。</td>
+	</tr>
+</table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>在画布上创建介于两个切线之间的弧：</p>
+<canvas id="canvas-arcto-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">YourbrowserdoesnotsupporttheHTML5canvastag.</canvas>
+<script>
+(function(){
+	var c=G("canvas-arcto-myCanvas");
+	var ctx=c.getContext("2d");
+	ctx.beginPath();
+	ctx.moveTo(20,20);
+	ctx.lineTo(100,20);
+	ctx.arcTo(150,20,150,70,50);
+	ctx.lineTo(150,120);
+	ctx.stroke();
+
+	ctx.strokeStyle="blue";
+	ctx.setLineDash([5,3])
+	ctx.beginPath();
+	ctx.moveTo(100,20);
+	ctx.lineTo(100,70)
+	ctx.lineTo(150,70)
+	ctx.stroke();
+	ctx.beginPath();
+	ctx.arc(100,70,50,0,2*Math.PI);
+	ctx.stroke();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>var ctx=c.getContext("2d");<br>
+	ctx.beginPath(); <br>
+	ctx.moveTo(20,20);
+	// Create a starting point<br>
+	ctx.lineTo(100,20);          //
+	Create a horizontal line<br>
+	ctx.arcTo(150,20,150,70,50); // Create an arc<br>
+	ctx.lineTo(150,120);         //
+	Continue with vertical line<br>
+	ctx.stroke();
+	// Draw it</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_arcto" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-ellipse" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>ellipse() 添加一个椭圆路径，椭圆的圆心在（x,y）位置，半径分别是radiusX 和 radiusY ，按照anticlockwise （默认顺时针）指定的方向，从 startAngle  开始绘制，到 endAngle 结束。</p>
+<p><strong>提示：</strong>如需通过 ellipse() 来创建椭圆，请把起始角设置为 0，结束角设置为 2*Math.PI。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-stroke.html">stroke()</a> 或 <a href="canvas-fill.html">fill()</a> 方法在画布上绘制实际的弧。</p>
+<br><table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.ellipse(<i>x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr><th style="width:15%">参数</th>
+    <th>描述</th>
+</tr>
+<tr><td><i>x</i></td>
+		<td>椭圆圆心的 x 轴坐标。</td>
+	</tr>
+<tr><td><i>y</i></td>
+		<td>椭圆圆心的 y 轴坐标。</td>
+	</tr>
+<tr><td><i>radiusX</i></td>
+		<td>椭圆长轴的半径。</td>
+	</tr>
+<tr><td><i>radiusY</i></td>
+		<td>椭圆短轴的半径。</td>
+	</tr>
+<tr><td><i>rotation</i></td>
+		<td>椭圆旋转角度，以弧度为单位。</td>
+	</tr>
+<tr><td><i>startAngle</i></td>
+		<td>起始角，以弧度计（弧的圆形的三点钟位置是 0 度）。</td>
+	</tr>
+<tr><td><i>endAngle</i></td>
+		<td>结束角，以弧度计。</td>
+	</tr>
+<tr><td><i>anticlockwise</i></td>
+		<td>可选。规定应该逆时针还是顺时针绘图。False = 顺时针(默认)，true = 逆时针。</td>
+	</tr>
+</table>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>创建一个椭圆形：</p>
+<canvas id="canvas-ellipse-myCanvas" width="200" height="200" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-ellipse-myCanvas");
+var ctx=c.getContext("2d");
+ctx.setLineDash([]);
+ctx.beginPath();
+ctx.ellipse(100, 100, 50, 75, 45 * Math.PI/180, 0, 2 * Math.PI);
+ctx.stroke();
+ctx.setLineDash([5]);
+ctx.moveTo(0,200);
+ctx.lineTo(200,0);
+ctx.stroke();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br>
+	ctx.setLineDash([]);<br>
+	ctx.beginPath();<br>
+	ctx.ellipse(100, 100, 50, 75, 45 * Math.PI/180, 0, 2 * Math.PI); //倾斜45°角<br>
+	ctx.stroke();<br>
+	ctx.setLineDash([5]);<br>
+	ctx.moveTo(0,200);<br>
+	ctx.lineTo(200,0);<br>
+	ctx.stroke();</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_arc" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-ispointinpath" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>如果指定的点位于当前路径中，isPointInPath() 方法返回 true，否则返回 false。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.isPointInPath(<i>x,y</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>x</i></td>
+		<td>要测试的 x 坐标。</td>
+	</tr>
+<tr>
+<td><i>y</i></td>
+		<td>要测试的 y 坐标。</td>
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>如果点 20,50 位于当前路径中，则绘制一个矩形：</p>
+<canvas id="canvas-ispointinpath-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-ispointinpath-myCanvas");
+var ctx=c.getContext("2d");
+ctx.rect(20,20,150,100);
+if (ctx.isPointInPath(20,50))
+	ctx.stroke();
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.rect(20,20,150,100);<br>
+if (ctx.isPointInPath(20,50))<br>
+   {<br>
+   ctx.stroke();<br>
+   };
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_ispointinpath" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+
+<div id="canvas-scale" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>scale() 方法缩放当前绘图至更大或更小。</p>
+<p><b>注意：</b>如果您对绘图进行缩放，所有之后的绘图也会被缩放。定位也会被缩放。如果您 scale(2,2)，那么绘图将定位于距离画布左上角两倍远的位置。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.scale(<em>scalewidth,scaleheight</em>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><i>scalewidth</i></td>
+		<td>缩放当前绘图的宽度（1=100%，0.5=50%，2=200%，依次类推）。</td>
+
+	</tr>
+<tr>
+<td><i>scaleheight</i></td>
+		<td>缩放当前绘图的高度（1=100%，0.5=50%，2=200%，依次类推）。</td>
+
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制一个矩形；放大到 200%，再次绘制矩形；放大到 200%，再次绘制矩形；放大到 200%，再次绘制矩形：</p>
+<canvas id="canvas-scale-myCanvas2" width="300" height="170" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-scale-myCanvas2");
+var ctx=c.getContext("2d");
+ctx.strokeRect(5,5,25,15);
+ctx.scale(2,2);
+ctx.strokeRect(5,5,25,15);
+ctx.scale(2,2);
+ctx.strokeRect(5,5,25,15);
+ctx.scale(2,2);
+ctx.strokeRect(5,5,25,15);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.strokeRect(5,5,25,15);<br>
+ctx.scale(2,2);<br>
+ctx.strokeRect(5,5,25,15);<br>
+ctx.scale(2,2);<br>
+ctx.strokeRect(5,5,25,15);<br>
+ctx.scale(2,2);<br>
+ctx.strokeRect(5,5,25,15);</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_scale2" target="_blank">尝试一下 »</a>
+</div>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制矩形，放大到 200%，然后再次绘制矩形：</p>
+<canvas id="canvas-scale-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-scale-myCanvas");
+	var ctx=c.getContext("2d");
+	ctx.strokeRect(5,5,25,15);
+	ctx.scale(2,2);
+	ctx.strokeRect(5,5,25,15);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.strokeRect(5,5,25,15);<br>
+ctx.scale(2,2);<br>
+ctx.strokeRect(5,5,25,15);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_scale" target="_blank">尝试一下 »</a>
+</div>
+
+
+</div>
+<div id="canvas-rotate" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>rotate() 方法旋转当前的绘图。旋转圆心为(0,0)点。</p>
+<p><b>注意：</b>旋转只会影响到旋转完成后的绘图。<br></p>
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.rotate(<em>angle</em>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><i>angle</i></td>
+		<td>旋转角度，以弧度计。<br><br>如需将角度转换为弧度，请使用 <i>degrees</i>*Math.PI/180 公式进行计算。<br>
+实例：如需旋转 5 度，可规定下面的公式：5*Math.PI/180。</td>
+
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>将矩形旋转 20 度：</p>
+<canvas id="canvas-rotate-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-rotate-myCanvas");
+	var ctx=c.getContext("2d");
+	ctx.rotate(20*Math.PI/180);
+	ctx.fillRect(50,20,100,50);
+	})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.rotate(20*Math.PI/180);<br>
+ctx.fillRect(50,20,100,50);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_rotate" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-translate" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>translate() 方法重新映射画布上的 (0,0) 位置。</p>
+<p><b>注意：</b>当您在 translate() 之后调用诸如 fillRect() 之类的方法时，值会添加到 x 和 y 坐标值上。</p>
+<img src="http://www.runoob.com/wp-content/uploads/2013/11/img_translate.gif" alt="Illustration of the translate() method"><br><br>
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.translate(<em>x,y</em>);</td>
+  </tr>
+</table>
+<h2>参数值</h2>
+<p><b>注意：</b> You can specify one or both parameters.</p>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>x</i></td>
+		<td>添加到水平坐标（x）上的值。</td>
+
+	</tr>
+<tr>
+<td><i>y</i></td>
+		<td>添加到垂直坐标（y）上的值。</td>
+
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>在位置 (10,10) 处绘制一个矩形，将新的 (0,0) 位置设置为 (70,70)。再次绘制新的矩形（请注意现在矩形从位置 (80,80) 开始绘制）：</p>
+<canvas id="canvas-translate-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-translate-myCanvas");
+	var ctx=c.getContext("2d");
+	ctx.fillRect(10,10,100,50);
+	ctx.translate(70,70);
+	ctx.fillRect(10,10,100,50);
+	})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.fillRect(10,10,100,50);<br>
+ctx.translate(70,70);<br>
+ctx.fillRect(10,10,100,50);<br>
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_rotate" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-transform" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>画布上的每个对象都拥有一个当前的变换矩阵。</p>
+<p>transform() 方法替换当前的变换矩阵。<br>它以下面描述的矩阵来操作当前的变换矩阵：
+<table style="left: 260px; position: relative;">
+<tr><td rowspan='3'>[</td>
+<td>a</td>
+<td>c</td>
+<td>e</td><td rowspan='3'>]</td>
+</tr>
+<tr>
+<td>b</td>
+<td>d</td>
+<td>f</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</table></p>
+<p>换句话说，transform() 允许您缩放、旋转、移动并倾斜当前的环境。</p>
+<p><b>注意：</b>该变换只会影响 transform() 方法调用之后的绘图。</p>
+<p><b>注意：</b>transform() 方法的行为相对于由 rotate()、scale()、translate() 或 transform() 完成的其他变换。
+例如：如果您已经将绘图设置为放到两倍，则 transform() 方法会把绘图放大两倍，您的绘图最终将放大四倍。</p>
+<p><strong>提示：</strong>请查看 <a href="canvas-settransform.html">setTransform()</a> 方法，它不会相对于其他变换来发生行为。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.transform(<em>a,b,c,d,e,f</em>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr><th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr><td><i>a</i></td>
+		<td>水平缩放。</td>
+	</tr>
+<tr><td><i>b</i></td>
+		<td>水平倾斜。</td>
+	</tr>
+<tr><td><i>c</i></td>
+		<td>垂直倾斜。</td>
+	</tr>
+<tr><td><i>d</i></td>
+		<td>垂直缩放。</td>
+	</tr>
+<tr><td><i>e</i></td>
+		<td>水平移动。</td>
+	</tr>
+<tr><td><i>f</i></td>
+		<td>垂直移动。</td>
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制一个矩形，通过 transform() 添加一个新的变换矩阵，再次绘制矩形，添加一个新的变换矩阵，然后再次绘制矩形。请注意，每当您调用 transform() 时，它都会在前一个变换矩阵上构建：</p>
+<canvas id="canvas-transform-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-transform-myCanvas");
+var ctx=c.getContext("2d");
+
+ctx.fillStyle="yellow";
+ctx.fillRect(0,0,250,100)
+
+ctx.transform(1,0.5,-0.5,1,30,10);
+ctx.fillStyle="red";
+ctx.fillRect(0,0,250,100);
+
+ctx.transform(1,0.5,-0.5,1,30,10);
+ctx.fillStyle="blue";
+ctx.fillRect(0,0,250,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br><br>
+ctx.fillStyle="yellow";<br>
+ctx.fillRect(0,0,250,100)<br><br>
+ctx.transform(1,0.5,-0.5,1,30,10);<br>
+ctx.fillStyle="red";<br>
+ctx.fillRect(0,0,250,100);<br><br>
+ctx.transform(1,0.5,-0.5,1,30,10);<br>
+ctx.fillStyle="blue";<br>
+ctx.fillRect(0,0,250,100);</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_transform" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-settransform" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>画布上的每个对象都拥有一个当前的变换矩阵。</p>
+<p>setTransform() 方法把当前的变换矩阵重置为单位矩阵，然后以相同的参数运行 <a href="canvas-transform.html">transform()</a>。</p>
+<p>换句话说，setTransform() 允许您缩放、旋转、移动并倾斜当前的环境。</p>
+<p><b>注意：</b>该变换只会影响 setTransform() 方法调用之后的绘图。</p>
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.setTransform(<em>a,b,c,d,e,f</em>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr><th style="width:13%">参数</th>
+    <th style="width:58%">描述</th>
+	</tr>
+<tr><td><i>a</i></td>
+		<td>水平缩放绘图。</td>
+	</tr>
+<tr><td><i>b</i></td>
+		<td>水平倾斜绘图。</td>
+	</tr>
+<tr><td><i>c</i></td>
+		<td>垂直倾斜绘图。</td>
+	</tr>
+<tr><td><i>d</i></td>
+		<td>垂直缩放绘图。</td>
+	</tr>
+<tr><td><i>e</i></td>
+		<td>水平移动绘图。</td>
+	</tr>
+<tr><td><i>f</i></td>
+		<td>垂直移动绘图。</td>
+	</tr>
+</table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>绘制一个矩形，通过 setTransform() 重置并创建新的变换矩阵，再次绘制矩形，重置并创建新的变换矩阵，然后再次绘制矩形。请注意，每当您调用 setTransform() 时，它都会重置前一个变换矩阵然后构建新的矩阵，因此在下面的例子中，不会显示红色矩形，因为它在蓝色矩形下面：</p>
+<canvas id="canvas-settransform-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-settransform-myCanvas");
+var ctx=c.getContext("2d");
+
+ctx.fillStyle="yellow";
+ctx.fillRect(0,0,250,100)
+
+ctx.setTransform(1,0.5,-0.5,1,30,10);
+ctx.fillStyle="red";
+ctx.fillRect(0,0,250,100);
+
+ctx.setTransform(1,0.5,-0.5,1,30,10);
+ctx.fillStyle="blue";
+ctx.fillRect(0,0,250,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br><br>
+ctx.fillStyle="yellow";<br>
+ctx.fillRect(0,0,250,100)<br><br>
+ctx.setTransform(1,0.5,-0.5,1,30,10);<br>
+ctx.fillStyle="red";<br>
+ctx.fillRect(0,0,250,100);<br><br>
+ctx.setTransform(1,0.5,-0.5,1,30,10);<br>
+ctx.fillStyle="blue";<br>
+ctx.fillRect(0,0,250,100);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_setTransform" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+
+<div id="canvas-font" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>font 属性设置或返回画布上文本内容的当前字体属性。</p>
+<p>font 属性使用的语法与 <a href="http://www.runoob.com/cssref/pr-font-font.html">CSS font 属性</a> 相同。</p>
+
+<table class="tecspec">
+<tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">10px sans-serif</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.font="italic small-caps bold 12px arial";</td>
+  </tr>
+</table>
+<h2>属性值</h2>
+<table class="reference">
+<tr>
+<th style="width:23%">值</th>
+    <th style="width:65%">描述</th>
+
+	</tr>
+<tr>
+<td><i>font-style</i></td>
+		<td>规定字体样式。可能的值：<ul>
+<li>normal</li>
+			<li>italic</li>
+			<li>oblique</li>
+		</ul>
+</td>
+
+	</tr>
+<tr>
+<td><i>font-variant</i></td>
+		<td>规定字体变体。可能的值：<ul>
+<li>normal</li>
+			<li>small-caps</li>
+		</ul>
+</td>
+
+	</tr>
+<tr>
+<td><i>font-weight</i></td>
+		<td>规定字体的粗细。可能的值：<ul>
+<li>normal</li>
+			<li>bold</li>
+			<li>bolder</li>
+			<li>lighter</li>
+			<li>100</li>
+			<li>200</li>
+			<li>300</li>
+			<li>400</li>
+			<li>500</li>
+			<li>600</li>
+			<li>700</li>
+			<li>800</li>
+			<li>900</li>
+		</ul>
+</td>
+
+	</tr>
+<tr>
+<td><i>font-size/line-height</i></td>
+		<td>规定字号和行高，以像素计。</td>
+
+	</tr>
+<tr>
+<td><i>font-family</i></td>
+		<td>规定字体系列。</td>
+
+	</tr>
+<tr>
+<td>caption</td>
+		<td>使用标题控件的字体（比如按钮、下拉列表等）。</td>
+
+	</tr>
+<tr>
+<td>icon</td>
+		<td>使用用于标记图标的字体。</td>
+
+	</tr>
+<tr>
+<td>menu</td>
+		<td>使用用于菜单中的字体（下拉列表和菜单列表）。</td>
+
+	</tr>
+<tr>
+<td>message-box</td>
+		<td>使用用于对话框中的字体。</td>
+
+	</tr>
+<tr>
+<td>small-caption</td>
+		<td>使用用于标记小型控件的字体。</td>
+
+	</tr>
+<tr>
+<td>status-bar</td>
+		<td>使用用于窗口状态栏中的字体。</td>
+
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>在画布上写一段 30 像素的文本，使用的字体是 "Arial"：</p>
+<canvas id="canvas-font-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-font-myCanvas");
+var ctx=c.getContext("2d");
+ctx.font="30px Arial";
+ctx.fillText("Hello World",10,50);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br>
+	ctx.font="30px Arial";<br>
+	ctx.fillText("Hello World",10,50);</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_font" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-textalign" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>textAlign 属性根据锚点，设置或返回文本内容的当前对齐方式。</p>
+<p>通常，文本会从指定位置<b>开始</b>，不过，如果您设置为 textAlign="right" 并将文本放置到位置 150，那么会在<strong style="font-weight: 400">位置 150</strong> <b>结束</b>。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-filltext.html">fillText()</a> 或
+<a href="canvas-stroketext.html">strokeText()</a> 方法在画布上实际地绘制并定位文本。</p>
+
+<table class="tecspec">
+<tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">start</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.textAlign="center|end|left|right|start";</td>
+  </tr>
+</table>
+<h2>属性值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">值</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td>start</td>
+		<td>默认。文本在指定的位置开始。</td>
+
+	</tr>
+<tr>
+<td>end</td>
+		<td>文本在指定的位置结束。</td>
+
+	</tr>
+<tr>
+<td>center</td>
+		<td>文本的中心被放置在指定的位置。</td>
+
+	</tr>
+<tr>
+<td>left</td>
+		<td>文本在指定的位置开始。</td>
+
+	</tr>
+<tr>
+<td>right</td>
+		<td>文本在指定的位置结束。</td>
+
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>在位置 150 创建一条红线。位置 150 是下面实例中定义的所有文本的锚点。请研究每种 textAlign 属性值的效果：</p>
+<canvas id="canvas-textalign-myCanvas" width="300" height="200" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-textalign-myCanvas");
+var ctx=c.getContext("2d");
+// Create a red line in position 150
+ctx.strokeStyle="red";
+ctx.moveTo(150,20);
+ctx.lineTo(150,170);
+ctx.stroke();
+
+ctx.font="15px Arial";
+
+// Show the different textAlign values
+ctx.textAlign="start";
+ctx.fillText("textAlign=start",150,60);
+ctx.textAlign="end";
+ctx.fillText("textAlign=end",150,80);
+ctx.textAlign="left";
+ctx.fillText("textAlign=left",150,100);
+ctx.textAlign="center";
+ctx.fillText("textAlign=center",150,120);
+ctx.textAlign="right";
+ctx.fillText("textAlign=right",150,140);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br><br>
+	// Create a red line in position 150<br>
+	ctx.strokeStyle="red";<br>
+	ctx.moveTo(150,20);<br>
+	ctx.lineTo(150,170);<br>
+	ctx.stroke();<br><br>
+	ctx.font="15px Arial"; <br><br>
+	// Show the different textAlign values<br>
+	ctx.textAlign="start"; <br>
+	ctx.fillText("textAlign=start",150,60); <br>
+	ctx.textAlign="end"; <br>
+	ctx.fillText("textAlign=end",150,80); <br>
+	ctx.textAlign="left"; <br>
+	ctx.fillText("textAlign=left",150,100);<br>
+	ctx.textAlign="center"; <br>
+	ctx.fillText("textAlign=center",150,120); <br>
+	ctx.textAlign="right"; <br>
+	ctx.fillText("textAlign=right",150,140);</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_textalign" target="_blank">尝试一下 »</a>
+</div>
+
+
+</div>
+<div id="canvas-textbaseline" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>textBaseline 属性设置或返回在绘制文本时的当前文本基线。</p>
+
+<p>下面的图示演示了 textBaseline 属性支持的各种基线：</p>
+<img src="http://www.runoob.com/wp-content/uploads/2013/11/img_textbaseline.gif" alt="textBaseline illustration"><p><b>注意：</b><a href="canvas-filltext.html">fillText()</a> 和
+<a href="canvas-stroketext.html">strokeText()</a> 方法在画布上定位文本时，将使用指定的 textBaseline 值。</p>
+
+<table class="tecspec">
+<tr>
+<th style="width:25%">默认值：</th>
+    <td>alphabetic</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.textBaseline="alphabetic|top|hanging|middle|ideographic|bottom";</td>
+  </tr>
+</table>
+<h2>属性值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">值</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td>alphabetic</td>
+		<td>默认。文本基线是普通的字母基线。</td>
+
+	</tr>
+<tr>
+<td>top</td>
+		<td>文本基线是 em 方框的顶端。</td>
+
+	</tr>
+<tr>
+<td>hanging</td>
+		<td>文本基线是悬挂基线。</td>
+
+	</tr>
+<tr>
+<td>middle</td>
+		<td>文本基线是 em 方框的正中。</td>
+
+	</tr>
+<tr>
+<td>ideographic</td>
+		<td>文本基线是表意基线。</td>
+
+	</tr>
+<tr>
+<td>bottom</td>
+		<td>文本基线是 em 方框的底端。</td>
+
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>在 y=100 处绘制一条红线，然后在 y=100 处用不同的 textBaseline 值放置每个单词：</p>
+<canvas id="canvas-textbaseline-myCanvas" width="400" height="200" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-textbaseline-myCanvas");
+var ctx=c.getContext("2d");
+//Draw a red line at y=100
+ctx.strokeStyle="red";
+ctx.moveTo(5,100);
+ctx.lineTo(395,100);
+ctx.stroke();
+ctx.font="20px Arial"
+//Place each word at y=100 with different textBaseline values
+ctx.textBaseline="top";
+ctx.fillText("Top",5,100);
+ctx.textBaseline="bottom";
+ctx.fillText("Bottom",50,100);
+ctx.textBaseline="middle";
+ctx.fillText("Middle",120,100);
+ctx.textBaseline="alphabetic";
+ctx.fillText("Alphabetic",190,100);
+ctx.textBaseline="hanging";
+ctx.fillText("Hanging",290,100);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br><br>
+	//Draw a red line at y=100<br>
+	ctx.strokeStyle="red";<br>
+	ctx.moveTo(5,100);<br>
+	ctx.lineTo(395,100);<br>
+	ctx.stroke();<br><br>
+	ctx.font="20px Arial"<br><br>
+	//Place each word at y=100 with different textBaseline values<br>
+	ctx.textBaseline="top"; <br>
+	ctx.fillText("Top",5,100); <br>
+	ctx.textBaseline="bottom"; <br>
+	ctx.fillText("Bottom",50,100); <br>
+	ctx.textBaseline="middle"; <br>
+	ctx.fillText("Middle",120,100); <br>
+	ctx.textBaseline="alphabetic"; <br>
+	ctx.fillText("Alphabetic",190,100); <br>
+	ctx.textBaseline="hanging"; <br>
+	ctx.fillText("Hanging",290,100);</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_textbaseline" target="_blank">尝试一下 »</a>
+</div>
+
+
+</div>
+<div id="canvas-filltext" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>fillText() 方法在画布上绘制填色的文本。文本的默认颜色是黑色。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-font.html">font</a> 属性来定义字体和字号，并使用 <a href="canvas-fillstyle.html">fillStyle</a>
+属性以另一种颜色/渐变来渲染文本。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.fillText(<i>text,x,y,maxWidth</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><i>text</i></td>
+		<td>规定在画布上输出的文本。</td>
+
+	</tr>
+<tr>
+<td><i>x</i></td>
+		<td>开始绘制文本的 x 坐标位置（相对于画布）。</td>
+
+	</tr>
+<tr>
+<td><i>y</i></td>
+		<td>开始绘制文本的 y 坐标位置（相对于画布）。</td>
+
+	</tr>
+<tr>
+<td><i>maxWidth</i></td>
+		<td>可选。允许的最大文本宽度，以像素计。</td>
+
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>使用 fillText()，在画布上写文本 "Hello world!" 和 "Big smile!"：</p>
+<canvas id="canvas-filltext-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-filltext-myCanvas");
+var ctx=c.getContext("2d");
+ctx.font="20px Georgia";
+ctx.fillText("Hello World!",10,50);
+ctx.font="30px Verdana";
+// Create gradient
+var gradient=ctx.createLinearGradient(0,0,c.width,0);
+gradient.addColorStop("0","magenta");
+gradient.addColorStop("0.5","blue");
+gradient.addColorStop("1.0","red");
+// Fill with gradient
+ctx.fillStyle=gradient;
+ctx.fillText("Big smile!",10,90);
+	})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br><br>
+ctx.font="20px Georgia";<br>
+ctx.fillText("Hello World!",10,50);<br><br>
+ctx.font="30px Verdana";<br>
+// Create gradient<br>
+var gradient=ctx.createLinearGradient(0,0,c.width,0);<br>
+gradient.addColorStop("0","magenta");<br>
+gradient.addColorStop("0.5","blue");<br>
+gradient.addColorStop("1.0","red");<br>
+// Fill with gradient<br>
+ctx.fillStyle=gradient;<br>
+ctx.fillText("Big smile!",10,90);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_filltext" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-stroketext" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>strokeText() 方法在画布上绘制文本（无填充色）。文本的默认颜色是黑色。</p>
+<p><strong>提示：</strong>请使用 <a href="canvas-font.html">font</a> 属性来定义字体和字号，并使用 <a href="canvas-strokestyle.html">strokeStyle</a>
+属性以另一种颜色/渐变来渲染文本。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.strokeText(<i>text,x,y,maxWidth</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><i>text</i></td>
+		<td>规定在画布上输出的文本。</td>
+
+	</tr>
+<tr>
+<td><i>x</i></td>
+		<td>开始绘制文本的 x 坐标位置（相对于画布）。</td>
+
+	</tr>
+<tr>
+<td><i>y</i></td>
+		<td>开始绘制文本的 y 坐标位置（相对于画布）。</td>
+
+	</tr>
+<tr>
+<td><i>maxWidth</i></td>
+		<td>可选。允许的最大文本宽度，以像素计。</td>
+
+	</tr>
+</table>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>使用 strokeText()，在画布上写文本 "Hello world!" 和 "Big smile!"（带渐变）：</p>
+<canvas id="canvas-stroketext-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-stroketext-myCanvas");
+var ctx=c.getContext("2d");
+ctx.font="20px Georgia";
+ctx.strokeText("Hello World!",10,50);
+ctx.font="30px Verdana";
+// Create gradient
+var gradient=ctx.createLinearGradient(0,0,c.width,0);
+gradient.addColorStop("0","magenta");
+gradient.addColorStop("0.5","blue");
+gradient.addColorStop("1.0","red");
+// Fill with gradient
+ctx.strokeStyle=gradient;
+ctx.strokeText("Big smile!",10,90);
+})()
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br><br>
+ctx.font="20px Georgia";<br>
+ctx.strokeText("Hello World!",10,50);<br><br>
+ctx.font="30px Verdana";<br>
+// Create gradient<br>
+var gradient=ctx.createLinearGradient(0,0,c.width,0);<br>
+gradient.addColorStop("0","magenta");<br>
+gradient.addColorStop("0.5","blue");<br>
+gradient.addColorStop("1.0","red");<br>
+// Fill with gradient<br>
+ctx.strokeStyle=gradient;<br>
+ctx.strokeText("Big smile!",10,90);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_stroketext" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-measuretext" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>measureText()方法返回一个对象，该对象包含以像素计的指定字体宽度。</p>
+<p><strong>提示：</strong>如果您需要在文本向画布输出之前，就了解文本的宽度，那么请使用该方法。</p>
+
+<table class="tecspec"><tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.measureText(<i>text</i>).width;</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><i>text</i></td>
+		<td>要测量的文本。</td>
+
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>在画布上输出文本之前，检查字体的宽度：</p>
+<canvas id="canvas-measuretext-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-measuretext-myCanvas");
+	var ctx=c.getContext("2d");
+	ctx.font="30px Arial";
+	var txt="Hello World"
+	ctx.fillText("width:" + ctx.measureText(txt).width,10,50)
+	ctx.fillText(txt,10,100);
+	})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>var
+	ctx=c.getContext("2d");<br>ctx.font="30px Arial";<br>
+	var txt="Hello World"<br>ctx.fillText("width:" + ctx.measureText(txt).width,10,50)<br>
+	ctx.fillText(txt,10,100);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_measuretext" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+
+<div id="canvas-drawimage" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>drawImage() 方法在画布上绘制图像、画布或视频。</p>
+<p>drawImage() 方法也能够绘制图像的某些部分，以及/或者增加或减少图像的尺寸。</p>
+
+<h2>JavaScript 语法</h2>
+<p>在画布上定位图像：</p>
+<table class="tecspec"><tr>
+<th style="width:150px">JavaScript 语法：</th>
+    <td>
+<i>context</i>.drawImage(<i>img,x,y</i>);</td>
+  </tr></table>
+<p>在画布上定位图像，并规定图像的宽度和高度：</p>
+<table class="tecspec"><tr>
+<th style="width:150px">JavaScript 语法：</th>
+    <td>
+<i>context</i>.drawImage(<i>img,x,y,width,height</i>);</td>
+  </tr></table>
+<p>剪切图像，并在画布上定位被剪切的部分：</p>
+<table class="tecspec"><tr>
+<th style="width:150px">JavaScript 语法：</th>
+    <td>
+<i>context</i>.drawImage(<i>img,sx,sy,swidth,sheight,x,y,width,height</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+
+   </tr>
+<tr>
+<td><i>img</i></td>
+      <td>规定要使用的图像、画布或视频。</td>
+      <td> </td>
+   </tr>
+<tr>
+<td><i>sx</i></td>
+      <td>可选。开始剪切的 x 坐标位置。</td>
+
+   </tr>
+<tr>
+<td><i>sy</i></td>
+      <td>可选。开始剪切的 y 坐标位置。</td>
+   </tr>
+<tr>
+<td><i>swidth</i></td>
+      <td>可选。被剪切图像的宽度。</td>
+
+   </tr>
+<tr>
+<td><i>sheight</i></td>
+      <td>可选。被剪切图像的高度。</td>
+
+   </tr>
+<tr>
+<td><i>x</i></td>
+      <td>在画布上放置图像的 x 坐标位置。</td>
+
+   </tr>
+<tr>
+<td><i>y</i></td>
+      <td>在画布上放置图像的 y 坐标位置。</td>
+
+   </tr>
+<tr>
+<td><i>width</i></td>
+      <td>可选。要使用的图像的宽度（伸展或缩小图像）。</td>
+
+   </tr>
+<tr>
+<td><i>height</i></td>
+      <td>可选。要使用的图像的高度（伸展或缩小图像）。</td>
+
+   </tr>
+</table>
+
+<div class="example">
+<h2 class="example">要使用的图片：</h2>
+<p><img id="scream" src="http://www.runoob.com/wp-content/uploads/2013/11/img_the_scream.jpg" alt="The Scream"></p>
+<h2 class="example">实例</h2>
+<p>向画布上面绘制图片：</p>
+<canvas id="canvas-drawimage-myCanvas" width="250" height="300" style="border:1px solid #d3d3d3;background:#ffffff;">
+您的浏览器不支持 HTML5 canvas 标签。</canvas>
+<script>
+(function(){
+var c=G("canvas-drawimage-myCanvas");
+   var ctx=c.getContext("2d");
+   var img=G("scream");
+   img.onload = function(){ ctx.drawImage(img,0,0); }
+   })();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+var img=document.getElementById("scream");<br>
+img.onload = function(){<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ctx.drawImage(img,10,10);<br>
+}</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_drawimage" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+
+<div id="canvas-width" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>width 属性返回 ImageData 对象的宽度，以像素计。</p>
+<p><strong>提示：</strong>请参阅 <a href="canvas-createimagedata.html">createImageData()</a>、
+<a href="canvas-getimagedata.html">getImageData()</a> 和
+<a href="canvas-putimagedata.html">putImageData()</a> 方法，以获得更多关于 ImageData 对象的知识。</p>
+<hr>
+<h2>JavaScript 语法</h2>
+<table class="tecspec"><tr>
+<th style="width:25%">JavaScript 语法：</th>
+    <td>
+<i>imgData</i>.width;</td>
+  </tr></table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>输出 ImageData 对象的宽度：</p>
+<div class="example_code">
+	alert("Width of imgData is: " + imgData.width);</div>
+<br><a class="tryitbtn" target="_blank" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_imagedata_width">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-height" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>height 属性返回 ImageData 对象的高度，以像素计。</p>
+<p><strong>提示：</strong>请参阅 <a href="canvas-createimagedata.html">createImageData()</a>、
+<a href="canvas-getimagedata.html">getImageData()</a> 和
+<a href="canvas-putimagedata.html">putImageData()</a> 方法，以获得更多关于 ImageData 对象的知识。</p>
+<hr>
+<h2>JavaScript 语法</h2>
+<table class="tecspec"><tr>
+<th style="width:25%">JavaScript 语法：</th>
+    <td>
+<i>imgData</i>.height;</td>
+  </tr></table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>输出 ImageData 对象的高度：</p>
+<div class="example_code">
+	alert("Height of imgData is: " + imgData.height);</div>
+<br><a class="tryitbtn" target="_blank" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_imagedata_height">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-data" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>data 属性返回一个对象，该对象包含指定的 ImageData 对象的图像数据。</p>
+<p>对于 ImageData 对象中的每个像素，都存在着四方面的信息，即 RGBA 值：</p>
+<p>R - 红色（0-255）<br>
+G - 绿色（0-255）<br>
+B - 蓝色（0-255）<br>
+A - alpha 通道（0-255; 0 是透明的，255 是完全可见的）</p>
+<p>color/alpha 信息以数组形式存在，并存储于 ImageData 对象的 data 属性中。</p>
+<p><b>实例：</b></p>
+<p>把 ImageData 对象中的第一个像素变为红色的语法：</p>
+<div class="example_code">
+imgData=ctx.createImageData(100,100);<br><br>
+imgData.data[0]=255;<br>
+imgData.data[1]=0;<br>
+imgData.data[2]=0;<br>
+imgData.data[3]=255;</div>
+
+<p>把 ImageData 对象中的第二个像素变为绿色的语法：</p>
+<div class="example_code">
+imgData=ctx.createImageData(100,100);<br><br>
+imgData.data[4]=0;<br>
+imgData.data[5]=255;<br>
+imgData.data[6]=0;<br>
+imgData.data[7]=255;</div>
+
+<p><strong>提示：</strong>请参阅 <a href="canvas-createimagedata.html">createImageData()</a>、
+<a href="canvas-getimagedata.html">getImageData()</a> 和
+<a href="canvas-putimagedata.html">putImageData()</a> 方法，以获得更多关于 ImageData 对象的知识。</p>
+<hr>
+<h2>JavaScript 语法</h2>
+<table class="tecspec"><tr>
+<th style="width:25%">JavaScript 语法：</th>
+    <td>
+<i>imageData</i>.data;</td>
+  </tr></table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>创建 100*100 像素的 ImageData 对象，其中每个像素均被设置为红色：</p>
+<h2 class="example">画布</h2>
+<canvas id="canvas-data-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-data-myCanvas");
+var ctx=c.getContext("2d");
+var imgData=ctx.createImageData(100,100);
+for (var i=0;i<imgData.width*imgData.height*4;i+=4)
+  {
+  imgData.data[i+0]=255;
+  imgData.data[i+1]=0;
+  imgData.data[i+2]=0;
+  imgData.data[i+3]=255;
+  }
+ctx.putImageData(imgData,10,10);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br>
+	var imgData=ctx.createImageData(100,100);<br>
+	for (var i=0;i&lt;imgData.data.length;i+=4)<br>
+  {<br>
+  imgData.data[i+0]=255;<br>
+  imgData.data[i+1]=0;<br>
+  imgData.data[i+2]=0;<br>
+  imgData.data[i+3]=255;<br>
+  }<br>
+	ctx.putImageData(imgData,10,10);</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_createimagedata" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+
+<div id="canvas-createimagedata" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>createImageData() 方法创建新的空白 ImageData 对象。新对象的默认像素值 transparent black。</p>
+<p>对于 ImageData 对象中的每个像素，都存在着四方面的信息，即 RGBA 值：</p>
+<p>R - 红色（0-255）<br>
+G - 绿色（0-255）<br>
+B - 蓝色（0-255）<br>
+A - alpha 通道（0-255; 0 是透明的，255 是完全可见的）</p>
+<p>因此 ，transparent black 表示 (0,0,0,0)。</p>
+<p>color/alpha 信息以数组形式存在，并且由于数组包含了每个像素的四条信息，所以数组的大小是 ImageData 对象的四倍：width*height*4。（获得数组大小有更简单的办法，就是使用 ImageDataObject.data.length）</p>
+<p>包含 color/alpha 信息的数组存储于 ImageData 对象的 <a href="canvas-imagedata-data.html">data</a> 属性中。</p>
+<p><strong>提示：</strong>在操作完成数组中的 color/alpha 信息之后，您可以使用 <a href="canvas-putimagedata.html">putImageData()</a> 方法将图像数据拷贝回画布上。</p>
+<p><b>实例：</b></p>
+<p>把 ImageData 对象中的第一个像素变为红色的语法：</p>
+<div class="example_code">
+imgData=ctx.createImageData(100,100);<br><br>
+imgData.data[0]=255;<br>
+imgData.data[1]=0;<br>
+imgData.data[2]=0;<br>
+imgData.data[3]=255;</div>
+
+<p>把 ImageData 对象中的第二个像素变为绿色的语法：</p>
+<div class="example_code">
+imgData=ctx.createImageData(100,100);<br><br>
+imgData.data[4]=0;<br>
+imgData.data[5]=255;<br>
+imgData.data[6]=0;<br>
+imgData.data[7]=255;</div>
+
+
+<h2>JavaScript 语法</h2>
+<p>有两个版本的 createImageData() 方法：</p>
+<p>1. 以指定的尺寸（以像素计）创建新的 ImageData 对象：</p>
+<table class="tecspec"><tr>
+<th style="width:150px">JavaScript 语法：</th>
+    <td>var imgData=<i>context</i>.createImageData(<i>width,height</i>);</td>
+  </tr></table>
+<p>2. 创建与指定的另一个 ImageData 对象尺寸相同的新 ImageData 对象（不会复制图像数据）：</p>
+<table class="tecspec"><tr>
+<th style="width:150px">JavaScript 语法：</th>
+    <td>var imgData=<i>context</i>.createImageData(<i>imageData</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>width</i></td>
+		<td>ImageData 对象的宽度，以像素计。</td>
+	</tr>
+<tr>
+<td><i>height</i></td>
+		<td>ImageData 对象的高度，以像素计。</td>
+	</tr>
+<tr>
+<td><i>imageData</i></td>
+		<td>另一个 ImageData 对象。</td>
+	</tr>
+</table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>创建 100*100 像素的 ImageData 对象，其中每个像素都是红色的，然后把它放到画布上：</p>
+<canvas id="canvas-createimagedata-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-createimagedata-myCanvas");
+var ctx=c.getContext("2d");
+var imgData=ctx.createImageData(100,100);
+for (var i=0;i<imgData.width*imgData.height*4;i+=4)
+{
+    imgData.data[i+0]=255;
+    imgData.data[i+1]=0;
+    imgData.data[i+2]=0;
+    imgData.data[i+3]=255;
+}
+ctx.putImageData(imgData,10,10);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br>
+	var imgData=ctx.createImageData(100,100);<br>
+	for (var i=0;i&lt;imgData.data.length;i+=4)<br>
+	{<br>
+	imgData.data[i+0]=255;<br>
+	imgData.data[i+1]=0;<br>
+	imgData.data[i+2]=0;<br>
+	imgData.data[i+3]=255;<br>
+	}<br>
+	ctx.putImageData(imgData,10,10);</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_createimagedata" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-getimagedata" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>getImageData() 方法返回 ImageData 对象，该对象拷贝了画布指定矩形的像素数据。<b>但是不能获取跨域的图像像素数据</b></p>
+<p><b>注意：</b>ImageData 对象不是图像，它规定了画布上一个部分（矩形），并保存了该矩形内每个像素的信息。</p>
+<p>对于 ImageData 对象中的每个像素，都存在着四方面的信息，即 RGBA 值：</p>
+<p>R - 红色（0-255）<br>
+G - 绿色（0-255）<br>
+B - 蓝色（0-255）<br>
+A - alpha 通道（0-255; 0 是透明的，255 是完全可见的）</p>
+<p>color/alpha 信息以数组形式存在，并存储于 ImageData 对象的 <a href="canvas-imagedata-data.html">data</a> 属性中。</p>
+<p><strong>提示：</strong>在操作完成数组中的 color/alpha 信息之后，您可以使用 <a href="canvas-putimagedata.html">putImageData()</a> 方法将图像数据拷贝回画布上。</p>
+<div class="example">
+<p><b>实例：</b></p>
+<p>以下代码可获得被返回的 ImageData 对象中第一个像素的 color/alpha 信息：</p>
+<div class="example_code">
+red=imgData.data[0];<br>
+green=imgData.data[1];<br>
+blue=imgData.data[2];<br>
+alpha=imgData.data[3];<br>
+</div>
+<p><a href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_getimagedata_firstpx" class="tryitbtn" target="_blank">尝试一下</a></p>
+</div>
+<p><strong>提示：</strong>您也可以使用 getImageData() 方法来反转画布上某个图像的每个像素的颜色。</p>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>下面的代码通过 getImageData() 复制画布上指定矩形的像素数据，然后通过 putImageData() 将图像数据放回画布：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br>
+	ctx.fillStyle="red";<br>
+	ctx.fillRect(10,10,50,50);<br><br>
+	function copy()<br>
+	{<br>
+	var imgData=ctx.getImageData(10,10,50,50);<br>
+	ctx.putImageData(imgData,10,70);<br>
+	}</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_getimagedata" target="_blank">尝试一下 »</a>
+</div>
+<p>使用该公式遍历所有的像素，并改变其颜色值：</p>
+
+<div class="example_code">
+red=255-old_red;<br>
+green=255-old_green;<br>
+blue=255-old_blue;<br>
+</div>
+<p>请看下面的"尝试一下"实例！</p>
+
+<hr>
+<h2>JavaScript 语法</h2>
+<table class="tecspec"><tr>
+<th style="width:150px">JavaScript 语法：</th>
+    <td>
+<i>context</i>.getImageData(<i>x,y,width,height</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>x</i></td>
+		<td>开始复制的左上角位置的 x 坐标（以像素计）。</td>
+	</tr>
+<tr>
+<td><i>y</i></td>
+		<td>开始复制的左上角位置的 y 坐标（以像素计）。</td>
+	</tr>
+<tr>
+<td><i>width</i></td>
+		<td>要复制的矩形区域的宽度。</td>
+	</tr>
+<tr>
+<td><i>height</i></td>
+		<td>要复制的矩形区域的高度。</td>
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">要使用的图像：</h2>
+<p><img id="scream234" src="http://www.runoob.com/wp-content/uploads/2013/11/img_the_scream.jpg" alt="The Scream"></p>
+<h2 class="example">实例</h2>
+<p>使用 getImageData() 来反转画布上的图像的每个像素的颜色：<b>getImageData不能获取跨域的图像像素数据,所以下图可能是原图</b></p>
+<canvas id="canvas-getimagedata-myCanvas2" width="240" height="307" style="border:1px solid #d3d3d3;background:#ffffff;">YourbrowserdoesnotsupporttheHTML5canvastag.</canvas>
+<script>
+G("scream234").onload=function(evt)
+{
+    var c=G("canvas-getimagedata-myCanvas2");
+    var ctx=c.getContext("2d");
+    var img=G("scream234");
+    ctx.drawImage(img,10,10);
+    var imgData=ctx.getImageData(0,0,c.width,c.height);//不能获取跨域的图像像素数据
+    for (i=0; i<imgData.width*imgData.height*4;i+=4)
+    {
+        imgData.data[i]=255-imgData.data[i];
+        imgData.data[i+1]=255-imgData.data[i+1];
+        imgData.data[i+2]=255-imgData.data[i+2];
+        imgData.data[i+3]=255;
+    }
+    ctx.putImageData(imgData,0,0);
+};
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+var img=document.getElementById("scream");<br>
+ctx.drawImage(img,0,0);<br>
+var imgData=ctx.getImageData(0,0,c.width,c.height);<br>
+// invert colors<br>
+for (var i=0;i&lt;imgData.data.length;i+=4)<br>
+  {<br>
+  imgData.data[i]=255-imgData.data[i];<br>
+  imgData.data[i+1]=255-imgData.data[i+1];<br>
+  imgData.data[i+2]=255-imgData.data[i+2];<br>
+  imgData.data[i+3]=255;<br>
+  }<br>
+ctx.putImageData(imgData,0,0);</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_getimagedata2" target="_blank">尝试一下 »</a>
+</div>
+
+
+</div>
+<div id="canvas-putimagedata" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>putImageData() 方法将图像数据（从指定的 ImageData 对象）放回画布上。</p>
+<p><strong>提示：</strong>请参阅 <a href="canvas-getimagedata.html">getImageData()</a> 方法，它可复制画布上指定的矩形的像素数据。</p>
+<p><strong>提示：</strong>请参阅 <a href="canvas-createimagedata.html">createImageData()</a> 方法，它可创建新的空白 ImageData 对象。</p>
+<hr>
+<h2>JavaScript 语法</h2>
+<table class="tecspec"><tr>
+<th style="width:150px">JavaScript 语法：</th>
+    <td>
+<i>context</i>.putImageData(<i>imgData,x,y,</i><i>dirtyX,dirtyY,dirtyWidth,dirtyHeight</i>);</td>
+  </tr></table>
+<h2>参数值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">参数</th>
+    <th>描述</th>
+	</tr>
+<tr>
+<td><i>imgData</i></td>
+		<td>规定要放回画布的 ImageData 对象。</td>
+	</tr>
+<tr>
+<td><i>x</i></td>
+		<td>ImageData 对象左上角的 x 坐标，以像素计。</td>
+	</tr>
+<tr>
+<td><i>y</i></td>
+		<td>ImageData 对象左上角的 y 坐标，以像素计。</td>
+	</tr>
+<tr>
+<td><i>dirtyX</i></td>
+		<td>可选。水平值（x），以像素计，在画布上放置图像的位置。</td>
+	</tr>
+<tr>
+<td><i>dirtyY</i></td>
+		<td>可选。垂直值（y），以像素计，在画布上放置图像的位置。</td>
+	</tr>
+<tr>
+<td><i>dirtyWidth</i></td>
+		<td>可选。在画布上绘制图像所使用的宽度。</td>
+	</tr>
+<tr>
+<td><i>dirtyHeight</i></td>
+		<td>可选。在画布上绘制图像所使用的高度。</td>
+	</tr>
+</table>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>下面的代码通过 getImageData() 复制画布上指定矩形的像素数据，然后通过 putImageData() 将图像数据放回画布：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br>
+	ctx.fillStyle="red";<br>
+	ctx.fillRect(10,10,50,50);<br><br>
+	function copy()<br>
+	{<br>
+	var imgData=ctx.getImageData(10,10,50,50);<br>
+	ctx.putImageData(imgData,10,70);<br>
+	}</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_getimagedata" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+
+<div id="canvas-globalalpha" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>globalAlpha 属性设置或返回绘图的当前透明值（alpha 或 transparency）。</p>
+<p>globalAlpha 属性值必须是介于 0.0（完全透明） 与 1.0（不透明） 之间的数字。</p>
+<table class="tecspec">
+<tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">1.0</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.globalAlpha=<i>number</i>;</td>
+  </tr>
+</table>
+<h2>属性值</h2>
+<table class="reference">
+<tr>
+<th style="width:15%">值</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td><em>number</em></td>
+		<td>透明值。必须介于 0.0（完全透明） 与 1.0（不透明） 之间。</td>
+
+	</tr>
+</table>
+
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>首先，绘制一个红色的矩形，然后将透明度 (globalAlpha) 设置为 0.5，然后再绘制一个蓝色和一个绿色的矩形：</p>
+<canvas id="canvas-globalalpha-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+
+<script>
+(function(){
+var c=G("canvas-globalalpha-myCanvas");
+    var ctx=c.getContext("2d");
+    ctx.fillStyle="red";
+    ctx.fillRect(20,20,75,50);
+
+    ctx.globalAlpha=0.2;
+    ctx.fillStyle="blue";
+    ctx.fillRect(50,50,75,50);
+    ctx.fillStyle="green";
+    ctx.fillRect(80,80,75,50);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+var c=document.getElementById("myCanvas");<br>
+var ctx=c.getContext("2d");<br>
+ctx.fillStyle="red";<br>
+ctx.fillRect(20,20,75,50);<br>
+// Turn transparency on<br>
+ctx.globalAlpha=0.2;<br>
+ctx.fillStyle="blue"; <br>
+ctx.fillRect(50,50,75,50); <br>
+ctx.fillStyle="green"; <br>
+ctx.fillRect(80,80,75,50);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_globalalpha" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+<div id="canvas-globalcompositeoperation" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>globalCompositeOperation 属性设置或返回使用何种合成或混合模式，将一个源（新的）图像绘制到目标（已有的）的图像上。</p>
+<p> <em>源图像 = </em>您打算放置到画布上的绘图。</p>
+<p> <em>目标图像 = </em>您已经放置在画布上的绘图。</p>
+
+<table class="tecspec">
+<tr>
+<th style="width:25%">默认值：</th>
+    <td width="75%">source-over</td>
+  </tr>
+<tr>
+<th>JavaScript 语法：</th>
+    <td>
+<i>context</i>.globalCompositeOperation="source-in";</td>
+  </tr>
+</table>
+<h2>属性值</h2>
+<table class="reference">
+<tr>
+<th style="width:18%">值</th>
+    <th>描述</th>
+
+	</tr>
+<tr>
+<td>source-over</td>
+		<td>默认。在<u>目标图像</u>上显示<u>源图像</u>。
+</td>
+
+	</tr>
+<tr>
+<td>source-atop</td>
+		<td>在<u>目标图像</u>顶部显示<u>源图像</u>。<u>源图像</u>位于<u>目标图像</u>之外的部分是不可见的。</td>
+
+	</tr>
+<tr>
+<td>source-in</td>
+		<td>在<u>目标图像</u>中显示<u>源图像</u>。只有<u>目标图像</u>之内的<u>源图像</u>部分会显示，<u>目标图像</u>是透明的。</td>
+
+	</tr>
+<tr>
+<td>source-out</td>
+		<td>在<u>目标图像</u>之外显示<u>源图像</u>。只有<u>目标图像</u>之外的<u>源图像</u>部分会显示，<u>目标图像</u>是透明的。</td>
+
+	</tr>
+<tr>
+<td>destination-over</td>
+		<td>在<u>源图像</u>上显示<u>目标图像</u>。
+</td>
+
+	</tr>
+<tr>
+<td>destination-atop</td>
+		<td>在<u>源图像</u>顶部显示<u>目标图像</u>。<u>目标图像</u>位于<u>源图像</u>之外的部分是不可见的。</td>
+
+	</tr>
+<tr>
+<td>destination-in</td>
+		<td>在<u>源图像</u>中显示<u>目标图像</u>。只有<u>源图像</u>之内的<u>目标图像</u>部分会被显示，<u>源图像</u>是透明的。</td>
+
+	</tr>
+<tr>
+<td>destination-out</td>
+		<td>在<u>源图像</u>之外显示<u>目标图像</u>。只有<u>源图像</u>之外的<u>目标图像</u>部分会被显示，<u>源图像</u>是透明的。</td>
+
+	</tr>
+<tr>
+<td>lighter</td>
+		<td>显示<u>源图像</u> + <u>目标图像</u>。
+</td>
+
+	</tr>
+<tr>
+<td>copy</td>
+		<td>显示<u>源图像</u>。忽略<u>目标图像</u>。</td>
+
+	</tr>
+<tr>
+<td>xor</td>
+		<td>使用异或操作对<u>源图像</u>与<u>目标图像</u>进行组合。
+</td>
+
+	</tr>
+</table>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>所有 globalCompositeOperation 属性值：蓝色矩形是<u>目标图像</u>，红色圆形是<u>源图像</u></p>
+<div style="border:1px solid #d3d3d3;background-color:#ffffff;height:400px;width:570px;padding:10px">
+<style>
+.gcoDIV {
+    float: left;
+    width: 140px;
+}
+</style>
+<script>
+(function(){
+var gco=["source-over","source-atop","source-in","source-out","destination-over","destination-atop","destination-in","destination-out","lighter","copy","xor"];
+for (n=0;n<gco.length;n++)
+{
+	document.write("<div class='gcoDIV' id='canvas-globalcompositeoperation_" + n + "'>" + gco[n] + ":<br></div>");
+	var canvas=document.createElement("canvas");
+	canvas.id="canvas-globalcompositeoperation-"+n;
+	canvas.width=120;
+	canvas.height=100;
+	G("canvas-globalcompositeoperation_" + n).appendChild(canvas);
+	var ctx=canvas.getContext("2d");
+	ctx.rect(10,10,50,50);
+	ctx.fillStyle="blue";
+	ctx.fill();
+	ctx.globalCompositeOperation=gco[n];
+	ctx.beginPath();
+	ctx.arc(50,50,30,0,2*Math.PI);
+	ctx.fillStyle="red";
+	ctx.fill();
+}
+})();
+</script>
+</div>
+<div style="clear:both"></div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_globalcompop_all" target="_blank">尝试一下 »</a>
+</div>
+
+<div class="example">
+<h2 class="example">实例</h2>
+<p>使用不同的 globalCompositeOperation 值绘制矩形。红色矩形是<u>目标图像</u>，蓝色矩形是<u>源图像</u>：</p>
+<div>
+<div style="float:left;width:150px">source-over</div>
+<div style="float:left;width:150px">destination-over</div>
+<div style="clear:both"></div>
+</div>
+<canvas id="canvas-globalcompositeoperation-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function(){
+var c=G("canvas-globalcompositeoperation-myCanvas");
+    var ctx=c.getContext("2d");
+    ctx.fillStyle="red";
+    ctx.fillRect(20,20,75,50);
+    ctx.globalCompositeOperation="source-over";
+    ctx.fillStyle="blue";
+    ctx.fillRect(50,50,75,50);
+    ctx.fillStyle="red";
+    ctx.fillRect(150,20,75,50);
+    ctx.globalCompositeOperation="destination-over";
+    ctx.fillStyle="blue";
+    ctx.fillRect(180,50,75,50);
+	})()
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+	var c=document.getElementById("myCanvas");<br>
+	var ctx=c.getContext("2d");<br><br>
+	ctx.fillStyle="red";<br>
+	ctx.fillRect(20,20,75,50);<br>
+	ctx.globalCompositeOperation="source-over";<br>
+	ctx.fillStyle="blue"; <br>
+	ctx.fillRect(50,50,75,50); <br><br>
+	ctx.fillStyle="red";<br>
+	ctx.fillRect(150,20,75,50);<br>
+	ctx.globalCompositeOperation="destination-over";<br>
+	ctx.fillStyle="blue"; <br>
+	ctx.fillRect(180,50,75,50);
+</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_globalcompop" target="_blank">尝试一下 »</a>
+</div>
+
+</div>
+
+<div id="canvas-save-restore" class="article-detail article-body">
+<h2>定义和用法</h2>
+<p>save 和 restore 方法是用来保存和恢复 canvas 状态的，都没有参数。Canvas 的状态就是当前画面应用的所有样式和变形的一个快照。</p>
+<p>Canvas状态存储在栈中，每当save()方法被调用后，当前的状态就被推送到栈中保存。一个绘画状态包括：</p>
+<ul>
+<li><p>&nbsp;&nbsp;①当前应用的变形（即移动，旋转和缩放，见下）</p></li>
+<li><p>&nbsp;&nbsp;②strokeStyle, fillStyle, globalAlpha, lineWidth, lineCap, lineJoin, miterLimit, shadowOffsetX, shadowOffsetY, shadowBlur, shadowColor, globalCompositeOperation 的值</p></li>
+<li><p>&nbsp;&nbsp;③当前的裁切路径（clipping path）</p></li>
+</ul>
+<p>你可以调用任意多次 save 方法。</p>
+<p>每一次调用 restore 方法，上一个保存的状态就从栈中弹出，所有设定都恢复。</p>
+<div class="example">
+<h2 class="example">实例</h2>
+<p>我们尝试用这个连续矩形的例子来描述 canvas 的状态栈是如何工作的。</p>
+<p>第一步是用默认设置画一个大四方形，然后保存一下状态。改变填充颜色画第二个小一点的蓝色四方形，然后再保存一下状态。再次改变填充颜色绘制更小一点的半透明的白色四方形。</p>
+<p>到目前为止所做的动作和前面章节的都很类似。不过一旦我们调用 restore，状态栈中最后的状态会弹出，并恢复所有设置。如果不是之前用 save 保存了状态，那么我们就需要手动改变设置来回到前一个状态，这个对于两三个属性的时候还是适用的，一旦多了，我们的代码将会猛涨。</p>
+<p>当第二次调用 restore 时，已经恢复到最初的状态，因此最后是再一次绘制出一个黑色的四方形：</p>
+<canvas id="canvas-save-restore-myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;background:#ffffff;">不支持Canvas标签.</canvas>
+<script>
+(function (){
+	var ctx = G('canvas-save-restore-myCanvas').getContext('2d');
+
+	ctx.fillRect(0,0,150,150);
+	ctx.save();
+
+	ctx.fillStyle = '#09F'
+	ctx.fillRect(15,15,120,120);
+
+	ctx.save();
+	ctx.fillStyle = '#FFF'
+	ctx.globalAlpha = 0.5;
+	ctx.fillRect(30,30,90,90);
+
+	ctx.restore();
+	ctx.fillRect(45,45,60,60);
+
+	ctx.restore();
+	ctx.fillRect(60,60,30,30);
+})();
+</script>
+<p>JavaScript：</p>
+<div class="example_code">
+function draw() {<br/>
+	var ctx = document.getElementById('canvas').getContext('2d');<br/>
+<br/>
+	ctx.fillRect(0,0,150,150);   // 使用默认设置绘制一个矩形<br/>
+	ctx.save();                  // 保存默认状态<br/>
+<br/>
+	ctx.fillStyle = '#09F'       // 在原有配置基础上对颜色做改变<br/>
+	ctx.fillRect(15,15,120,120); // 使用新的设置绘制一个矩形<br/>
+<br/>
+	ctx.save();                  // 保存当前状态<br/>
+	ctx.fillStyle = '#FFF'       // 再次改变颜色配置<br/>
+	ctx.globalAlpha = 0.5;
+	ctx.fillRect(30,30,90,90);   // 使用新的配置绘制一个矩形<br/><br/>
+
+	ctx.restore();               // 重新加载之前的颜色状态<br/>
+	ctx.fillRect(45,45,60,60);   // 使用上一次的配置绘制一个矩形<br/>
+<br/>
+	ctx.restore();               // 加载默认颜色配置<br/>
+	ctx.fillRect(60,60,30,30);   // 使用加载的配置绘制一个矩形<br/>
+}</div>
+<br><a class="tryitbtn" href="http://www.runoob.com/try/try.php?filename=tryhtml5_canvas_save" target="_blank">尝试一下 »</a>
+</div>
+
+
+
+</div>
+
+<div id="canvas-testdraw" class="article-detail article-body">
+<canvas id="canvas-testdraw-cav" width="800" height="400"></canvas>
+编辑:(使用ctx为CanvasRenderingContext2D对象名称,clear()可以清除绘画) <label for="canvas-testdraw-chk1" style="font-size:13px;"><input type="checkbox" id="canvas-testdraw-chk1"/>实时</label>
+<input type="button" id="canvas-testdraw-zx" value="执行"/> <input type="button" id="canvas-testdraw-qc" value="清除"/>
+<textarea id="testarea" style="width:800px;height:400px;border:1px dashed blue;">
+function draw() {
+    roundedRect(ctx,12,12,150,150,15);
+    roundedRect(ctx,19,19,150,150,9);
+    roundedRect(ctx,53,53,49,33,10);
+    roundedRect(ctx,53,119,49,16,6);
+    roundedRect(ctx,135,53,49,33,10);
+    roundedRect(ctx,135,119,25,49,10);
+
+    ctx.beginPath();
+    ctx.arc(37,37,13,Math.PI/7,-Math.PI/7,false);
+    ctx.lineTo(31,37);
+    ctx.fill();
+
+    for(var i=0;i<8;i++){
+      ctx.fillRect(51+i*16,35,4,4);
+    }
+
+    for(i=0;i<6;i++){
+      ctx.fillRect(115,51+i*16,4,4);
+    }
+
+    for(i=0;i<8;i++){
+      ctx.fillRect(51+i*16,99,4,4);
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(83,116);
+    ctx.lineTo(83,102);
+    ctx.bezierCurveTo(83,94,89,88,97,88);
+    ctx.bezierCurveTo(105,88,111,94,111,102);
+    ctx.lineTo(111,116);
+    ctx.lineTo(106.333,111.333);
+    ctx.lineTo(101.666,116);
+    ctx.lineTo(97,111.333);
+    ctx.lineTo(92.333,116);
+    ctx.lineTo(87.666,111.333);
+    ctx.lineTo(83,116);
+    ctx.fill();
+
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.moveTo(91,96);
+    ctx.bezierCurveTo(88,96,87,99,87,101);
+    ctx.bezierCurveTo(87,103,88,106,91,106);
+    ctx.bezierCurveTo(94,106,95,103,95,101);
+    ctx.bezierCurveTo(95,99,94,96,91,96);
+    ctx.moveTo(103,96);
+    ctx.bezierCurveTo(100,96,99,99,99,101);
+    ctx.bezierCurveTo(99,103,100,106,103,106);
+    ctx.bezierCurveTo(106,106,107,103,107,101);
+    ctx.bezierCurveTo(107,99,106,96,103,96);
+    ctx.fill();
+
+    ctx.fillStyle = "black";
+    ctx.beginPath();
+    ctx.arc(101,102,2,0,Math.PI*2,true);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(89,102,2,0,Math.PI*2,true);
+    ctx.fill();
+}
+
+// 封装的一个用于绘制圆角矩形的函数.
+
+function roundedRect(ctx,x,y,width,height,radius){
+  ctx.beginPath();
+  ctx.moveTo(x,y+radius);
+  ctx.lineTo(x,y+height-radius);
+  ctx.quadraticCurveTo(x,y+height,x+radius,y+height);
+  ctx.lineTo(x+width-radius,y+height);
+  ctx.quadraticCurveTo(x+width,y+height,x+width,y+height-radius);
+  ctx.lineTo(x+width,y+radius);
+  ctx.quadraticCurveTo(x+width,y,x+width-radius,y);
+  ctx.lineTo(x+radius,y);
+  ctx.quadraticCurveTo(x,y,x,y+radius);
+  ctx.stroke();
+}
+draw()
+</textarea>
+<script>
+(function(){
+var ctx = G("canvas-testdraw-cav").getContext("2d");
+function clear(){ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);}
+function drawCanvas() {
+  clear();
+  eval(G("testarea").value);
+}
+G("testarea").addEventListener("input", function(){if(G('canvas-testdraw-chk1').checked)drawCanvas();});
+G("canvas-testdraw-zx").onclick=drawCanvas;
+G("canvas-testdraw-qc").onclick=clear;
+})();
+</script>
+</div>
+
+<div id="closeBtn">X</div>
+
+</div>
+
+
+
+<script>
+
+document.body.onload=function(){
+arr=document.querySelectorAll("a");
+arr.forEach((a)=>{
+  if(a.href.endsWith(".html")){
+    let i=a.href.indexOf(".html");
+    a.onclick=showDetail;
+  }
+});
+G("closeBtn").onclick=closeDetail;
+}
+var curShow=null;
+function showDetail()
+{
+try{
+  if(curShow)
+    G(curShow).style.display="none";
+  s=this.href;
+  s=s.substr(s.indexOf("canvas-"));
+  s=s.substr(0,s.indexOf(".html"));
+  //s=this.innerText.toLowerCase();
+  //if(s.indexOf('(')>0)
+  //  s=s.substr(0,s.indexOf('('));
+  cur=G(s);
+  if(cur){
+    G("DetailContent").style.display="";
+    //G("Catalog").style.display="none";
+    cur.style.display="block";
+    curShow=s;
+  }
+  else
+    curShow=null;
+}catch(e){}
+  return false;
+}
+function closeDetail(){
+  //G("Catalog").style.display=null;
+  if(curShow)
+    G(curShow).style.display="none";
+  G("DetailContent").style.display="none";
+  curShow=null;
+}
+</script>
+</body>
+<html>
