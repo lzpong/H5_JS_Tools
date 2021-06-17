@@ -84,4 +84,33 @@
     14. 类似桌面的鼠标框选,和拖动选择的所有元素(360°的框选)
   </a>
 </li>
+  <li>
+  <a href="https://github.com/lzpong/JS_Tools/issues/15">
+    15. 一个简单的格式化Json字符串函数
+  </a>
+</li>
+  </li>
+  <li>
+  <a href="https://github.com/lzpong/JS_Tools/issues/16">
+    16. 获取给js文件传的参数
+  </a>
+</li>
+</li>
+  <li>
+  <a href="https://github.com/lzpong/JS_Tools/issues/17">
+    17. CSS 自动填充高度(宽度), 无需JS代码
+  </a>
+</li>
+</li>
+  <li>
+  <a href="https://github.com/lzpong/JS_Tools/issues/18">
+    18. JQuery拖动排序(table,ul等)
+  </a>
+</li>
+</li>
+  <li>
+  <a href="https://github.com/lzpong/JS_Tools/issues/19">
+    19. 自动重连的WebSocket
+  </a>
+</li>
 </ul>
