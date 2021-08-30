@@ -113,4 +113,10 @@
     19. 自动重连的WebSocket
   </a>
 </li>
+</li>
+  <li>
+  <a href="https://github.com/lzpong/JS_Tools/issues/20">
+    19. 格式化秒数为 时分秒格式
+  </a>
+</li>
 </ul>
