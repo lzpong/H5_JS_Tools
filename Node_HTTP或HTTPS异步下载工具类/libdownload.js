@@ -4,7 +4,7 @@ const {URL}=require("url");
 const {statSync,existsSync,mkdirSync,appendFile,writeFile,readFileSync}=require('fs');
 /*
 HTTP或HTTPS异步下载工具类
-支持匿名代理
+支持匿名代理; 支持用户名加密码代理
 回调函数: callback(data<ArrayBuffer>,statusCode,headers)
 */
 module.exports={
@@ -15,7 +15,7 @@ module.exports={
     request:request, //异步http/https请求 调用: `request(method,url,data,headers,fun)`
     post:post, //异步POST请求 调用: `post(url,data,callback)`
     get:get,   //异步POST请求 调用: `get(url,data,callback)`
-    setProxy:setProxy, //全局设置代理: 调用 `setProxy("http://127.0.0.1:2356")`
+    setProxy:setProxy, //全局设置代理: 调用 `setProxy("http://127.0.0.1:2356",user,pswd)`
     getJson:getJson,   //同步读取文件为 JSON  调用: `getJson(path)`
     getFile:getFile,   //同步读取文件 调用: `getFile(path)`
     unescape:unescape, //解码 `%xx` 格式
@@ -52,21 +52,25 @@ function getCli(url){
         return (url.startsWith("https")?https:http);
 }
 
-function setProxy(p){
+function setProxy(url,user,pswd){
     proxy=p;
+    if(user!=null && user!="")
+        auth="Basic "+new Buffer('flyingzl:password').toString('base64')
 }
 
 //http请求 callback(data<ArrayBuffer>,statusCode,headers)
 function request(method,url,data,headers,fun) {
     var ops={
       method: method,
-      headers: headers
+      headers: headers||{}
     };
     if(proxy){
         let u2=new URL(proxy);
         ops.hostname=u2.hostname;
         ops.port=u2.port||(proxy.startsWith("https")?443:80);
         ops.path=url;
+        if(auth)
+            ops.headers["Proxy-Authorization"]=auth;
     }else{
         let u1=new URL(url);
         ops.hostname=u1.hostname;
