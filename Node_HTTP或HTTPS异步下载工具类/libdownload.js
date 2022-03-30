@@ -4,7 +4,7 @@ const {URL}=require("url");
 const {statSync,existsSync,mkdirSync,appendFile,writeFile,readFileSync}=require('fs');
 /*
 HTTP或HTTPS异步下载工具类
-支持匿名代理; 支持用户名加密码代理
+支持匿名代理; 或用户名加密码代理
 回调函数: callback(data<ArrayBuffer>,statusCode,headers)
 */
 module.exports={
@@ -40,7 +40,7 @@ https.globalAgent.options.rejectUnauthorized=false;//忽略证书验证
 var defaultHeaders={"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36"};
 var postHeaders=defaultHeaders;
 var getHeaders=defaultHeaders;
-var proxy=null;
+var proxy=null,auth=null;
 
 function setPostHeaders(hd) { postHeaders=hd;}
 function setGetHeaders(hd) { getHeaders=hd;}
