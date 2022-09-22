@@ -6,109 +6,25 @@
 # 列表: [更多的在这里>>>Issues<<<](https://github.com/lzpong/JS_Tools/issues)
 *此处列表不是实时更新*
 <ul>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/1">
-    1. document.ready [兼容] 跟 $.ready 一样功能
-  </a>
-</li>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/2">
-    2. JavaScript 中的对象深度复制(Object Deep Clone)
-  </a>
-</li>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/3">
-    3. 对Date的扩展，将Date 转化为指定格式的String
-  </a>
-</li>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/4">
-    4. Array数组删除元素,参数可以是下标、单个对象、一维数组、多维数组
-  </a>
-</li>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/5">
-    5. 判断对象是否为空对象
-  </a>
-</li>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/6">
-    6. Array 去除数组里重复的对象,返回新的数组
-  </a>
-</li>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/7">
-    7. 用JavaScript在浏览器中创建下载文件,在前端生成的文件下载
-  </a>
-</li>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/7">
-    8. 一个函数搞定拖拽,直接指定对象设置可拖拽
-  </a>
-</li>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/9">
-    9. String 的扩展和 stringBuilder 也是很有意思的
-  </a>
-</li>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/10">
-    10. Array 数组的排序 sort
-  </a>
-</li>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/11">
-    11. 一个函数搞定进度条/拖动滑块
-  </a>
-</li>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/12">
-    12. 一个函数搞定右键菜单
-  </a>
-</li>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/13">
-    13. 文档上点击鼠标左键并拖动绘制矩形,,矩形上点击拖动矩形
-  </a>
-</li>
-<li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/14">
-    14. 类似桌面的鼠标框选,和拖动选择的所有元素(360°的框选)
-  </a>
-</li>
-  <li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/15">
-    15. 一个简单的格式化Json字符串函数
-  </a>
-</li>
-  </li>
-  <li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/16">
-    16. 获取给js文件传的参数
-  </a>
-</li>
-</li>
-  <li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/17">
-    17. CSS 自动填充高度(宽度), 无需JS代码
-  </a>
-</li>
-</li>
-  <li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/18">
-    18. JQuery拖动排序(table,ul等)
-  </a>
-</li>
-</li>
-  <li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/19">
-    19. 自动重连的WebSocket
-  </a>
-</li>
-</li>
-  <li>
-  <a href="https://github.com/lzpong/JS_Tools/issues/20">
-    20. 格式化秒数为 时分秒格式
-  </a>
-</li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/1">1. document.ready [兼容] 跟 $.ready 一样功能</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/2">2. JavaScript 中的对象深度复制(Object Deep Clone)</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/3">3. 对Date的扩展，将Date 转化为指定格式的String</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/4">4. Array数组删除元素,参数可以是下标、单个对象、一维数组、多维数组</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/5">5. 判断对象是否为空对象</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/6">6. Array 去除数组里重复的对象,返回新的数组</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/7">7. 用JavaScript在浏览器中创建下载文件,在前端生成的文件下载</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/7">8. 一个函数搞定拖拽,直接指定对象设置可拖拽</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/9">9. String 的扩展和 stringBuilder 也是很有意思的</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/10">10. Array 数组的排序 sort</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/11">11. 一个函数搞定进度条/拖动滑块</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/12">12. 一个函数搞定右键菜单</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/13">13. 文档上点击鼠标左键并拖动绘制矩形,,矩形上点击拖动矩形</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/14">14. 类似桌面的鼠标框选,和拖动选择的所有元素(360°的框选)</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/15">15. 一个简单的格式化Json字符串函数</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/16">16. 获取给js文件传的参数</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/17">17. CSS 自动填充高度(宽度), 无需JS代码</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/18">18. JQuery拖动排序(table,ul等)</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/19">19. 自动重连的WebSocket</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/20">20. 格式化秒数为 时分秒格式</a></li>
+<li><a href="https://github.com/lzpong/JS_Tools/issues/21">21. JavaScrip 打包(zip)批量下载页面图片</a></li>
 </ul>
