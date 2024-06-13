@@ -1,6 +1,7 @@
 # H5_JS_Tools
 * HTML5 JavaScript Tools 有用的或有趣的, 实用工具,函数,等等...  
 * 为方便讨论补充等,多数内容会放在`Issues`中,欢迎到[Issues](https://github.com/lzpong/JS_Tools/issues)观看和评论
+* 国内镜像: https://gitee.com/lzpong/H5_JS_Tools
 
 ===================================================  
 # 列表: [更多的在这里>>>Issues<<<](https://github.com/lzpong/JS_Tools/issues)
