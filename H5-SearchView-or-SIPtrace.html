@@ -1,45 +1,33 @@
-<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
 <meta name="renderer" content="webkit">
 <title>大文件查找字符串与详情查看----以及FS_sipTrace</title>
 <style>
-#fileImage{
-  overflow: scroll;
-  height: 400px;
-  margin: 20px auto;
-  background-repeat: no-repeat;
-  background-position: left top;
-  background-size: contain;
-}
-#fileInfo,div{border: 1px solid #CFF3F5;}
-#progressp{
-  position: absolute;
-  width:200px;
-  height:24px;
-  border: 1px solid #CFF3F5;
-  display: none;
-}
-#progress{
-  background-color:blue;
-  height:20px;
-  width:0%;
-}
-
-.red{color:red;}
-#showMsg{position: absolute;background-color: antiquewhite;display:none;}
+body{height:100%;width:calc(100% - 6px);margin:0;padding:0 3px;}
+/*#fileInfo,div{border:1px solid #CFF3F5;}*/
+#progressp{position:absolute;width:200px;height:24px;border:1px solid #CFF3F5;display:none;}
+#progress{background-color:blue;height:20px;width:0%;}
+ul{padding-left:5px;margin:3px 0;overflow-y:auto;}
+li{list-style:none;}
+.red{color:red;background:#e0ff3877;}
+/*#showMsg{position:absolute;background-color:antiquewhite;display:none;}*/
 #msgTitle{display:inline;}
-#close{display:inline;cursor: pointer;right:0px;color:red}
+#close{display:inline;cursor:pointer;right:16px;color:red;position:absolute;width:17px;font-size:15px;}
 </style>
-
-<input type="file" value="upload" id="fileInput"> <div id="progressp"><div id="progress"> </div> </div>
+</head>
+<body>
+<div id="panel0">
+<label>选择搜索的文件: <input type="file" value="upload" id="fileInput"></label> <div id="progressp"><div id="progress"> </div> </div>
 <p id="fileInfo"></p>
-<div>搜索内容:<input id="stxt" placeholder="正则表达式搜索"/><input type="button" value="按行搜索" id="stxtbtn" title="使用正则表达式搜索"/><input type="button" value="按字节搜索" id="stxtbtn2" title="使用正则表达式搜索"/> <input type="button" id="siptracebtn" value="getSipTrace"/> 查看点前后字符数:<input id="poswave" value="1024"/></div>
-<dl></dl>
+<div>搜索内容:<input id="stxt" placeholder="正则表达式搜索" size="100"/><input type="button" value="按行搜索" id="stxtbtn" title="使用正则表达式搜索"/><input type="button" value="按字节搜索" id="stxtbtn2" title="使用正则表达式搜索"/> <input type="button" id="siptracebtn" value="getSipTrace"/> <label>查看点前后字符数:<input id="poswave" size="3" value="1024"/></label></div>
 <div id="fileText"></div>
-
-<div id="showMsg">
-<div id="showMsgTitle"><div id="msgTitle">msgTitle</div><div id="close" onclick="javascript:showMsg.style.display= 'none'">×</div></div>
-<pre id="msgTxt"></pre>
 </div>
+<ul style="width:calc(100% - 8px);bottom:0px;top:175px;position:absolute;"></ul>
+
+<dialog id="showMsg" style="padding-top:8px;">
+<div id="showMsgTitle"><div id="msgTitle">msgTitle</div><div id="close" onclick="javascript:showMsg.style.display= 'none'">❌</div></div>
+<pre id="msgTxt"></pre>
+</dialog>
 
 <script>
 //读取文件(文件对象,开始位置[,结束位置],回调函数)
@@ -117,7 +105,7 @@ function show(msg,title,top)
   showMsg.querySelector('#msgTitle').innerHTML=title;
   showMsg.querySelector('#msgTxt').innerHTML=msg;
   showMsg.style.display= 'block';
-  showMsg.style.top=top+"px";
+  //showMsg.style.top=top+"px";
 }
 
 //监听change事件
@@ -284,7 +272,7 @@ document.getElementById("siptracebtn").addEventListener('click',function (){
                 //var sip=getSip(siparr);
             }
             downloadFile(html,file.name+"_副本.log");
-            //fileText.innerText=html;
+            fileText.innerText=html;
             html="";
         }
         lodprogress(file.size,size);
@@ -306,8 +294,8 @@ document.getElementById("stxtbtn").addEventListener('click',function(){
 	if(s.length<1) return alert("没有搜索内容");
 	var sr=RegExp(s,"g");
 	var lineNum=0;
-	var dl=document.querySelector("dl");
-	dl.innerHTML="";
+	var ul=document.querySelector("ul");
+	ul.innerHTML="";
 	read(file,0,(data,size)=>{
 		var ind=0;
 		var offset=0;
@@ -317,11 +305,11 @@ document.getElementById("stxtbtn").addEventListener('click',function(){
 		while(ind<len){
 		    let ms=lines[ind].match(sr);
             if(ms){
-                var dd=document.createElement("dd");
-                dd.innerHTML=lineNum+ind+1+"  "+lines[ind].replace(sr,"<span class='red'>$&</span>");
-                dd.start=size-data.length+offset;
-                dl.appendChild(dd);
-                dd.addEventListener('dblclick',(e)=>{
+                var li=document.createElement("li");
+                li.innerHTML=lineNum+ind+1+"  "+lines[ind].replace(sr,"<span class='red'>$&</span>");
+                li.start=size-data.length+offset;
+                ul.appendChild(li);
+                li.addEventListener('dblclick',(e)=>{
                     //console.log(e.target.start,e.target.innerText);
                     let st=e.target.start||0;
                     let pn=parseInt(document.querySelector("#poswave").value,10)||600;
@@ -343,18 +331,18 @@ document.getElementById("stxtbtn2").addEventListener('click',function(){
 	var s=document.getElementById("stxt").value;
 	if(s.length<1) return alert("没有搜索内容");
 	var sr=RegExp(s,"g");
-	var dl=document.querySelector("dl");
-	dl.innerHTML="";
+	var ul=document.querySelector("ul");
+	ul.innerHTML="";
 	read(file,0,(data,size)=>{
 		enable(false);
 		let ms=data.matchAll(sr);
 		ms&&Array.from(ms, x=>{
-			var dd=document.createElement("dd");
+			var li=document.createElement("li");
 			let st=x.index-60;st=st>0?st:0;
-			dd.innerHTML=size-data.length+x.index+"  "+data.substr(st,128).replace(sr,"<span class='red'>$&</span>");
-			dd.start=size-data.length+x.index;
-			dl.appendChild(dd);
-			dd.addEventListener('dblclick',(e)=>{
+			li.innerHTML=size-data.length+x.index+"  "+data.substr(st,128).replace(sr,"<span class='red'>$&</span>");
+			li.start=size-data.length+x.index;
+			ul.appendChild(li);
+			li.addEventListener('dblclick',(e)=>{
 				//console.log(e.target.start,e.target.innerText);
 				let st=e.target.start||0;
 				let pn=parseInt(document.querySelector("#poswave").value,10)||200;
@@ -369,3 +357,5 @@ document.getElementById("stxtbtn2").addEventListener('click',function(){
 	});
 });
 </script>
+</body>
+</html>
