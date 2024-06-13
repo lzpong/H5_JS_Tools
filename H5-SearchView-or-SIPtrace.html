@@ -51,6 +51,7 @@ function read(file,start,ended,procFun){
     if(typeof ended =="function")
        procFun=ended,ended=file.size;
     start=parseInt(start, 10)||0;
+    if(start<0) start=0;
     var minSize=64*1024, maxSize=10*1024*1024;//64KB~10MB
     var blob;
     var reader=new FileReader();
@@ -243,6 +244,7 @@ document.getElementById("siptracebtn").addEventListener('click',function (){
         ldata=lldata;
         var lastLine1="",lastLine2="";
         var lineDate="";
+        enable(false);
         //html+="\n----------------------------------------------------------------------------"+ ++tt +"\n";
         for(i=0;i<lines.length;i++){
             if(siparr.length<1 && lines[i].indexOf("   ------------------")<0){
@@ -286,6 +288,7 @@ document.getElementById("siptracebtn").addEventListener('click',function (){
             html="";
         }
         lodprogress(file.size,size);
+        enable(true);
         return size < file.size?0:null;
     });
 });
@@ -293,6 +296,11 @@ document.getElementById("siptracebtn").addEventListener('click',function (){
 </script>
 
 <script descript="actions">
+
+function enable(t){
+  t=!t,document.querySelectorAll('input').forEach(x=>x.disabled=t);
+}
+
 document.getElementById("stxtbtn").addEventListener('click',function(){
 	var s=document.getElementById("stxt").value;
 	if(s.length<1) return alert("没有搜索内容");
@@ -305,10 +313,12 @@ document.getElementById("stxtbtn").addEventListener('click',function(){
 		var offset=0;
 		var lines=data.split("\n");
 		var len=lines.length-1;
+		enable(false);
 		while(ind<len){
-            if(lines[ind].indexOf(s)>=0){
+		    let ms=lines[ind].match(sr);
+            if(ms){
                 var dd=document.createElement("dd");
-                dd.innerHTML=lineNum+ind+1+"  "+lines[ind].replace(sr,"<span class='red'>"+s+"</span>");
+                dd.innerHTML=lineNum+ind+1+"  "+lines[ind].replace(sr,"<span class='red'>$&</span>");
                 dd.start=size-data.length+offset;
                 dl.appendChild(dd);
                 dd.addEventListener('dblclick',(e)=>{
@@ -316,7 +326,7 @@ document.getElementById("stxtbtn").addEventListener('click',function(){
                     let st=e.target.start||0;
                     let pn=parseInt(document.querySelector("#poswave").value,10)||600;
                     read(file,st-pn,st+pn,(data,size)=>{
-                        show(data.replace(sr,"<span class='red'>"+s+"</span>"),e.target.innerHTML,e.target.offsetTop+e.target.offsetHeight+1);
+                        show(data.replace(sr,"<span class='red'>$&</span>"),e.target.innerHTML,e.target.offsetTop+e.target.offsetHeight+1);
                     },false);
                 });
 			}
@@ -325,6 +335,7 @@ document.getElementById("stxtbtn").addEventListener('click',function(){
 		}
 		lineNum+=ind;
 		lodprogress(file.size,size);
+		enable(true);
 		return offset-data.length;
 	});
 });
@@ -335,23 +346,25 @@ document.getElementById("stxtbtn2").addEventListener('click',function(){
 	var dl=document.querySelector("dl");
 	dl.innerHTML="";
 	read(file,0,(data,size)=>{
-		var ind=0;
-		while((ind=data.indexOf(s,ind+1))>=0&&ind<data.length){
+		enable(false);
+		let ms=data.matchAll(sr);
+		ms&&Array.from(ms, x=>{
 			var dd=document.createElement("dd");
-			let st=ind-60;st=st>0?st:0;
-			dd.innerHTML=size-data.length+ind+"  "+data.substr(st,128).replace(sr,"<span class='red'>"+s+"</span>");
-			dd.start=size-data.length+ind;
+			let st=x.index-60;st=st>0?st:0;
+			dd.innerHTML=size-data.length+x.index+"  "+data.substr(st,128).replace(sr,"<span class='red'>$&</span>");
+			dd.start=size-data.length+x.index;
 			dl.appendChild(dd);
 			dd.addEventListener('dblclick',(e)=>{
 				//console.log(e.target.start,e.target.innerText);
 				let st=e.target.start||0;
 				let pn=parseInt(document.querySelector("#poswave").value,10)||200;
 				read(file,st-pn,st+pn,(data,size)=>{
-					show(data.replace(sr,"<span class='red'>"+s+"</span>"),e.target.innerHTML,e.target.offsetTop+e.target.offsetHeight+1);
+					show(data.replace(sr,"<span class='red'>$&</span>"),e.target.innerHTML,e.target.offsetTop+e.target.offsetHeight+1);
 				},false);
 			});
-		}
+		})
 		lodprogress(file.size,size);
+		enable(true);
 		return 0;
 	});
 });
