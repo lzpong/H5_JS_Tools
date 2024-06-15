@@ -19,7 +19,10 @@ li{list-style:none;}
 <div id="panel0">
 <label>选择搜索的文件: <input type="file" value="upload" id="fileInput"></label> <div id="progressp"><div id="progress"> </div> </div>
 <p id="fileInfo"></p>
-<div>搜索内容:<input id="stxt" placeholder="正则表达式搜索" size="100"/><input type="button" value="按行搜索" id="stxtbtn" title="使用正则表达式搜索"/><input type="button" value="按字节搜索" id="stxtbtn2" title="使用正则表达式搜索"/> <input type="button" id="siptracebtn" value="getSipTrace"/> <label>查看点前后字符数:<input id="poswave" size="3" value="1024"/></label></div>
+<div>字符编码:<select id="coding"><option value="GB18030" selected>GB18030</option><option value="GBK">GBK</option><option value="utf8">UTF-8</option><option value="utf16">UNICODE</option></select>
+搜索内容:<input id="stxt" placeholder="正则表达式搜索" size="100"/><input type="button" value="按行搜索" id="stxtbtn" title="使用正则表达式搜索"/><input type="button" value="按字节搜索" id="stxtbtn2" title="使用正则表达式搜索"/> <input type="button" id="siptracebtn" value="getSipTrace"/>
+ <label>查看点前后字符数:<input id="poswave" size="3" value="1024"/></label>
+</div>
 <div id="fileText"></div>
 </div>
 <ul style="width:calc(100% - 8px);bottom:0px;top:175px;position:absolute;"></ul>
@@ -30,14 +33,16 @@ li{list-style:none;}
 </dialog>
 
 <script>
-//读取文件(文件对象,开始位置[,结束位置],回调函数)
+//读取文件(文件对象,开始位置[,结束位置],回调函数[,字符编码])
 //回调函数(数据,总共已读取数据大小)
 //回调函数返回null表示停止,返回number表示继续读取偏移位置(如负数:往前偏移)
-function read(file,start,ended,procFun){
+function read(file,start,ended,procFun,coding){
     if(!file)
-      return alert("未选择文件");
+        return alert("未选择文件");
+    if(typeof procFun=="string")
+        coding=procFun;//编码
     if(typeof ended =="function")
-       procFun=ended,ended=file.size;
+        procFun=ended,ended=file.size;
     start=parseInt(start, 10)||0;
     if(start<0) start=0;
     var minSize=64*1024, maxSize=10*1024*1024;//64KB~10MB
@@ -45,29 +50,30 @@ function read(file,start,ended,procFun){
     var reader=new FileReader();
     var sliceSize=parseInt(file.size/100);//每次读取大小(byte)
     if(sliceSize<64*1024)
-      sliceSize=64*1024;
+        sliceSize=64*1024;
     else if(sliceSize>maxSize)
-      sliceSize=maxSize;
+        sliceSize=maxSize;
     var end=start+sliceSize;
     if(end>ended)
-      end=ended;
+        end=ended;
     blob =(file.slice||(file.webkitSlice||file.mozSlice)).call(file,start, end);
-    console.log("本次读取: ",start, end," percent:"+(end/file.size).toFixed(5)*100+'%');
+    //console.log("本次读取: ",start, end," percent:"+(end/file.size).toFixed(5)*100+'%');
     reader.onload = function(e){
         //console.log("进度(byte)",end,(end/file.size*100).toFixed(2)+"%");
         let ctnu=null;
-        start=end;
-        procFun?ctnu=procFun(e.target.result,start):null;
+        procFun?ctnu=procFun(e.target.result,end):null;
         if(ctnu!=null){
-            start+=ctnu;
+            start=end+ctnu;
             if(start<ended)
-            read(file,start,ended,procFun);
+                read(file,start,ended,procFun,coding);
+            //else
+            //    console.log("本次读取完毕",file.size);
         }
         //else
         //    console.log("本次读取完毕",file.size);
     }
-    reader.onerror=(e)=>{console.error(e)}
-    reader.readAsText(blob)
+    reader.onerror=(e)=>{console.error(e);alert(e.currentTarget.error)}
+    reader.readAsText(blob,coding)
 }
 
 function downloadFile(content, fileName){
@@ -82,7 +88,26 @@ function downloadFile(content, fileName){
     aLink.click();
 }
 
-
+//GB.GBK码中文2字符
+function GBLength(str) {
+    var byteLen = 0;
+    if( !str ) return 0;
+    for( var i=0; i<str.length; i++ )
+        byteLen += str.charCodeAt(i) > 255 ? 2 : 1;
+    return byteLen;
+}
+//汉字 emoj 等编码占多字节 , 各个编码适用
+function StrByteLength(str) {
+    var byteLen = 0;
+    if( !str ) return 0;
+    for( var i=0; i<str.length; i++ ){
+        byteLen++;
+        var l=str.charCodeAt(i);
+        while(l>255)
+            byteLen++,l=l>>8;
+    }
+    return byteLen;
+}
 //================================================
 
 var fileInput = document.getElementById("fileInput"),
@@ -95,17 +120,16 @@ var fileInput = document.getElementById("fileInput"),
 var file=null;
 
 function lodprogress(t,s){
-if(t!=s)
-progressp.style.display= "block",progress.style.width=Math.round((s / t) * 100)+"%";
-else
-progressp.style.display= "none";
+    if(t!=s)
+        progressp.style.display= "block",progress.style.width=Math.round((s / t) * 100)+"%";
+    else
+        progressp.style.display= "none";
 }
-function show(msg,title,top)
-{
-  showMsg.querySelector('#msgTitle').innerHTML=title;
-  showMsg.querySelector('#msgTxt').innerHTML=msg;
-  showMsg.style.display= 'block';
-  //showMsg.style.top=top+"px";
+function show(msg,title,top){
+    showMsg.querySelector('#msgTitle').innerHTML=title;
+    showMsg.querySelector('#msgTxt').innerHTML=msg;
+    showMsg.style.display= 'block';
+    //showMsg.style.top=top+"px";
 }
 
 //监听change事件
@@ -130,7 +154,7 @@ fileInput.addEventListener('change',function(){
     progressp.style.top=(this.offsetTop-2)+"px",
     progressp.style.left=this.offsetLeft+"px",
     progressp.style.width=this.offsetWidth+"px",
-    progressp.style.height=this.offsetHeight+"px";
+    progressp.style.height=this.offsetHeight/2+"px";
     /*if(file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif'){
         alert('不是有效的图片');
         return;
@@ -278,7 +302,7 @@ document.getElementById("siptracebtn").addEventListener('click',function (){
         lodprogress(file.size,size);
         enable(true);
         return size < file.size?0:null;
-    });
+    },document.getElementById('coding').value);
 });
 
 </script>
@@ -291,6 +315,8 @@ function enable(t){
 
 document.getElementById("stxtbtn").addEventListener('click',function(){
 	var s=document.getElementById("stxt").value;
+	var coding=document.getElementById('coding').value;
+	var codingFun=coding.match(/GB|gb/)?GBLength:StrByteLength;//汉字编码占多字节
 	if(s.length<1) return alert("没有搜索内容");
 	var sr=RegExp(s,"g");
 	var lineNum=0;
@@ -299,39 +325,44 @@ document.getElementById("stxtbtn").addEventListener('click',function(){
 	read(file,0,(data,size)=>{
 		var ind=0;
 		var offset=0;
-		var lines=data.split("\n");
+		var lines=data.split(/\r\n|\n|\r/);
 		var len=lines.length-1;
-		enable(false);
+		var utf8len=codingFun(data);
 		while(ind<len){
 		    let ms=lines[ind].match(sr);
             if(ms){
                 var li=document.createElement("li");
-                li.innerHTML=lineNum+ind+1+"  "+lines[ind].replace(sr,"<span class='red'>$&</span>");
-                li.start=size-data.length+offset;
+                li.innerHTML=lineNum+ind+1+"  "+lines[ind].replace(/\</g,'&lt;').replace(/\>/g,'&gt;').replace(sr,"<span class='red'>$&</span>");
+                li.start=size-utf8len+offset;
                 ul.appendChild(li);
                 li.addEventListener('dblclick',(e)=>{
                     //console.log(e.target.start,e.target.innerText);
                     let st=e.target.start||0;
                     let pn=parseInt(document.querySelector("#poswave").value,10)||600;
                     read(file,st-pn,st+pn,(data,size)=>{
-                        show(data.replace(sr,"<span class='red'>$&</span>"),e.target.innerHTML,e.target.offsetTop+e.target.offsetHeight+1);
-                    },false);
+                        show(data.replace(/\</g,'&lt;').replace(/\>/g,'&gt;').replace(sr,"<span class='red'>$&</span>"),e.target.innerHTML,e.target.offsetTop+e.target.offsetHeight+1);
+                    },coding);
                 });
 			}
-			offset+=lines[ind].length+1;
+			offset+=codingFun(lines[ind])+1;
 			ind++;
 		}
 		lineNum+=ind;
 		lodprogress(file.size,size);
 		enable(true);
 		return offset-data.length;
-	});
+		//return len>0?-lines[len].length:0;
+	},coding);
 });
+//按字节搜索
 document.getElementById("stxtbtn2").addEventListener('click',function(){
 	var s=document.getElementById("stxt").value;
+	var coding=document.getElementById('coding').value;
+	var codingFun=coding.match(/GB|gb/)?GBLength:StrByteLength;
 	if(s.length<1) return alert("没有搜索内容");
 	var sr=RegExp(s,"g");
 	var ul=document.querySelector("ul");
+	var utf8len=codingFun(data);
 	ul.innerHTML="";
 	read(file,0,(data,size)=>{
 		enable(false);
@@ -340,7 +371,7 @@ document.getElementById("stxtbtn2").addEventListener('click',function(){
 			var li=document.createElement("li");
 			let st=x.index-60;st=st>0?st:0;
 			li.innerHTML=size-data.length+x.index+"  "+data.substr(st,128).replace(sr,"<span class='red'>$&</span>");
-			li.start=size-data.length+x.index;
+			li.start=size-utf8len+x.index;
 			ul.appendChild(li);
 			li.addEventListener('dblclick',(e)=>{
 				//console.log(e.target.start,e.target.innerText);
@@ -348,13 +379,13 @@ document.getElementById("stxtbtn2").addEventListener('click',function(){
 				let pn=parseInt(document.querySelector("#poswave").value,10)||200;
 				read(file,st-pn,st+pn,(data,size)=>{
 					show(data.replace(sr,"<span class='red'>$&</span>"),e.target.innerHTML,e.target.offsetTop+e.target.offsetHeight+1);
-				},false);
+				},coding);
 			});
 		})
 		lodprogress(file.size,size);
 		enable(true);
 		return 0;
-	});
+	},coding);
 });
 </script>
 </body>
