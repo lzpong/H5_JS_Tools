@@ -4,13 +4,13 @@
 <title>大文件查找字符串与详情查看----以及FS_sipTrace</title>
 <style>
 body{height:100%;width:calc(100% - 6px);margin:0;padding:0 3px;}
-/*#fileInfo,div{border:1px solid #CFF3F5;}*/
+#fileInfo{margin:0;}
 #progressp{position:absolute;width:200px;height:24px;border:1px solid #CFF3F5;display:none;}
 #progress{background-color:blue;height:20px;width:0%;}
-ul{padding-left:5px;margin:3px 0;overflow-y:auto;}
+ul{padding-left:5px;margin:3px 0;overflow-y:auto;width:calc(100% - 8px);bottom:0px;top:114px;position:absolute;}
 li{list-style:none;}
 .red{color:red;background:#e0ff3877;}
-/*#showMsg{position:absolute;background-color:antiquewhite;display:none;}*/
+#showMsg{padding-top:8px;}
 #msgTitle{display:inline;}
 #close{display:inline;cursor:pointer;right:16px;color:red;position:absolute;width:17px;font-size:15px;}
 </style>
@@ -25,9 +25,9 @@ li{list-style:none;}
 </div>
 <div id="fileText"></div>
 </div>
-<ul style="width:calc(100% - 8px);bottom:0px;top:175px;position:absolute;"></ul>
+<ul></ul>
 
-<dialog id="showMsg" style="padding-top:8px;">
+<dialog id="showMsg">
 <div id="showMsgTitle"><div id="msgTitle">msgTitle</div><div id="close" onclick="javascript:showMsg.style.display= 'none'">❌</div></div>
 <pre id="msgTxt"></pre>
 </dialog>
@@ -296,7 +296,7 @@ document.getElementById("siptracebtn").addEventListener('click',function (){
                 //var sip=getSip(siparr);
             }
             downloadFile(html,file.name+"_副本.log");
-            fileText.innerText=html;
+            //fileText.innerText=html;
             html="";
         }
         lodprogress(file.size,size);
@@ -313,6 +313,7 @@ function enable(t){
   t=!t,document.querySelectorAll('input').forEach(x=>x.disabled=t);
 }
 
+//按行搜索
 document.getElementById("stxtbtn").addEventListener('click',function(){
 	var s=document.getElementById("stxt").value;
 	var coding=document.getElementById('coding').value;
