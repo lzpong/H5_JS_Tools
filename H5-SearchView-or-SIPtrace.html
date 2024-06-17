@@ -11,7 +11,7 @@ ul{padding-left:5px;margin:3px 0;overflow-y:auto;width:calc(100% - 8px);bottom:0
 li{list-style:none;}
 .red{color:red;background:#e0ff3877;}
 #showMsg{padding-top:8px;}
-#msgTitle{display:inline;}
+#msgTitle{display:inline;margin-right: 20px;}
 #close{display:inline;cursor:pointer;right:16px;color:red;position:absolute;width:17px;font-size:15px;}
 </style>
 </head>
@@ -147,14 +147,14 @@ fileInput.addEventListener('change',function(){
 
     //获取file信息
     fileInfo.innerHTML = '文件: '+file.name+'<br>'+
-                         '类型: '+file.type+'<br>'+
+    //                     '类型: '+file.type+'<br>'+
                          '大小: '+file.size+'<br>'+
-                         '修改: '+file.lastModifiedDate+'<br>';
+                         '修改: '+file.lastModifiedDate.toLocaleString()+'<br>';
     progress.style.width="1px";
     progressp.style.top=(this.offsetTop-2)+"px",
     progressp.style.left=this.offsetLeft+"px",
     progressp.style.width=this.offsetWidth+"px",
-    progressp.style.height=this.offsetHeight/2+"px";
+    progressp.style.height=this.offsetHeight+"px";
     /*if(file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif'){
         alert('不是有效的图片');
         return;
