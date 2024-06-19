@@ -7,7 +7,7 @@
 body{height:100%;width:calc(100% - 6px);margin:0;padding:0 3px;}
 #fileInfo{margin:0;}
 #progressp{position:absolute;width:200px;height:24px;border:1px solid #CFF3F5;display:none;}
-#progress{background-color:blue;height:20px;width:0%;}
+#progress{background-color:blue;height:24px;width:0%;}
 ul{padding-left:5px;margin:3px 0;overflow-y:auto;width:calc(100% - 9px);bottom:0px;top:110px;position:absolute;}
 li{list-style:none;}
 .red{color:red;background:#e0ff3877;}
@@ -333,6 +333,7 @@ document.getElementById("stxtbtn").addEventListener('click',function(){
 		var ind=0;
 		var offset=0;
 		var lines=data.split(/\r\n|\n|\r/);
+		var lends=data.match(/\r\n|\n|\r/mg);
 		var len=lines.length-1;
 		var utf8len=codingFun(data);
 		enable(false);
@@ -352,7 +353,7 @@ document.getElementById("stxtbtn").addEventListener('click',function(){
                     },coding);
                 });
 			}
-			offset+=codingFun(lines[ind])+1;
+			offset+=codingFun(lines[ind])+lends[ind].length;
 			ind++;
 		}
 		lineNum+=ind;
@@ -370,10 +371,10 @@ document.getElementById("stxtbtn2").addEventListener('click',function(){
 	if(s.length<1) return alert("没有搜索内容");
 	var sr=RegExp(s,"g");
 	var ul=document.querySelector("ul");
-	var utf8len=codingFun(data);
 	ul.innerHTML="";
 	read(file,0,(data,size)=>{
 		enable(false);
+		let utf8len=codingFun(data);
 		let ms=data.matchAll(sr);
 		ms&&Array.from(ms, x=>{
 			var li=document.createElement("li");
