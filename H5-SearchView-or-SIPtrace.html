@@ -1,5 +1,6 @@
 <html lang="zh-cn">
 <head>
+<meta charset="UTF-8">
 <meta name="renderer" content="webkit">
 <title>大文件查找字符串与详情查看----以及FS_sipTrace</title>
 <style>
@@ -7,11 +8,11 @@ body{height:100%;width:calc(100% - 6px);margin:0;padding:0 3px;}
 #fileInfo{margin:0;}
 #progressp{position:absolute;width:200px;height:24px;border:1px solid #CFF3F5;display:none;}
 #progress{background-color:blue;height:20px;width:0%;}
-ul{padding-left:5px;margin:3px 0;overflow-y:auto;width:calc(100% - 8px);bottom:0px;top:114px;position:absolute;}
+ul{padding-left:5px;margin:3px 0;overflow-y:auto;width:calc(100% - 9px);bottom:0px;top:110px;position:absolute;}
 li{list-style:none;}
 .red{color:red;background:#e0ff3877;}
 #showMsg{padding-top:8px;}
-#msgTitle{display:inline;margin-right: 20px;}
+#msgTitle{display:inline;}
 #close{display:inline;cursor:pointer;right:16px;color:red;position:absolute;width:17px;font-size:15px;}
 </style>
 </head>
@@ -19,7 +20,7 @@ li{list-style:none;}
 <div id="panel0">
 <label>选择搜索的文件: <input type="file" value="upload" id="fileInput"></label> <div id="progressp"><div id="progress"> </div> </div>
 <p id="fileInfo"></p>
-<div>字符编码:<select id="coding"><option value="GB18030" selected>GB18030</option><option value="GBK">GBK</option><option value="utf8">UTF-8</option><option value="utf16">UNICODE</option></select>
+<div>字符编码:<select id="coding"><option value="utf8" selected>UTF-8</option><option value="GB18030">GB18030</option><option value="GBK">GBK</option><option value="utf16">UNICODE</option></select>
 搜索内容:<input id="stxt" placeholder="正则表达式搜索" size="100"/><input type="button" value="按行搜索" id="stxtbtn" title="使用正则表达式搜索"/><input type="button" value="按字节搜索" id="stxtbtn2" title="使用正则表达式搜索"/> <input type="button" id="siptracebtn" value="getSipTrace"/>
  <label>查看点前后字符数:<input id="poswave" size="3" value="1024"/></label>
 </div>
@@ -57,7 +58,7 @@ function read(file,start,ended,procFun,coding){
     if(end>ended)
         end=ended;
     blob =(file.slice||(file.webkitSlice||file.mozSlice)).call(file,start, end);
-    //console.log("本次读取: ",start, end," percent:"+(end/file.size).toFixed(5)*100+'%');
+    console.log("本次读取: ",start, end," percent:"+(end/file.size).toFixed(5)*100+'%');
     reader.onload = function(e){
         //console.log("进度(byte)",end,(end/file.size*100).toFixed(2)+"%");
         let ctnu=null;
@@ -125,11 +126,11 @@ function lodprogress(t,s){
     else
         progressp.style.display= "none";
 }
+
 function show(msg,title,top){
     showMsg.querySelector('#msgTitle').innerHTML=title;
     showMsg.querySelector('#msgTxt').innerHTML=msg;
     showMsg.style.display= 'block';
-    //showMsg.style.top=top+"px";
 }
 
 //监听change事件
@@ -329,6 +330,7 @@ document.getElementById("stxtbtn").addEventListener('click',function(){
 		var lines=data.split(/\r\n|\n|\r/);
 		var len=lines.length-1;
 		var utf8len=codingFun(data);
+		enable(false);
 		while(ind<len){
 		    let ms=lines[ind].match(sr);
             if(ms){
