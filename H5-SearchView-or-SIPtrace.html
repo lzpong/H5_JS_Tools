@@ -21,7 +21,11 @@ li{list-style:none;}
 <label>选择搜索的文件: <input type="file" value="upload" id="fileInput"></label> <div id="progressp"><div id="progress"> </div> </div>
 <p id="fileInfo"></p>
 <div>字符编码:<select id="coding"><option value="utf8" selected>UTF-8</option><option value="GB18030">GB18030</option><option value="GBK">GBK</option><option value="utf16">UNICODE</option></select>
-搜索内容:<input id="stxt" placeholder="正则表达式搜索" size="100"/><input type="button" value="按行搜索" id="stxtbtn" title="使用正则表达式搜索"/><input type="button" value="按字节搜索" id="stxtbtn2" title="使用正则表达式搜索"/> <input type="button" id="siptracebtn" value="getSipTrace"/>
+搜索内容:<input id="stxt" list="stxtlist" placeholder="正则表达式搜索" size="100"/>
+<datalist id="stxtlist">
+  <option value=" \w\/DEFL"> x/DEFL</option>
+</datalist>
+<input type="button" value="按行搜索" id="stxtbtn" title="使用正则表达式搜索"/><input type="button" value="按字节搜索" id="stxtbtn2" title="使用正则表达式搜索"/> <input type="button" id="siptracebtn" value="getSipTrace"/>
  <label>查看点前后字符数:<input id="poswave" size="3" value="1024"/></label>
 </div>
 <div id="fileText"></div>
