@@ -11,6 +11,7 @@ body{height:100%;width:calc(100% - 6px);margin:0;padding:0 3px;}
 ul{padding-left:5px;margin:3px 0;overflow-y:auto;width:calc(100% - 9px);bottom:0px;top:110px;position:absolute;}
 li{list-style:none;}
 .red{color:red;background:#e0ff3877;}
+.fixd1{position:fixed;left:600px;top:10;}
 #showMsg{padding-top:8px;}
 #msgTitle{display:inline;}
 #close{display:inline;cursor:pointer;right:16px;color:red;position:absolute;width:17px;font-size:15px;}
@@ -19,14 +20,15 @@ li{list-style:none;}
 <body>
 <div id="panel0">
 <label>选择搜索的文件: <input type="file" value="upload" id="fileInput"></label> <div id="progressp"><div id="progress"> </div> </div>
-<p id="fileInfo"></p>
-<div>字符编码:<select id="coding"><option value="utf8" selected>UTF-8</option><option value="GB18030">GB18030</option><option value="GBK">GBK</option><option value="utf16">UNICODE</option></select>
+<p id="fileInfo">文件:<br>大小:<br>修改:<br></p>
 搜索内容:<input id="stxt" list="stxtlist" placeholder="正则表达式搜索" size="100"/>
 <datalist id="stxtlist">
   <option value=" \w\/DEFL"> x/DEFL</option>
 </datalist>
-<input type="button" value="按行搜索" id="stxtbtn" title="使用正则表达式搜索"/><input type="button" value="按字节搜索" id="stxtbtn2" title="使用正则表达式搜索"/> <input type="button" id="siptracebtn" value="getSipTrace"/>
- <label>查看点前后字符数:<input id="poswave" size="3" value="1024"/></label>
+<div class="fixd1">
+字符编码:<select id="coding"><option value="utf8" selected="">UTF-8</option><option value="GB18030">GB18030</option><option value="GBK">GBK</option><option value="utf16">UNICODE</option></select><br>
+<label>查看点前后字符数:<input id="poswave" size="3" value="1024"></label><br>
+<input type="button" value="按行搜索" id="stxtbtn" title="使用正则表达式搜索"> <input type="button" value="按字节搜索" id="stxtbtn2" title="使用正则表达式搜索">
 </div>
 <div id="fileText"></div>
 </div>
@@ -143,7 +145,7 @@ fileInput.addEventListener('change',function(){
     fileText.innerText = '';
     //检查文件是否选择
     if(!this.value){
-        fileInfo.innerHTML = "没有选择任何文件";
+        fileInfo.innerHTML = '文件: &lt;未选择任何文件&gt;<br>大小:<br>修改:<br>';
         return;
     }
 
@@ -152,7 +154,6 @@ fileInput.addEventListener('change',function(){
 
     //获取file信息
     fileInfo.innerHTML = '文件: '+file.name+'<br>'+
-    //                     '类型: '+file.type+'<br>'+
                          '大小: '+file.size+'<br>'+
                          '修改: '+file.lastModifiedDate.toLocaleString()+'<br>';
     progress.style.width="1px";
